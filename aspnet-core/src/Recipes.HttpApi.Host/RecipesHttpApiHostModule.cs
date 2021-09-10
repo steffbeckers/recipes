@@ -28,6 +28,8 @@ using Volo.Abp.Modularity;
 using Volo.Abp.Swashbuckle;
 using Volo.Abp.UI.Navigation.Urls;
 using Volo.Abp.VirtualFileSystem;
+using Microsoft.AspNetCore.HttpOverrides;
+using Volo.Abp.MultiTenancy;
 
 namespace Recipes
 {
@@ -58,6 +60,33 @@ namespace Recipes
             ConfigureVirtualFileSystem(context);
             ConfigureCors(context, configuration);
             ConfigureSwaggerServices(context, configuration);
+
+            ConfigureForwardedHeaders();
+            ConfigureMultiTenancy(configuration);
+        }
+
+        private void ConfigureMultiTenancy(IConfiguration configuration)
+        {
+            string multiTenancyDomainFormat = configuration["App:MultiTenancyDomainFormat"];
+            if (!string.IsNullOrEmpty(multiTenancyDomainFormat))
+            {
+                Configure<AbpTenantResolveOptions>(options =>
+                {
+                    options.AddDomainTenantResolver(multiTenancyDomainFormat);
+                });
+            }
+        }
+
+        private void ConfigureForwardedHeaders()
+        {
+            // Forwarding request headers from proxy https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/proxy-load-balancer?view=aspnetcore-5.0#forwarded-headers-middleware-order
+            Configure<ForwardedHeadersOptions>(options =>
+            {
+                // https://github.com/aspnet/AspNetCore/issues/5970#issuecomment-475388872
+                //options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+                // This works to pass the https scheme protocol to the container
+                options.ForwardedHeaders = ForwardedHeaders.XForwardedProto;
+            });
         }
 
         private void ConfigureBundles()
@@ -141,7 +170,7 @@ namespace Recipes
                 },
                 options =>
                 {
-                    options.SwaggerDoc("v1", new OpenApiInfo {Title = "Recipes API", Version = "v1"});
+                    options.SwaggerDoc("v1", new OpenApiInfo { Title = "Recipes API", Version = "v1" });
                     options.DocInclusionPredicate((docName, description) => true);
                     options.CustomSchemaIds(type => type.FullName);
                 });
@@ -175,21 +204,21 @@ namespace Recipes
         {
             context.Services.AddCors(options =>
             {
-                options.AddDefaultPolicy( builder =>
-                {
-                    builder
-                        .WithOrigins(
-                            configuration["App:CorsOrigins"]
-                                .Split(",", StringSplitOptions.RemoveEmptyEntries)
-                                .Select(o => o.RemovePostFix("/"))
-                                .ToArray()
-                        )
-                        .WithAbpExposedHeaders()
-                        .SetIsOriginAllowedToAllowWildcardSubdomains()
-                        .AllowAnyHeader()
-                        .AllowAnyMethod()
-                        .AllowCredentials();
-                });
+                options.AddDefaultPolicy(builder =>
+               {
+                   builder
+                       .WithOrigins(
+                           configuration["App:CorsOrigins"]
+                               .Split(",", StringSplitOptions.RemoveEmptyEntries)
+                               .Select(o => o.RemovePostFix("/"))
+                               .ToArray()
+                       )
+                       .WithAbpExposedHeaders()
+                       .SetIsOriginAllowedToAllowWildcardSubdomains()
+                       .AllowAnyHeader()
+                       .AllowAnyMethod()
+                       .AllowCredentials();
+               });
             });
         }
 
