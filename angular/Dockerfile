@@ -7,6 +7,8 @@ COPY package*.json ./
 
 RUN npm install
 
+RUN npm run ngcc
+
 COPY . .
 
 RUN npm run build:prod
