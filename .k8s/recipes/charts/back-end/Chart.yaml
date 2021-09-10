@@ -1,6 +1,6 @@
 apiVersion: v2
-name: recipes-front-end
-description: Recipes front-end
+name: recipes-back-end
+description: Recipes back-end.
 
 # A chart can be either an 'application' or a 'library' chart.
 #
