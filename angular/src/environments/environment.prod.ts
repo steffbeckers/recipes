@@ -19,7 +19,7 @@ export const environment = {
   },
   apis: {
     default: {
-      url: baseUrl,
+      url: '',
       rootNamespace: 'Recipes',
     },
   },
