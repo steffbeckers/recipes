@@ -46,15 +46,6 @@ service:
   type: ClusterIP
   port: 80
 
-ingress:
-  enabled: true
-  annotations:
-    kubernetes.io/ingress.class: public
-    certmanager.k8s.io/cluster-issuer: letsencrypt
-    ingress.kubernetes.io/ssl-redirect: "true"
-    nginx.ingress.kubernetes.io/configuration-snippet: |
-      proxy_set_header   X-Forwarded-Proto $scheme;
-
 resources:
   {}
   # We usually recommend not to specify default resources and to leave this as a conscious

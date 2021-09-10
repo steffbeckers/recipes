@@ -1,22 +1,16 @@
 {{- if .Values.ingress.enabled -}}
-{{- $fullName := include "back-end.fullname" . -}}
-{{- $svcPort := .Values.service.port -}}
+{{- $fullName := include "recipes.fullname" . -}}
 {{- if and .Values.ingress.className (not (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion)) }}
   {{- if not (hasKey .Values.ingress.annotations "kubernetes.io/ingress.class") }}
   {{- $_ := set .Values.ingress.annotations "kubernetes.io/ingress.class" .Values.ingress.className}}
   {{- end }}
 {{- end }}
-{{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion -}}
 apiVersion: networking.k8s.io/v1
-{{- else if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
-apiVersion: networking.k8s.io/v1beta1
-{{- else -}}
-apiVersion: extensions/v1beta1
-{{- end }}
 kind: Ingress
 metadata:
-  name: {{ $fullName }}
+  name: "{{ $fullName }}-ingress"
   labels:
+    {{- include "front-end.labels" . | nindent 4 }}
     {{- include "back-end.labels" . | nindent 4 }}
   {{- with .Values.ingress.annotations }}
   annotations:
@@ -29,10 +23,8 @@ spec:
   tls:
     - hosts:
         - {{ .Values.app.domain }}
-      secretName: "{{ .Values.app.domain }}-tls"
-    - hosts:
         - "*.{{ .Values.app.domain }}"
-      secretName: "wildcard.{{ .Values.app.domain }}-tls"
+      secretName: "{{ .Values.app.domain }}-tls"
   rules:
     - host: {{ .Values.app.domain }}
       http: &http_rules
@@ -41,63 +33,70 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: "{{ $fullName }}"
+                name: "{{ $fullName }}-back-end"
                 port:
                   number: 80
           - path: /__bundles
             pathType: Prefix
             backend:
               service:
-                name: "{{ $fullName }}"
+                name: "{{ $fullName }}-back-end"
                 port:
                   number: 80
           - path: /Abp
             pathType: Prefix
             backend:
               service:
-                name: "{{ $fullName }}"
+                name: "{{ $fullName }}-back-end"
                 port:
                   number: 80
           - path: /account
             pathType: Prefix
             backend:
               service:
-                name: "{{ $fullName }}"
+                name: "{{ $fullName }}-back-end"
                 port:
                   number: 80
           - path: /Account
             pathType: Prefix
             backend:
               service:
-                name: "{{ $fullName }}"
+                name: "{{ $fullName }}-back-end"
                 port:
                   number: 80
           - path: /api
             pathType: Prefix
             backend:
               service:
-                name: "{{ $fullName }}"
+                name: "{{ $fullName }}-back-end"
                 port:
                   number: 80
           - path: /connect
             pathType: Prefix
             backend:
               service:
-                name: "{{ $fullName }}"
+                name: "{{ $fullName }}-back-end"
                 port:
                   number: 80
           - path: /libs
             pathType: Prefix
             backend:
               service:
-                name: "{{ $fullName }}"
+                name: "{{ $fullName }}-back-end"
                 port:
                   number: 80
           - path: /swagger
             pathType: Prefix
             backend:
               service:
-                name: "{{ $fullName }}"
+                name: "{{ $fullName }}-back-end"
+                port:
+                  number: 80
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: "{{ $fullName }}-front-end"
                 port:
                   number: 80
     - host: "*.{{ .Values.app.domain }}"

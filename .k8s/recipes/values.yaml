@@ -1,0 +1,15 @@
+# Default values for recipes web app.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+app:
+  domain: recipes.steffbeckers.eu
+
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: public
+    kubernetes.io/tls-acme: "true"
+    ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      proxy_set_header   X-Forwarded-Proto $scheme;
