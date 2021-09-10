@@ -7,7 +7,8 @@ COPY package*.json ./
 
 RUN npm install
 
-RUN npm run ngcc
+# TODO
+#RUN npm run ngcc
 
 COPY . .
 
