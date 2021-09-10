@@ -29,8 +29,10 @@ spec:
   tls:
     - hosts:
         - {{ .Values.app.domain }}
+      secretName: "{{ .Values.app.domain }}-tls"
+    - hosts:
         - "*.{{ .Values.app.domain }}"
-      secretName: "{{ $fullName }}-tls"
+      secretName: "wildcard.{{ .Values.app.domain }}-tls"
   rules:
     - host: {{ .Values.app.domain }}
       http: &http_rules
