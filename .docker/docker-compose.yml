@@ -1,0 +1,20 @@
+version: "3.5"
+
+services:
+  front-end:
+    image: registry.steffbeckers.eu/recipes/front-end
+    build:
+      context: ../angular/
+      dockerfile: Dockerfile
+
+  back-end:
+    image: registry.steffbeckers.eu/recipes/back-end
+    build:
+      context: ../aspnet-core/
+      dockerfile: src/Recipes.HttpApi.Host/Dockerfile
+
+  db-migrator:
+    image: registry.steffbeckers.eu/recipes/db-migrator
+    build:
+      context: ../aspnet-core/
+      dockerfile: src/Recipes.DbMigrator/Dockerfile

@@ -1,0 +1,24 @@
+parameters:
+  - name: additionalImageTags
+    type: string
+
+steps:
+  - task: DockerCompose@0
+    displayName: "Build services"
+    inputs:
+      dockerRegistryEndpoint: DockerRegistrySteffBeckers
+      containerregistrytype: "Container Registry"
+      dockerComposeFile: ".docker/docker-compose.yml"
+      action: "Build services"
+      qualifyImageNames: true
+      additionalImageTags: ${{ parameters.additionalImageTags }}
+
+  - task: DockerCompose@0
+    displayName: "Push services"
+    inputs:
+      dockerRegistryEndpoint: DockerRegistrySteffBeckers
+      containerregistrytype: "Container Registry"
+      dockerComposeFile: ".docker/docker-compose.yml"
+      action: "Push services"
+      qualifyImageNames: true
+      additionalImageTags: ${{ parameters.additionalImageTags }}

@@ -1,0 +1,13 @@
+trigger:
+  - main
+
+# no PR triggers
+pr: none
+
+pool:
+  name: Default
+
+steps:
+  - template: templates/docker-build-push.yml
+    parameters:
+      additionalImageTags: $(Build.BuildId)
