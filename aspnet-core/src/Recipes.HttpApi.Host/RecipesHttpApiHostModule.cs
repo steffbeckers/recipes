@@ -232,6 +232,8 @@ namespace Recipes
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseForwardedHeaders();
+
             app.UseAbpRequestLocalization();
 
             if (!env.IsDevelopment())
