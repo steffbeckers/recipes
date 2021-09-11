@@ -1,6 +1,6 @@
 import { Environment } from '@abp/ng.core';
 
-const baseUrl = "https://recipes.steffbeckers.eu";
+const baseUrl = "https://{0}.recipes.steffbeckers.eu";
 
 export const environment = {
   production: true,
