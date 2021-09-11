@@ -1,11 +1,11 @@
 import { Environment } from '@abp/ng.core';
 
-const baseUrl = "/";
+const baseUrl = "https://recipes.steffbeckers.eu";
 
 export const environment = {
   production: true,
   application: {
-    baseUrl: '',
+    baseUrl,
     name: 'Recipes',
     logoUrl: '',
   },
@@ -19,7 +19,7 @@ export const environment = {
   },
   apis: {
     default: {
-      url: '',
+      url: baseUrl,
       rootNamespace: 'Recipes',
     },
   },
