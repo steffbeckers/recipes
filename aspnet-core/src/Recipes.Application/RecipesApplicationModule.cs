@@ -1,5 +1,6 @@
 ﻿using Volo.Abp.Account;
 using Volo.Abp.AutoMapper;
+using Volo.Abp.Domain.Entities.Events.Distributed;
 using Volo.Abp.FeatureManagement;
 using Volo.Abp.Identity;
 using Volo.Abp.Modularity;
@@ -26,6 +27,10 @@ namespace Recipes
             Configure<AbpAutoMapperOptions>(options =>
             {
                 options.AddMaps<RecipesApplicationModule>();
+            });
+
+            Configure<AbpDistributedEntityEventOptions>(options => {
+                options.AutoEventSelectors.AddAll();
             });
         }
     }

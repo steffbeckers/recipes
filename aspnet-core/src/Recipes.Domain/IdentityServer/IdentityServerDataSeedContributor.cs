@@ -142,8 +142,7 @@ namespace Recipes.IdentityServer
 
             var configurationSection = _configuration.GetSection("IdentityServer:Clients");
 
-
-            //Console Test / Angular Client
+            // Console Test / Angular Client
             var consoleAndAngularClientId = configurationSection["Recipes_App:ClientId"];
             if (!consoleAndAngularClientId.IsNullOrWhiteSpace())
             {
@@ -160,9 +159,7 @@ namespace Recipes.IdentityServer
                     corsOrigins: new[] { webClientRootUrl.RemovePostFix("/") }
                 );
             }
-            
-            
-            
+
             // Swagger Client
             var swaggerClientId = configurationSection["Recipes_Swagger:ClientId"];
             if (!swaggerClientId.IsNullOrWhiteSpace())
