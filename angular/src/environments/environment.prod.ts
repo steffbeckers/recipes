@@ -5,7 +5,7 @@ const baseUrl = "/";
 export const environment = {
   production: true,
   application: {
-    baseUrl,
+    baseUrl: '',
     name: 'Recipes',
     logoUrl: '',
   },
