@@ -1,10 +1,11 @@
 using System;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.MultiTenancy;
 
 namespace Recipes.Recipes
 {
-    public class RecipeIngredient : FullAuditedEntity<Guid>
+    public class RecipeIngredient : FullAuditedEntity<Guid>, IMultiTenant
     {
         private string _name;
         private string _unit;
@@ -26,6 +27,8 @@ namespace Recipes.Recipes
 
         public virtual Guid RecipeId { get; set; }
 
+        public virtual Guid? TenantId { get; private set; }
+
         public virtual string Unit
         {
             get => _unit;
@@ -40,12 +43,14 @@ namespace Recipes.Recipes
             Guid id,
             Guid recipeId,
             string name,
-            decimal amount)
+            decimal amount,
+            Guid? tenantId = null)
         {
             Id = id;
             RecipeId = recipeId;
             Name = name;
             Amount = amount;
+            TenantId = tenantId;
         }
 
         private RecipeIngredient()

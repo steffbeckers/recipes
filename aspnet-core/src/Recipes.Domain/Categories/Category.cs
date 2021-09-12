@@ -1,10 +1,11 @@
 using System;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.MultiTenancy;
 
 namespace Recipes.Categories
 {
-    public class Category : FullAuditedAggregateRoot<Guid>
+    public class Category : FullAuditedAggregateRoot<Guid>, IMultiTenant
     {
         private string _description;
         private string _name;
@@ -30,14 +31,18 @@ namespace Recipes.Categories
             }
         }
 
-        public Guid? PhotoId { get; set; }
+        public virtual Guid? PhotoId { get; set; }
+
+        public virtual Guid? TenantId { get; private set; }
 
         public Category(
             Guid id,
-            string name)
+            string name,
+            Guid? tenantId = null)
         {
             Id = id;
             Name = name;
+            TenantId = tenantId;
         }
 
         private Category()

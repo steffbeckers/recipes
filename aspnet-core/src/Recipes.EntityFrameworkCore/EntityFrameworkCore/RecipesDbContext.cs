@@ -102,6 +102,7 @@ namespace Recipes.EntityFrameworkCore
             {
                 b.ToTable(RecipesConsts.DbTablePrefix + "Categories", RecipesConsts.DbSchema);
                 b.ConfigureByConvention();
+                b.Property(x => x.TenantId).HasColumnName(nameof(Category.TenantId));
                 b.Property(x => x.Name).HasColumnName(nameof(Category.Name)).IsRequired().HasMaxLength(CategoryConsts.NameMaxLength);
                 b.Property(x => x.Description).HasColumnName(nameof(Category.Description)).HasMaxLength(CategoryConsts.DescriptionMaxLength);
                 b.Property(x => x.PhotoId).HasColumnName(nameof(Category.PhotoId));
@@ -111,6 +112,7 @@ namespace Recipes.EntityFrameworkCore
             {
                 b.ToTable(RecipesConsts.DbTablePrefix + "RecipeIngredients", RecipesConsts.DbSchema);
                 b.ConfigureByConvention();
+                b.Property(x => x.TenantId).HasColumnName(nameof(RecipeIngredient.TenantId));
                 b.Property(x => x.RecipeId).HasColumnName(nameof(RecipeIngredient.RecipeId)).IsRequired();
                 b.HasOne(x => x.Recipe).WithMany(x => x.Ingredients).HasForeignKey(x => x.RecipeId);
                 b.Property(x => x.Name).HasColumnName(nameof(RecipeIngredient.Name)).IsRequired().HasMaxLength(RecipeIngredientConsts.NameMaxLength);
@@ -122,6 +124,7 @@ namespace Recipes.EntityFrameworkCore
             {
                 b.ToTable(RecipesConsts.DbTablePrefix + "Recipes", RecipesConsts.DbSchema);
                 b.ConfigureByConvention();
+                b.Property(x => x.TenantId).HasColumnName(nameof(Recipe.TenantId));
                 b.Property(x => x.CategoryId).HasColumnName(nameof(Recipe.CategoryId)).IsRequired();
                 b.HasOne<Category>().WithMany().HasForeignKey(x => x.CategoryId);
                 b.Property(x => x.Name).HasColumnName(nameof(Recipe.Name)).IsRequired().HasMaxLength(RecipeConsts.NameMaxLength);
@@ -135,6 +138,7 @@ namespace Recipes.EntityFrameworkCore
             {
                 b.ToTable(RecipesConsts.DbTablePrefix + "RecipeSteps", RecipesConsts.DbSchema);
                 b.ConfigureByConvention();
+                b.Property(x => x.TenantId).HasColumnName(nameof(RecipeStep.TenantId));
                 b.Property(x => x.RecipeId).HasColumnName(nameof(RecipeStep.RecipeId)).IsRequired();
                 b.HasOne(x => x.Recipe).WithMany(x => x.Steps).HasForeignKey(x => x.RecipeId);
                 b.Property(x => x.Number).HasColumnName(nameof(RecipeStep.Number)).IsRequired();

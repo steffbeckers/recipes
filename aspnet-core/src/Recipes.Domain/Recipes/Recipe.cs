@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.MultiTenancy;
 
 namespace Recipes.Recipes
 {
-    public class Recipe : FullAuditedAggregateRoot<Guid>
+    public class Recipe : FullAuditedAggregateRoot<Guid>, IMultiTenant
     {
         private string _description;
         private string _forUnit;
@@ -36,7 +37,7 @@ namespace Recipes.Recipes
             }
         }
 
-        public virtual ICollection<RecipeIngredient> Ingredients { get; set; }
+        public virtual ICollection<RecipeIngredient> Ingredients { get; private set; }
 
         public virtual string Name
         {
@@ -51,16 +52,20 @@ namespace Recipes.Recipes
 
         public virtual Guid? PhotoId { get; set; }
 
-        public virtual ICollection<RecipeStep> Steps { get; set; }
+        public virtual ICollection<RecipeStep> Steps { get; private set; }
+
+        public virtual Guid? TenantId { get; private set; }
 
         public Recipe(
             Guid id,
             Guid categoryId,
-            string name)
+            string name,
+            Guid? tenantId = null)
         {
             Id = id;
             CategoryId = categoryId;
             Name = name;
+            TenantId = tenantId;
             Ingredients = new Collection<RecipeIngredient>();
             Steps = new Collection<RecipeStep>();
         }

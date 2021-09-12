@@ -1,4 +1,5 @@
 using Recipes.Categories;
+using System;
 using System.Threading.Tasks;
 using Volo.Abp.Data;
 using Volo.Abp.DependencyInjection;
@@ -31,7 +32,26 @@ namespace Recipes.Data.Seeding
 
             if (tenant.Name == "didi")
             {
-                // TODO
+                if (await _categoryRepository.GetCountAsync() == 0)
+                {
+                    Category dinnerCategory = new Category(
+                        id: Guid.Parse("ba44bc2d-8c35-40ad-961e-515817b62eb1"),
+                        name: "Hoofdgerechten",
+                        tenantId: tenant.Id);
+                    await _categoryRepository.InsertAsync(dinnerCategory);
+
+                    Category saladsCategory = new Category(
+                        id: Guid.Parse("77021ea6-5547-4d53-88b5-dc2a81dc7f13"),
+                        name: "Slaatjes",
+                        tenantId: tenant.Id);
+                    await _categoryRepository.InsertAsync(saladsCategory);
+
+                    Category dessertsCategory = new Category(
+                        id: Guid.Parse("80684d3c-34f8-4f3d-b819-60dd4c9a9111"),
+                        name: "Desserten",
+                        tenantId: tenant.Id);
+                    await _categoryRepository.InsertAsync(dessertsCategory);
+                }
             }
         }
     }

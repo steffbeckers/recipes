@@ -1,7 +1,10 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Recipes.Recipes;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
+using Volo.Abp.EntityFrameworkCore.DependencyInjection;
 using Volo.Abp.EntityFrameworkCore.SqlServer;
 using Volo.Abp.FeatureManagement.EntityFrameworkCore;
 using Volo.Abp.Identity.EntityFrameworkCore;
@@ -23,15 +26,9 @@ namespace Recipes.EntityFrameworkCore
         typeof(AbpBackgroundJobsEntityFrameworkCoreModule),
         typeof(AbpAuditLoggingEntityFrameworkCoreModule),
         typeof(AbpTenantManagementEntityFrameworkCoreModule),
-        typeof(AbpFeatureManagementEntityFrameworkCoreModule)
-        )]
+        typeof(AbpFeatureManagementEntityFrameworkCoreModule))]
     public class RecipesEntityFrameworkCoreModule : AbpModule
     {
-        public override void PreConfigureServices(ServiceConfigurationContext context)
-        {
-            RecipesEfCoreEntityExtensionMappings.Configure();
-        }
-
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
             context.Services.AddAbpDbContext<RecipesDbContext>(options =>
@@ -47,6 +44,21 @@ namespace Recipes.EntityFrameworkCore
                  * See also RecipesMigrationsDbContextFactory for EF Core tooling. */
                 options.UseSqlServer();
             });
+
+            Configure<AbpEntityOptions>(options =>
+            {
+                options.Entity<Recipe>(e =>
+                {
+                    e.DefaultWithDetailsFunc = query => query
+                        .Include(x => x.Ingredients)
+                        .Include(x => x.Steps);
+                });
+            });
+        }
+
+        public override void PreConfigureServices(ServiceConfigurationContext context)
+        {
+            RecipesEfCoreEntityExtensionMappings.Configure();
         }
     }
 }
