@@ -49,7 +49,7 @@ namespace Recipes.Recipes
             }
         }
 
-        public virtual Guid PhotoId { get; set; }
+        public virtual Guid? PhotoId { get; set; }
 
         public virtual ICollection<RecipeStep> Steps { get; set; }
 
