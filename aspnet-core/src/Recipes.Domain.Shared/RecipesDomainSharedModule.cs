@@ -23,8 +23,7 @@ namespace Recipes
         typeof(AbpIdentityServerDomainSharedModule),
         typeof(AbpPermissionManagementDomainSharedModule),
         typeof(AbpSettingManagementDomainSharedModule),
-        typeof(AbpTenantManagementDomainSharedModule)
-        )]
+        typeof(AbpTenantManagementDomainSharedModule))]
     public class RecipesDomainSharedModule : AbpModule
     {
         public override void ConfigureServices(ServiceConfigurationContext context)
@@ -46,7 +45,8 @@ namespace Recipes
 
             Configure<AbpExceptionLocalizationOptions>(options =>
             {
-                options.MapCodeNamespace("Recipes", typeof(RecipesResource));
+                options.MapCodeNamespace(nameof(RecipesDomainErrorCodes.Categories), typeof(RecipesResource));
+                options.MapCodeNamespace(nameof(RecipesDomainErrorCodes.Recipes), typeof(RecipesResource));
             });
         }
 

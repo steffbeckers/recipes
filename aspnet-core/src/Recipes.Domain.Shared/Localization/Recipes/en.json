@@ -1,14 +1,16 @@
 {
   "culture": "en",
   "texts": {
-    "Menu:Home": "Home",
-    "Welcome": "Welcome",
+    "Categories:DeleteNotAllowedWhenRecipesStillLinked": "Category can't be deleted since there are still {RecipeCount} recipes linked to the category.",
     "LongWelcomeMessage": "Welcome to the application. This is a startup project based on the ABP framework. For more information, visit abp.io.",
+    "Menu:Home": "Home",
+    "Permission:Categories": "Categories",
     "Permission:Create": "Create",
     "Permission:Recipes": "Recipes",
     "Permission:Delete": "Delete",
     "Permission:Edit": "Edit",
     "Recipes:AtLeastOneIngredientIsRequired": "At least one ingredient is required.",
-    "Recipes:AtLeastOneStepIsRequired": "At least one step is required."
+    "Recipes:AtLeastOneStepIsRequired": "At least one step is required.",
+    "Welcome": "Welcome"
   }
 }

@@ -12,6 +12,10 @@ namespace Recipes
              * Alternatively, you can split your mapping configurations
              * into multiple profile classes for a better organization. */
 
+            CreateMap<Category, CategoryDto>();
+            CreateMap<Category, CategoryListDto>();
+            CreateMap<Category, CategorySimpleDto>();
+
             CreateMap<Recipe, RecipeDto>();
             CreateMap<Recipe, RecipeListDto>();
             CreateMap<RecipeIngredient, RecipeIngredientDto>();
@@ -20,8 +24,6 @@ namespace Recipes
                 .IncludeMembers(x => x.Recipe);
             CreateMap<RecipeWithNavigationProperties, RecipeListDto>()
                 .IncludeMembers(x => x.Recipe);
-
-            CreateMap<Category, CategorySimpleDto>();
         }
     }
 }
