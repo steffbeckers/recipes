@@ -1,3 +1,4 @@
 import * as Categories from './categories';
 import * as Recipes from './recipes';
-export { Categories, Recipes };
+import * as Shared from './shared';
+export { Categories, Recipes, Shared };
