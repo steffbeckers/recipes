@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Recipes.Categories;
+using Recipes.Shared;
 using System;
 using System.Threading.Tasks;
 using Volo.Abp;
@@ -44,6 +45,13 @@ namespace Recipes.Controllers.Categories
         public virtual Task<PagedResultDto<CategoryListDto>> GetListAsync(GetCategoriesInput input)
         {
             return _categoriesAppService.GetListAsync(input);
+        }
+
+        [HttpGet]
+        [Route("lookup")]
+        public virtual Task<PagedResultDto<LookupDto<Guid>>> GetLookupAsync(LookupRequestDto input)
+        {
+            return _categoriesAppService.GetLookupAsync(input);
         }
 
         [HttpPut]

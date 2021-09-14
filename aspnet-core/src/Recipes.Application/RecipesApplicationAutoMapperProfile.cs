@@ -1,6 +1,8 @@
 using AutoMapper;
 using Recipes.Categories;
 using Recipes.Recipes;
+using Recipes.Shared;
+using System;
 
 namespace Recipes
 {
@@ -15,6 +17,7 @@ namespace Recipes
             CreateMap<Category, CategoryDto>();
             CreateMap<Category, CategoryListDto>();
             CreateMap<Category, CategorySimpleDto>();
+            CreateMap<Category, LookupDto<Guid>>();
 
             CreateMap<Recipe, RecipeDto>();
             CreateMap<Recipe, RecipeListDto>();

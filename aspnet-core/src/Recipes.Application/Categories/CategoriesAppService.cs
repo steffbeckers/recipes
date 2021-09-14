@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Recipes.Permissions;
 using Recipes.Recipes;
+using Recipes.Shared;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -109,6 +110,33 @@ namespace Recipes.Categories
                 TotalCount = totalCount,
                 Items = await ObjectMapper.GetMapper()
                     .ProjectTo<CategoryListDto>(categoryQueryable)
+                    .AsNoTracking()
+                    .ToListAsync()
+            };
+        }
+
+        public virtual async Task<PagedResultDto<LookupDto<Guid>>> GetLookupAsync(LookupRequestDto input)
+        {
+            IQueryable<Category> categoryQueryable = await _categoryRepository.GetQueryableAsync();
+
+            // Filter
+            categoryQueryable = categoryQueryable.WhereIf(!string.IsNullOrWhiteSpace(input.FilterText), x =>
+                x.Name.Contains(input.FilterText));
+
+            // Sort
+            categoryQueryable = categoryQueryable.OrderBy(x => x.Name);
+
+            // Total count
+            long totalCount = await categoryQueryable.LongCountAsync();
+
+            // Page
+            categoryQueryable = categoryQueryable.PageBy(input.SkipCount, input.MaxResultCount);
+
+            return new PagedResultDto<LookupDto<Guid>>()
+            {
+                TotalCount = totalCount,
+                Items = await ObjectMapper.GetMapper()
+                    .ProjectTo<LookupDto<Guid>>(categoryQueryable)
                     .AsNoTracking()
                     .ToListAsync()
             };
