@@ -7,6 +7,8 @@
     "Permission:Create": "Toevoegen",
     "Permission:Recipes": "Recepten",
     "Permission:Delete": "Verwijderen",
-    "Permission:Edit": "Bewerken"
+    "Permission:Edit": "Bewerken",
+    "Recipes:AtLeastOneIngredientIsRequired": "Ten minste één ingredient is verplicht.",
+    "Recipes:AtLeastOneStepIsRequired": "Ten minste één stap is verplicht."
   }
 }

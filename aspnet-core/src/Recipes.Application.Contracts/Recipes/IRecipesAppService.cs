@@ -14,6 +14,6 @@ namespace Recipes.Recipes
 
         Task<PagedResultDto<RecipeListDto>> GetListAsync(GetRecipesInput input);
 
-        Task<RecipeDto> UpdateAsync(RecipeUpdateDto input);
+        Task<RecipeDto> UpdateAsync(Guid id, RecipeUpdateDto input);
     }
 }

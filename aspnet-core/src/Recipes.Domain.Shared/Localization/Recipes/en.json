@@ -7,6 +7,8 @@
     "Permission:Create": "Create",
     "Permission:Recipes": "Recipes",
     "Permission:Delete": "Delete",
-    "Permission:Edit": "Edit"
+    "Permission:Edit": "Edit",
+    "Recipes:AtLeastOneIngredientIsRequired": "At least one ingredient is required.",
+    "Recipes:AtLeastOneStepIsRequired": "At least one step is required."
   }
 }

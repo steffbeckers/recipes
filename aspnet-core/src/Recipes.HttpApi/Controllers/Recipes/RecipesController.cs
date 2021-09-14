@@ -48,9 +48,9 @@ namespace Recipes.Controllers.Recipes
 
         [HttpPut]
         [Route("{id}")]
-        public virtual Task<RecipeDto> UpdateAsync(RecipeUpdateDto input)
+        public virtual Task<RecipeDto> UpdateAsync(Guid id, RecipeUpdateDto input)
         {
-            return _recipesAppService.UpdateAsync(input);
+            return _recipesAppService.UpdateAsync(id, input);
         }
     }
 }
