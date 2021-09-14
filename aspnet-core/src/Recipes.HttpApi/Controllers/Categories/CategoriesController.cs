@@ -54,6 +54,13 @@ namespace Recipes.Controllers.Categories
             return _categoriesAppService.GetLookupAsync(input);
         }
 
+        [HttpGet]
+        [Route("{id}/recipes")]
+        public virtual Task<PagedResultDto<CategoryRecipeListDto>> GetRecipesListAsync(Guid id, GetCategoryRecipesInput input)
+        {
+            return _categoriesAppService.GetRecipesListAsync(id, input);
+        }
+
         [HttpPut]
         [Route("{id}")]
         public virtual Task<CategoryDto> UpdateAsync(Guid id, CategoryUpdateDto input)

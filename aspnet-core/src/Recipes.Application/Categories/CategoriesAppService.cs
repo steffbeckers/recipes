@@ -142,6 +142,42 @@ namespace Recipes.Categories
             };
         }
 
+        public virtual async Task<PagedResultDto<CategoryRecipeListDto>> GetRecipesListAsync(Guid id, GetCategoryRecipesInput input)
+        {
+            IQueryable<Recipe> recipeQueryable = await _recipeRepository.GetQueryableAsync();
+
+            // Filter
+            recipeQueryable = recipeQueryable
+                .Where(x => x.CategoryId == id)
+                .WhereIf(!string.IsNullOrWhiteSpace(input.FilterText), x =>
+                    x.Name.Contains(input.FilterText));
+
+            // Sort
+            if (string.IsNullOrEmpty(input.Sorting))
+            {
+                recipeQueryable = recipeQueryable.OrderBy(x => x.Name);
+            }
+            else
+            {
+                recipeQueryable = recipeQueryable.OrderBy(x => input.Sorting);
+            }
+
+            // Total count
+            long totalCount = await recipeQueryable.LongCountAsync();
+
+            // Page
+            recipeQueryable = recipeQueryable.PageBy(input.SkipCount, input.MaxResultCount);
+
+            return new PagedResultDto<CategoryRecipeListDto>()
+            {
+                TotalCount = totalCount,
+                Items = await ObjectMapper.GetMapper()
+                    .ProjectTo<CategoryRecipeListDto>(recipeQueryable)
+                    .AsNoTracking()
+                    .ToListAsync()
+            };
+        }
+
         [Authorize(RecipesPermissions.Categories.Edit)]
         public virtual async Task<CategoryDto> UpdateAsync(Guid id, CategoryUpdateDto input)
         {

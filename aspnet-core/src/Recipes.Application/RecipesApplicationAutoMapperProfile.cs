@@ -19,6 +19,7 @@ namespace Recipes
             CreateMap<Category, CategorySimpleDto>();
             CreateMap<Category, LookupDto<Guid>>();
 
+            CreateMap<Recipe, CategoryRecipeListDto>();
             CreateMap<Recipe, RecipeDto>();
             CreateMap<Recipe, RecipeListDto>();
             CreateMap<RecipeIngredient, RecipeIngredientDto>();

@@ -17,6 +17,8 @@ namespace Recipes.Categories
 
         Task<PagedResultDto<LookupDto<Guid>>> GetLookupAsync(LookupRequestDto input);
 
+        Task<PagedResultDto<CategoryRecipeListDto>> GetRecipesListAsync(Guid id, GetCategoryRecipesInput input);
+
         Task<CategoryDto> UpdateAsync(Guid id, CategoryUpdateDto input);
     }
 }
