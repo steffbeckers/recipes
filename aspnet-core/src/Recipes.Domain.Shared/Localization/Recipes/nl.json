@@ -2,15 +2,14 @@
   "culture": "nl",
   "texts": {
     "Categories:DeleteNotAllowedWhenRecipesStillLinked": "Categorie kan niet verwijderd worden omdat er nog reeds {RecipeCount} recepten gelinkt zijn aan de categorie.",
-    "LongWelcomeMessage": "Welkom bij de applicatie. Dit is een startup-project gebaseerd op het ABP-framework. Bezoek abp.io voor meer informatie.",
-    "Menu:Home": "Home",
+    "Menu:Categories": "Categorieën",
+    "Menu:Recipes": "Recepten",
     "Permission:Categories": "Categorieën",
     "Permission:Create": "Toevoegen",
     "Permission:Recipes": "Recepten",
     "Permission:Delete": "Verwijderen",
     "Permission:Edit": "Bewerken",
     "Recipes:AtLeastOneIngredientIsRequired": "Ten minste één ingredient is verplicht.",
-    "Recipes:AtLeastOneStepIsRequired": "Ten minste één stap is verplicht.",
-    "Welcome": "Welkom"
+    "Recipes:AtLeastOneStepIsRequired": "Ten minste één stap is verplicht."
   }
 }
