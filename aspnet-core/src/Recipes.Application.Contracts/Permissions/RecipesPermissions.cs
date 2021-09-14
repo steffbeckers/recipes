@@ -1,4 +1,4 @@
-﻿namespace Recipes.Permissions
+namespace Recipes.Permissions
 {
     public static class RecipesPermissions
     {
@@ -6,5 +6,13 @@
 
         //Add your own permission names. Example:
         //public const string MyPermission1 = GroupName + ".MyPermission1";
+
+        public class Recipes
+        {
+            public const string Create = Default + ".Create";
+            public const string Default = GroupName + ".Recipes";
+            public const string Delete = Default + ".Delete";
+            public const string Edit = Default + ".Edit";
+        }
     }
 }

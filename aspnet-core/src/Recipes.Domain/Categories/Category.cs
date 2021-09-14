@@ -33,6 +33,8 @@ namespace Recipes.Categories
 
         public virtual Guid? PhotoId { get; set; }
 
+        public virtual int? SortOrder { get; set; }
+
         public virtual Guid? TenantId { get; private set; }
 
         public Category(

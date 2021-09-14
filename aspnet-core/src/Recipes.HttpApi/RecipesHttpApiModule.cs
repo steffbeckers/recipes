@@ -1,4 +1,4 @@
-﻿using Localization.Resources.AbpUi;
+using Localization.Resources.AbpUi;
 using Recipes.Localization;
 using Volo.Abp.Account;
 using Volo.Abp.FeatureManagement;
@@ -33,9 +33,7 @@ namespace Recipes
             {
                 options.Resources
                     .Get<RecipesResource>()
-                    .AddBaseTypes(
-                        typeof(AbpUiResource)
-                    );
+                    .AddBaseTypes(typeof(AbpUiResource));
             });
         }
     }

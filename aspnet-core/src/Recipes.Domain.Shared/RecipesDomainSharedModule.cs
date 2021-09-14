@@ -1,4 +1,4 @@
-﻿using Recipes.Localization;
+using Recipes.Localization;
 using Volo.Abp.AuditLogging;
 using Volo.Abp.BackgroundJobs;
 using Volo.Abp.FeatureManagement;
@@ -27,12 +27,6 @@ namespace Recipes
         )]
     public class RecipesDomainSharedModule : AbpModule
     {
-        public override void PreConfigureServices(ServiceConfigurationContext context)
-        {
-            RecipesGlobalFeatureConfigurator.Configure();
-            RecipesModuleExtensionConfigurator.Configure();
-        }
-
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
             Configure<AbpVirtualFileSystemOptions>(options =>
@@ -43,7 +37,7 @@ namespace Recipes
             Configure<AbpLocalizationOptions>(options =>
             {
                 options.Resources
-                    .Add<RecipesResource>("en")
+                    .Add<RecipesResource>("nl")
                     .AddBaseTypes(typeof(AbpValidationResource))
                     .AddVirtualJson("/Localization/Recipes");
 
@@ -54,6 +48,12 @@ namespace Recipes
             {
                 options.MapCodeNamespace("Recipes", typeof(RecipesResource));
             });
+        }
+
+        public override void PreConfigureServices(ServiceConfigurationContext context)
+        {
+            RecipesGlobalFeatureConfigurator.Configure();
+            RecipesModuleExtensionConfigurator.Configure();
         }
     }
 }

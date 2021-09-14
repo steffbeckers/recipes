@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Recipes.Localization;
@@ -8,9 +8,9 @@ namespace Recipes
 {
     /* Inherit your application services from this class.
      */
-    public abstract class RecipesAppService : ApplicationService
+    public abstract class RecipesAppServiceBase : ApplicationService
     {
-        protected RecipesAppService()
+        protected RecipesAppServiceBase()
         {
             LocalizationResource = typeof(RecipesResource);
         }

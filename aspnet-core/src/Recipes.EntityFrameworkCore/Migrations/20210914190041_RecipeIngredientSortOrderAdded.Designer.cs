@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Recipes.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
@@ -10,9 +11,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Recipes.Migrations
 {
     [DbContext(typeof(RecipesDbContext))]
-    partial class RecipesDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210914190041_RecipeIngredientSortOrderAdded")]
+    partial class RecipeIngredientSortOrderAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -80,10 +82,6 @@ namespace Recipes.Migrations
                     b.Property<Guid?>("PhotoId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("PhotoId");
-
-                    b.Property<int?>("SortOrder")
-                        .HasColumnType("int")
-                        .HasColumnName("SortOrder");
 
                     b.Property<Guid?>("TenantId")
                         .HasColumnType("uniqueidentifier")

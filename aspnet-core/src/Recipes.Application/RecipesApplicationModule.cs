@@ -1,4 +1,4 @@
-﻿using Volo.Abp.Account;
+using Volo.Abp.Account;
 using Volo.Abp.AutoMapper;
 using Volo.Abp.Domain.Entities.Events.Distributed;
 using Volo.Abp.FeatureManagement;
@@ -18,8 +18,7 @@ namespace Recipes
         typeof(AbpPermissionManagementApplicationModule),
         typeof(AbpTenantManagementApplicationModule),
         typeof(AbpFeatureManagementApplicationModule),
-        typeof(AbpSettingManagementApplicationModule)
-        )]
+        typeof(AbpSettingManagementApplicationModule))]
     public class RecipesApplicationModule : AbpModule
     {
         public override void ConfigureServices(ServiceConfigurationContext context)
@@ -29,7 +28,8 @@ namespace Recipes
                 options.AddMaps<RecipesApplicationModule>();
             });
 
-            Configure<AbpDistributedEntityEventOptions>(options => {
+            Configure<AbpDistributedEntityEventOptions>(options =>
+            {
                 options.AutoEventSelectors.AddAll();
             });
         }

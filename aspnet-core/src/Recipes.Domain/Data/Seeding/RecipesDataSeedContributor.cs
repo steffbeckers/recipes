@@ -52,7 +52,8 @@ namespace Recipes.Data.Seeding
                             amount: 125,
                             tenantId: tenant.Id)
                         {
-                            Unit = "gram"
+                            Unit = "gram",
+                            SortOrder = 1
                         });
 
                     chocolateMousseRecipe.Ingredients.Add(
@@ -61,7 +62,10 @@ namespace Recipes.Data.Seeding
                             recipeId: chocolateMousseRecipe.Id,
                             name: "Eidooiers",
                             amount: 2,
-                            tenantId: tenant.Id));
+                            tenantId: tenant.Id)
+                        {
+                            SortOrder = 2
+                        });
 
                     chocolateMousseRecipe.Ingredients.Add(
                         new RecipeIngredient(
@@ -71,7 +75,8 @@ namespace Recipes.Data.Seeding
                             amount: 60,
                             tenantId: tenant.Id)
                         {
-                            Unit = "gram"
+                            Unit = "gram",
+                            SortOrder = 3
                         });
 
                     chocolateMousseRecipe.Ingredients.Add(
@@ -80,7 +85,10 @@ namespace Recipes.Data.Seeding
                             recipeId: chocolateMousseRecipe.Id,
                             name: "Eiwitten",
                             amount: 3,
-                            tenantId: tenant.Id));
+                            tenantId: tenant.Id)
+                        {
+                            SortOrder = 4
+                        });
 
                     chocolateMousseRecipe.Ingredients.Add(
                         new RecipeIngredient(
@@ -90,7 +98,8 @@ namespace Recipes.Data.Seeding
                             amount: 1,
                             tenantId: tenant.Id)
                         {
-                            Unit = "snuifje"
+                            Unit = "snuifje",
+                            SortOrder = 5
                         });
 
                     chocolateMousseRecipe.Ingredients.Add(
@@ -101,7 +110,8 @@ namespace Recipes.Data.Seeding
                             amount: 15,
                             tenantId: tenant.Id)
                         {
-                            Unit = "ml"
+                            Unit = "ml",
+                            SortOrder = 6
                         });
 
                     chocolateMousseRecipe.Ingredients.Add(
@@ -110,7 +120,10 @@ namespace Recipes.Data.Seeding
                             recipeId: chocolateMousseRecipe.Id,
                             name: "Meringue",
                             amount: 1,
-                            tenantId: tenant.Id));
+                            tenantId: tenant.Id)
+                        {
+                            SortOrder = 7
+                        });
 
                     chocolateMousseRecipe.Steps.Add(
                         new RecipeStep(

@@ -106,6 +106,7 @@ namespace Recipes.EntityFrameworkCore
                 b.Property(x => x.Name).HasColumnName(nameof(Category.Name)).IsRequired().HasMaxLength(CategoryConsts.NameMaxLength);
                 b.Property(x => x.Description).HasColumnName(nameof(Category.Description)).HasMaxLength(CategoryConsts.DescriptionMaxLength);
                 b.Property(x => x.PhotoId).HasColumnName(nameof(Category.PhotoId));
+                b.Property(x => x.SortOrder).HasColumnName(nameof(Category.SortOrder));
             });
 
             builder.Entity<RecipeIngredient>(b =>
@@ -118,6 +119,7 @@ namespace Recipes.EntityFrameworkCore
                 b.Property(x => x.Name).HasColumnName(nameof(RecipeIngredient.Name)).IsRequired().HasMaxLength(RecipeIngredientConsts.NameMaxLength);
                 b.Property(x => x.Amount).HasColumnName(nameof(RecipeIngredient.Amount)).IsRequired().HasPrecision(11, 2);
                 b.Property(x => x.Unit).HasColumnName(nameof(RecipeIngredient.Unit)).HasMaxLength(RecipeIngredientConsts.UnitMaxLength);
+                b.Property(x => x.SortOrder).HasColumnName(nameof(RecipeIngredient.SortOrder));
             });
 
             builder.Entity<Recipe>(b =>
