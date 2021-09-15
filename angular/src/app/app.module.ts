@@ -18,6 +18,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { APP_ROUTE_PROVIDER } from './route.provider';
 import { metaReducers, reducers } from './store';
+import { EffectsModule } from '@ngrx/effects';
+import { AppEffects } from './store/effects/app.effects';
 
 @NgModule({
   imports: [
@@ -37,6 +39,7 @@ import { metaReducers, reducers } from './store';
     ThemeBasicModule.forRoot(),
     StoreModule.forRoot(reducers, { metaReducers }),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
+    EffectsModule.forRoot([AppEffects]),
   ],
   declarations: [AppComponent],
   providers: [APP_ROUTE_PROVIDER],
