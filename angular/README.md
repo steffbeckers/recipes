@@ -14,7 +14,7 @@ Ran commands for NgRx
 
 `npm install --save-dev @ngrx/schematics`
 `npm install @ngrx/store @ngrx/effects @ngrx/entity @ngrx/store-devtools`
-`ng generate @ngrx/schematics:store State --root --statePath store --module app.module.ts`
+`ng generate @ngrx/schematics:store State --root --state-path store --module app.module.ts`
 `ng generate @ngrx/schematics:effect store/App --root --module app.module.ts --group`
 `ng generate @ngrx/schematics:feature public/store/Public --module public/public.module.ts --group`
 `ng generate @ngrx/schematics:feature admin/store/Admin --module admin/admin.module.ts --group`
