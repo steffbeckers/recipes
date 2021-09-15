@@ -1,0 +1,13 @@
+{
+    "folders": [
+		{
+		    "name": "front-end",
+			"path": "."
+		},
+		{
+		    "name": "localizations",
+			"path": "..\\aspnet-core\\src\\Recipes.Domain.Shared\\Localization\\Recipes"
+		}
+	],
+    "settings": {}
+}
