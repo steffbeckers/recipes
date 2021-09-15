@@ -14,7 +14,6 @@ using Volo.Abp.ObjectMapping;
 namespace Recipes.Categories
 {
     [RemoteService(IsEnabled = false)]
-    [Authorize(RecipesPermissions.Categories.Default)]
     public class CategoriesAppService : RecipesAppServiceBase, ICategoriesAppService
     {
         private readonly ICategoryRepository _categoryRepository;

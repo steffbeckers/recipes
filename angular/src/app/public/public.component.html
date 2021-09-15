@@ -1,1 +1,8 @@
-<p>public works!</p>
+<ng-container *ngIf="publicState$ | async as publicState">
+    <div *ngIf="publicState.recipes">
+        <h1>Recipes ({{ publicState.recipes.totalCount }})</h1>
+        <ul>
+            <li *ngFor="let recipe of publicState.recipes.items">{{ recipe.name }}</li>
+        </ul>
+    </div>
+</ng-container>
