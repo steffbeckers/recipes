@@ -4,7 +4,9 @@
 
 app:
   domain: recipes.steffbeckers.eu
-  connectionString: Server=mssql-mssql-linux.mssql.svc.cluster.local;Database=Recipes;User ID=app;Password=*=ac5bLtp?Dd9TnUkEJD
+  # TODO
+  #connectionString: Server=mssql-mssql-linux.mssql.svc.cluster.local;Database=Recipes;User ID=app;Password=*=ac5bLtp?Dd9TnUkEJD
+  connectionString: Server=mssql-mssql-linux.mssql.svc.cluster.local;Database=Recipes;User ID=sa;Password=OJPVz3waeUwkYBls1fqU
 
 replicaCount: 1
 

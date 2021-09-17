@@ -17,7 +17,7 @@ RUN dotnet build "Recipes.DbMigrator.csproj" -c Release -o /app/build
 FROM build AS publish
 RUN dotnet publish "Recipes.DbMigrator.csproj" -c Release -o /app/publish
 
-FROM base AS final
+FROM build AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "Recipes.DbMigrator.dll"]

@@ -27,6 +27,16 @@ spec:
       serviceAccountName: {{ include "back-end.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      initContainers:
+        - name: db-migrator
+          image: registry.steffbeckers.eu/recipes/db-migrator
+          env:
+            - name: ConnectionStrings__Default
+              value: {{ .Values.app.connectionString }}
+            - name: IdentityServer__Clients__Recipes_App__RootUrl
+              value: "https://{{ .Values.app.domain }}"
+            - name: IdentityServer__Clients__Recipes_Swagger__RootUrl
+              value: "https://{{ .Values.app.domain }}"
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
