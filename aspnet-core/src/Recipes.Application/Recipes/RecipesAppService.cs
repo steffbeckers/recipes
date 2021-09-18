@@ -34,16 +34,6 @@ namespace Recipes.Recipes
         [Authorize(RecipesPermissions.Recipes.Create)]
         public virtual async Task<RecipeDto> CreateAsync(RecipeCreateDto input)
         {
-            if (input.Ingredients.Count == 0)
-            {
-                throw new BusinessException(RecipesDomainErrorCodes.Recipes.AtLeastOneIngredientIsRequired);
-            }
-
-            if (input.Steps.Count == 0)
-            {
-                throw new BusinessException(RecipesDomainErrorCodes.Recipes.AtLeastOneStepIsRequired);
-            }
-
             Recipe recipe = new Recipe(
                 GuidGenerator.Create(),
                 input.CategoryId,

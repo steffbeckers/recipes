@@ -1,3 +1,6 @@
+using FluentValidation;
+using Microsoft.Extensions.Localization;
+using Recipes.Localization;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -33,6 +36,15 @@ namespace Recipes.Recipes
         {
             Ingredients = new Collection<RecipeIngredientUpdateDto>();
             Steps = new Collection<RecipeStepUpdateDto>();
+        }
+    }
+
+    public class RecipeUpdateDtoValidator : AbstractValidator<RecipeUpdateDto>
+    {
+        public RecipeUpdateDtoValidator(IStringLocalizer<RecipesResource> stringLocalizer)
+        {
+            RuleFor(x => x.Ingredients).NotEmpty().WithMessage(stringLocalizer[RecipesDomainErrorCodes.Recipes.AtLeastOneIngredientIsRequired]);
+            RuleFor(x => x.Steps).NotEmpty().WithMessage(stringLocalizer[RecipesDomainErrorCodes.Recipes.AtLeastOneStepIsRequired]);
         }
     }
 }
