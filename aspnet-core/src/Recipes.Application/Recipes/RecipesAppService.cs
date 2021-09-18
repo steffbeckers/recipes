@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
+using Volo.Abp.BlobStoring;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.ObjectMapping;
 
@@ -16,13 +17,16 @@ namespace Recipes.Recipes
     [RemoteService(IsEnabled = false)]
     public class RecipesAppService : RecipesAppServiceBase, IRecipesAppService
     {
+        private readonly IBlobContainer _blobContainer;
         private readonly ICategoryRepository _categoryRepository;
         private readonly IRecipeRepository _recipeRepository;
 
         public RecipesAppService(
+            IBlobContainer blobContainer,
             ICategoryRepository categoryRepository,
             IRecipeRepository recipeRepository)
         {
+            _blobContainer = blobContainer;
             _categoryRepository = categoryRepository;
             _recipeRepository = recipeRepository;
         }
@@ -51,7 +55,14 @@ namespace Recipes.Recipes
                 ForUnit = input.ForUnit
             };
 
-            // TODO: input.Photo
+            if (input.Photo != null)
+            {
+                Guid photoId = GuidGenerator.Create();
+                await _blobContainer.SaveAsync(
+                    photoId.ToString(),
+                    input.Photo);
+                recipe.PhotoId = photoId;
+            }
 
             foreach (RecipeIngredientCreateDto ingredientDto in input.Ingredients)
             {
@@ -175,7 +186,19 @@ namespace Recipes.Recipes
             recipe.ForAmount = input.ForAmount;
             recipe.ForUnit = input.ForUnit;
 
-            // TODO: input.Photo
+            if (recipe.PhotoId.HasValue && (input.Photo != null || input.DeletePhoto))
+            {
+                await _blobContainer.DeleteAsync(recipe.PhotoId.ToString());
+            }
+
+            if (input.Photo != null)
+            {
+                Guid photoId = GuidGenerator.Create();
+                await _blobContainer.SaveAsync(
+                    photoId.ToString(),
+                    input.Photo);
+                recipe.PhotoId = photoId;
+            }
 
             recipe.Ingredients.RemoveAll(t => !input.Ingredients.Any(x => x.Id == t.Id));
             foreach (RecipeIngredientUpdateDto ingredientDto in input.Ingredients.Where(x => !recipe.Ingredients.Any(y => y.Id == x.Id)))

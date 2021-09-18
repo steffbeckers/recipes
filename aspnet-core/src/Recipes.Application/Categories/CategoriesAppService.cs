@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
+using Volo.Abp.BlobStoring;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.ObjectMapping;
 
@@ -16,13 +17,16 @@ namespace Recipes.Categories
     [RemoteService(IsEnabled = false)]
     public class CategoriesAppService : RecipesAppServiceBase, ICategoriesAppService
     {
+        private readonly IBlobContainer _blobContainer;
         private readonly ICategoryRepository _categoryRepository;
         private readonly IRecipeRepository _recipeRepository;
 
         public CategoriesAppService(
+            IBlobContainer blobContainer,
             ICategoryRepository categoryRepository,
             IRecipeRepository recipeRepository)
         {
+            _blobContainer = blobContainer;
             _categoryRepository = categoryRepository;
             _recipeRepository = recipeRepository;
         }
@@ -39,7 +43,14 @@ namespace Recipes.Categories
                 SortOrder = input.SortOrder
             };
 
-            // TODO: input.Photo
+            if (input.Photo != null)
+            {
+                Guid photoId = GuidGenerator.Create();
+                await _blobContainer.SaveAsync(
+                    photoId.ToString(),
+                    input.Photo);
+                category.PhotoId = photoId;
+            }
 
             await _categoryRepository.InsertAsync(category, autoSave: true);
 
@@ -186,7 +197,19 @@ namespace Recipes.Categories
             category.Description = input.Description;
             category.SortOrder = input.SortOrder;
 
-            // TODO: input.Photo
+            if (category.PhotoId.HasValue && (input.Photo != null || input.DeletePhoto))
+            {
+                await _blobContainer.DeleteAsync(category.PhotoId.ToString());
+            }
+
+            if (input.Photo != null)
+            {
+                Guid photoId = GuidGenerator.Create();
+                await _blobContainer.SaveAsync(
+                    photoId.ToString(),
+                    input.Photo);
+                category.PhotoId = photoId;
+            }
 
             await _categoryRepository.UpdateAsync(category, autoSave: true);
 

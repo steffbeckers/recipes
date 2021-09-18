@@ -4,6 +4,8 @@ namespace Recipes.Categories
 {
     public class CategoryUpdateDto
     {
+        public bool DeletePhoto { get; set; }
+
         [StringLength(CategoryConsts.DescriptionMaxLength)]
         public string Description { get; set; }
 

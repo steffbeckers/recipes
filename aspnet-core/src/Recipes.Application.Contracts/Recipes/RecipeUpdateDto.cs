@@ -9,6 +9,8 @@ namespace Recipes.Recipes
     {
         public Guid CategoryId { get; set; }
 
+        public bool DeletePhoto { get; set; }
+
         [StringLength(RecipeConsts.DescriptionMaxLength)]
         public string Description { get; set; }
 
