@@ -22,11 +22,11 @@ spec:
   {{- end }}
   tls:
     - hosts:
-        - {{ .Values.app.domain }}
-        - "*.{{ .Values.app.domain }}"
-      secretName: "{{ .Values.app.domain }}-tls"
+        - {{ .Values.global.app.domain }}
+        - "*.{{ .Values.global.app.domain }}"
+      secretName: "{{ .Values.global.app.domain }}-tls"
   rules:
-    - host: {{ .Values.app.domain }}
+    - host: {{ .Values.global.app.domain }}
       http: &http_rules
         paths:
           - path: /.well-known
@@ -99,6 +99,6 @@ spec:
                 name: "{{ $fullName }}-front-end"
                 port:
                   number: 80
-    - host: "*.{{ .Values.app.domain }}"
+    - host: "*.{{ .Values.global.app.domain }}"
       http: *http_rules
 {{- end }}

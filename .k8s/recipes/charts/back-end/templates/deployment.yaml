@@ -32,11 +32,11 @@ spec:
           image: registry.steffbeckers.eu/recipes/db-migrator
           env:
             - name: ConnectionStrings__Default
-              value: {{ .Values.app.connectionString }}
+              value: {{ .Values.global.app.connectionString }}
             - name: IdentityServer__Clients__Recipes_App__RootUrl
-              value: "https://{{ .Values.app.domain }}"
+              value: "https://{{ .Values.global.app.domain }}"
             - name: IdentityServer__Clients__Recipes_Swagger__RootUrl
-              value: "https://{{ .Values.app.domain }}"
+              value: "https://{{ .Values.global.app.domain }}"
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
@@ -49,17 +49,21 @@ spec:
             - name: ASPNETCORE_URLS
               value: http://0.0.0.0:80
             - name: AuthServer__Authority
-              value: "https://{{ .Values.app.domain }}"
+              value: "https://{{ .Values.global.app.domain }}"
             - name: App__SelfUrl
-              value: "https://{{ .Values.app.domain }}"
+              value: "https://{{ .Values.global.app.domain }}"
             - name: App__CorsOrigins
-              value: "https://{{ .Values.app.domain }}"
+              value: "https://{{ .Values.global.app.domain }}"
             - name: App__RedirectAllowedUrls
-              value: "https://{{ .Values.app.domain }}"
+              value: "https://{{ .Values.global.app.domain }}"
             - name: App__MultiTenancyDomainFormat
-              value: "{0}.{{ .Values.app.domain }}"
+              value: "{0}.{{ .Values.global.app.domain }}"
             - name: ConnectionStrings__Default
-              value: {{ .Values.app.connectionString }}
+              value: {{ .Values.global.app.connectionString }}
+            - name: BlobStorage__Azure__ConnectionString
+              value: {{ .Values.global.app.blobStorage.azure.connectionString }}
+            - name: BlobStorage__Azure__ContainerName
+              value: {{ .Values.global.app.blobStorage.azure.containerName }}
           ports:
             - name: http
               containerPort: 80

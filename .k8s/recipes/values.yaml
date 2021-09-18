@@ -2,8 +2,9 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-app:
-  domain: recipes.steffbeckers.eu
+global:
+  app:
+    domain: recipes.steffbeckers.eu
 
 ingress:
   enabled: true
@@ -11,6 +12,7 @@ ingress:
     kubernetes.io/ingress.class: public
     kubernetes.io/tls-acme: "true"
     ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: 50m
     nginx.ingress.kubernetes.io/configuration-snippet: |
       proxy_set_header X-Forwarded-Proto $scheme;
       proxy_set_header X-Real-IP $remote_addr;
