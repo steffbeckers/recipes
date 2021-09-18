@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Recipes.Files;
 using Recipes.Permissions;
 using Recipes.Recipes;
 using Recipes.Shared;
@@ -48,8 +50,11 @@ namespace Recipes.Categories
                 Guid photoId = GuidGenerator.Create();
                 await _blobContainer.SaveAsync(
                     photoId.ToString(),
-                    input.Photo);
-                category.PhotoId = photoId;
+                    input.Photo.Data);
+                category.Photo = new File(
+                    photoId,
+                    input.Photo.Name,
+                    input.Photo.ContentType);
             }
 
             await _categoryRepository.InsertAsync(category, autoSave: true);
@@ -152,6 +157,23 @@ namespace Recipes.Categories
             };
         }
 
+        public virtual async Task<FileResult> GetPhotoAsync(Guid id)
+        {
+            Category category = await _categoryRepository.GetAsync(id);
+            if (category.Photo == null)
+            {
+                return null;
+            }
+
+            byte[] photoData = await _blobContainer.GetAllBytesOrNullAsync(category.Photo.Id.ToString());
+            if (photoData == null)
+            {
+                return null;
+            }
+
+            return new FileContentResult(photoData, category.Photo.ContentType);
+        }
+
         public virtual async Task<PagedResultDto<CategoryRecipeListDto>> GetRecipesListAsync(Guid id, GetCategoryRecipesInput input)
         {
             IQueryable<Recipe> recipeQueryable = await _recipeRepository.GetQueryableAsync();
@@ -197,9 +219,10 @@ namespace Recipes.Categories
             category.Description = input.Description;
             category.SortOrder = input.SortOrder;
 
-            if (category.PhotoId.HasValue && (input.Photo != null || input.DeletePhoto))
+            if (category.Photo != null && (input.Photo != null || input.DeletePhoto))
             {
-                await _blobContainer.DeleteAsync(category.PhotoId.ToString());
+                await _blobContainer.DeleteAsync(category.Photo.Id.ToString());
+                category.Photo = null;
             }
 
             if (input.Photo != null)
@@ -207,8 +230,11 @@ namespace Recipes.Categories
                 Guid photoId = GuidGenerator.Create();
                 await _blobContainer.SaveAsync(
                     photoId.ToString(),
-                    input.Photo);
-                category.PhotoId = photoId;
+                    input.Photo.Data);
+                category.Photo = new File(
+                    photoId,
+                    input.Photo.Name,
+                    input.Photo.ContentType);
             }
 
             await _categoryRepository.UpdateAsync(category, autoSave: true);

@@ -1,3 +1,4 @@
+using Recipes.Files;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -50,7 +51,7 @@ namespace Recipes.Recipes
             }
         }
 
-        public virtual Guid? PhotoId { get; set; }
+        public virtual File Photo { get; set; }
 
         public virtual ICollection<RecipeStep> Steps { get; private set; }
 

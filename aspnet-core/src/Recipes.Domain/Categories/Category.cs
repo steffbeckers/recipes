@@ -1,3 +1,4 @@
+using Recipes.Files;
 using System;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
@@ -31,7 +32,7 @@ namespace Recipes.Categories
             }
         }
 
-        public virtual Guid? PhotoId { get; set; }
+        public virtual File Photo { get; set; }
 
         public virtual int? SortOrder { get; set; }
 

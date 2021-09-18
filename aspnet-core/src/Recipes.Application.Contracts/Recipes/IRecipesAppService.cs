@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
@@ -13,6 +14,8 @@ namespace Recipes.Recipes
         Task<RecipeDto> GetAsync(Guid id);
 
         Task<PagedResultDto<RecipeListDto>> GetListAsync(GetRecipesInput input);
+
+        Task<FileResult> GetPhotoAsync(Guid id);
 
         Task<RecipeDto> UpdateAsync(Guid id, RecipeUpdateDto input);
     }

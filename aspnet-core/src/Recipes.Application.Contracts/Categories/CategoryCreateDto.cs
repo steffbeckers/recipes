@@ -1,3 +1,4 @@
+using Recipes.Files;
 using System.ComponentModel.DataAnnotations;
 
 namespace Recipes.Categories
@@ -11,7 +12,7 @@ namespace Recipes.Categories
         [StringLength(CategoryConsts.NameMaxLength)]
         public string Name { get; set; }
 
-        public byte[] Photo { get; set; }
+        public FileDto Photo { get; set; }
 
         public int? SortOrder { get; set; }
     }

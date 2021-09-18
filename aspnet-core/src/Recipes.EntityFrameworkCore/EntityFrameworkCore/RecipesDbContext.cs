@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Recipes.Categories;
+using Recipes.Files;
 using Recipes.Recipes;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
@@ -105,7 +106,8 @@ namespace Recipes.EntityFrameworkCore
                 b.Property(x => x.TenantId).HasColumnName(nameof(Category.TenantId));
                 b.Property(x => x.Name).HasColumnName(nameof(Category.Name)).IsRequired().HasMaxLength(CategoryConsts.NameMaxLength);
                 b.Property(x => x.Description).HasColumnName(nameof(Category.Description)).HasMaxLength(CategoryConsts.DescriptionMaxLength);
-                b.Property(x => x.PhotoId).HasColumnName(nameof(Category.PhotoId));
+                b.OwnsOne(x => x.Photo).Property(x => x.Name).HasMaxLength(FileConsts.NameMaxLength);
+                b.OwnsOne(x => x.Photo).Property(x => x.ContentType).HasMaxLength(FileConsts.ContentTypeMaxLength);
                 b.Property(x => x.SortOrder).HasColumnName(nameof(Category.SortOrder));
             });
 
@@ -131,7 +133,8 @@ namespace Recipes.EntityFrameworkCore
                 b.HasOne<Category>().WithMany().HasForeignKey(x => x.CategoryId);
                 b.Property(x => x.Name).HasColumnName(nameof(Recipe.Name)).IsRequired().HasMaxLength(RecipeConsts.NameMaxLength);
                 b.Property(x => x.Description).HasColumnName(nameof(Recipe.Description)).HasMaxLength(RecipeConsts.DescriptionMaxLength);
-                b.Property(x => x.PhotoId).HasColumnName(nameof(Recipe.PhotoId));
+                b.OwnsOne(x => x.Photo).Property(x => x.Name).HasMaxLength(FileConsts.NameMaxLength);
+                b.OwnsOne(x => x.Photo).Property(x => x.ContentType).HasMaxLength(FileConsts.ContentTypeMaxLength);
                 b.Property(x => x.ForAmount).HasColumnName(nameof(Recipe.ForAmount));
                 b.Property(x => x.ForUnit).HasColumnName(nameof(Recipe.ForUnit)).HasMaxLength(RecipeConsts.ForUnitMaxLength);
             });

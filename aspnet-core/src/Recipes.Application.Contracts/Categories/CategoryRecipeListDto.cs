@@ -1,4 +1,4 @@
-using System;
+using Recipes.Files;
 
 namespace Recipes.Categories
 {
@@ -12,6 +12,6 @@ namespace Recipes.Categories
 
         public string Name { get; set; }
 
-        public Guid? PhotoId { get; set; }
+        public FileDto Photo { get; set; }
     }
 }

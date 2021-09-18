@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Recipes.Categories;
+using Recipes.Files;
 using Recipes.Permissions;
 using System;
 using System.Collections.Generic;
@@ -50,8 +52,11 @@ namespace Recipes.Recipes
                 Guid photoId = GuidGenerator.Create();
                 await _blobContainer.SaveAsync(
                     photoId.ToString(),
-                    input.Photo);
-                recipe.PhotoId = photoId;
+                    input.Photo.Data);
+                recipe.Photo = new File(
+                    photoId,
+                    input.Photo.Name,
+                    input.Photo.ContentType);
             }
 
             foreach (RecipeIngredientCreateDto ingredientDto in input.Ingredients)
@@ -165,6 +170,23 @@ namespace Recipes.Recipes
             };
         }
 
+        public virtual async Task<FileResult> GetPhotoAsync(Guid id)
+        {
+            Recipe recipe = await _recipeRepository.GetAsync(id);
+            if (recipe.Photo == null)
+            {
+                return null;
+            }
+
+            byte[] photoData = await _blobContainer.GetAllBytesOrNullAsync(recipe.Photo.Id.ToString());
+            if (photoData == null)
+            {
+                return null;
+            }
+
+            return new FileContentResult(photoData, recipe.Photo.ContentType);
+        }
+
         [Authorize(RecipesPermissions.Recipes.Edit)]
         public virtual async Task<RecipeDto> UpdateAsync(Guid id, RecipeUpdateDto input)
         {
@@ -176,9 +198,10 @@ namespace Recipes.Recipes
             recipe.ForAmount = input.ForAmount;
             recipe.ForUnit = input.ForUnit;
 
-            if (recipe.PhotoId.HasValue && (input.Photo != null || input.DeletePhoto))
+            if (recipe.Photo != null && (input.Photo != null || input.DeletePhoto))
             {
-                await _blobContainer.DeleteAsync(recipe.PhotoId.ToString());
+                await _blobContainer.DeleteAsync(recipe.Photo.Id.ToString());
+                recipe.Photo = null;
             }
 
             if (input.Photo != null)
@@ -186,8 +209,11 @@ namespace Recipes.Recipes
                 Guid photoId = GuidGenerator.Create();
                 await _blobContainer.SaveAsync(
                     photoId.ToString(),
-                    input.Photo);
-                recipe.PhotoId = photoId;
+                    input.Photo.Data);
+                recipe.Photo = new File(
+                    photoId,
+                    input.Photo.Name,
+                    input.Photo.ContentType);
             }
 
             recipe.Ingredients.RemoveAll(t => !input.Ingredients.Any(x => x.Id == t.Id));

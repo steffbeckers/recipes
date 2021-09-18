@@ -55,6 +55,13 @@ namespace Recipes.Controllers.Categories
         }
 
         [HttpGet]
+        [Route("{id}/photo")]
+        public virtual Task<FileResult> GetPhotoAsync(Guid id)
+        {
+            return _categoriesAppService.GetPhotoAsync(id);
+        }
+
+        [HttpGet]
         [Route("{id}/recipes")]
         public virtual Task<PagedResultDto<CategoryRecipeListDto>> GetRecipesListAsync(Guid id, GetCategoryRecipesInput input)
         {

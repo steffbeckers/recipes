@@ -1,5 +1,6 @@
 using FluentValidation;
 using Microsoft.Extensions.Localization;
+using Recipes.Files;
 using Recipes.Localization;
 using System;
 using System.Collections.Generic;
@@ -28,7 +29,7 @@ namespace Recipes.Recipes
         [StringLength(RecipeConsts.NameMaxLength)]
         public string Name { get; set; }
 
-        public byte[] Photo { get; set; }
+        public FileDto Photo { get; set; }
 
         public ICollection<RecipeStepUpdateDto> Steps { get; set; }
 

@@ -1,3 +1,4 @@
+using Recipes.Files;
 using System;
 using Volo.Abp.Application.Dtos;
 
@@ -9,7 +10,7 @@ namespace Recipes.Categories
 
         public string Name { get; set; }
 
-        public Guid? PhotoId { get; set; }
+        public FileDto Photo { get; set; }
 
         public int? SortOrder { get; set; }
     }

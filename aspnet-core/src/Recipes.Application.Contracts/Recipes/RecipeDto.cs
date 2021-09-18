@@ -1,4 +1,5 @@
 using Recipes.Categories;
+using Recipes.Files;
 using System;
 using System.Collections.Generic;
 using Volo.Abp.Application.Dtos;
@@ -19,7 +20,7 @@ namespace Recipes.Recipes
 
         public string Name { get; set; }
 
-        public Guid? PhotoId { get; set; }
+        public FileDto Photo { get; set; }
 
         public ICollection<RecipeStepDto> Steps { get; set; }
     }
