@@ -1,15 +1,23 @@
 {
-  "culture": "en",
-  "texts": {
-    "Categories:DeleteNotAllowedWhenRecipesStillLinked": "Category can't be deleted since there are still {RecipeCount} recipes linked to the category.",
-    "Menu:Categories": "Categories",
-    "Menu:Recipes": "Recipes",
-    "Permission:Categories": "Categories",
-    "Permission:Create": "Create",
-    "Permission:Recipes": "Recipes",
-    "Permission:Delete": "Delete",
-    "Permission:Edit": "Edit",
-    "Recipes:AtLeastOneIngredientIsRequired": "At least one ingredient is required.",
-    "Recipes:AtLeastOneStepIsRequired": "At least one step is required."
-  }
+    "culture": "en",
+    "texts": {
+        "Actions": "Actions",
+        "AddNewCategory": "Add new category",
+        "Categories": "Categories",
+        "Categories:DeleteNotAllowedWhenRecipesStillLinked": "Category can't be deleted since there are still {RecipeCount} recipes linked to the category.",
+        "Create": "Create",
+        "Description": "Description",
+        "Menu:Categories": "Categories",
+        "Menu:Recipes": "Recipes",
+        "Name": "Name",
+        "Permission:Categories": "Categories",
+        "Permission:Create": "Create",
+        "Permission:Delete": "Delete",
+        "Permission:Edit": "Edit",
+        "Permission:Recipes": "Recipes",
+        "Recipes": "Recipes",
+        "Recipes:AtLeastOneIngredientIsRequired": "At least one ingredient is required.",
+        "Recipes:AtLeastOneStepIsRequired": "At least one step is required.",
+        "SortOrder": "Sort order"
+    }
 }

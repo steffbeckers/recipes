@@ -9,6 +9,14 @@ const routes: Routes = [
         component: AdminComponent,
         children: [
             {
+                path: 'categories',
+                loadChildren: () => import('./categories/categories.module').then(m => m.CategoriesModule)
+            },
+            {
+                path: 'recipes',
+                loadChildren: () => import('./recipes/recipes.module').then(m => m.RecipesModule)
+            },
+            {
                 path: 'identity',
                 loadChildren: () => import('@abp/ng.identity').then(m => m.IdentityModule.forLazy()),
             },
@@ -22,8 +30,13 @@ const routes: Routes = [
                 loadChildren: () =>
                 import('@abp/ng.setting-management').then(m => m.SettingManagementModule.forLazy()),
             },
+            {
+                path: '**',
+                pathMatch: 'full',
+                redirectTo: 'categories'
+            }
         ]
-    }
+    },
 ];
 
 @NgModule({

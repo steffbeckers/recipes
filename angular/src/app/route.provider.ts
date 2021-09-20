@@ -8,12 +8,18 @@ export const APP_ROUTE_PROVIDER = [
 function configureRoutes(routesService: RoutesService) {
   return () => {
     routesService.add([
-      {
-        path: '/',
-        name: '::Menu:Recipes',
-        order: 1,
-        layout: eLayoutType.application,
-      },
+        {
+            path: '/admin/categories',
+            name: '::Menu:Categories',
+            order: 1,
+            layout: eLayoutType.application,
+        },
+        {
+            path: '/admin/recipes',
+            name: '::Menu:Recipes',
+            order: 2,
+            layout: eLayoutType.application,
+        },
     ]);
 
     // Update admin routes config

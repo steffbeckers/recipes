@@ -9,5 +9,17 @@
 			"path": "..\\aspnet-core\\src\\Recipes.Domain.Shared\\Localization\\Recipes"
 		}
 	],
-    "settings": {}
+    "settings": {
+        "sortJSON.contextMenu": {
+            "sortJSON": false,
+            "sortJSONReverse": false,
+            "sortJSONKeyLength": false,
+            "sortJSONKeyLengthReverse": false,
+            "sortJSONAlphaNumReverse": false,
+            "sortJSONValues": false,
+            "sortJSONValuesReverse": false,
+            "sortJSONType": false,
+            "sortJSONTypeReverse": false
+        }
+    }
 }

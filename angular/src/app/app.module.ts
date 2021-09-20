@@ -1,6 +1,6 @@
 import { AccountConfigModule } from '@abp/ng.account/config';
 import { CoreModule } from '@abp/ng.core';
-import { registerLocale } from '@abp/ng.core/locale';
+import { registerLocale, storeLocaleData } from '@abp/ng.core/locale';
 import { IdentityConfigModule } from '@abp/ng.identity/config';
 import { SettingManagementConfigModule } from '@abp/ng.setting-management/config';
 import { TenantManagementConfigModule } from '@abp/ng.tenant-management/config';
@@ -9,6 +9,7 @@ import { ThemeSharedModule } from '@abp/ng.theme.shared';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { NgxsModule } from '@ngxs/store';
@@ -18,8 +19,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { APP_ROUTE_PROVIDER } from './route.provider';
 import { metaReducers, reducers } from './store';
-import { EffectsModule } from '@ngrx/effects';
 import { AppEffects } from './store/effects/app.effects';
+
+import(
+/* webpackChunkName: "_locale-nl-js"*/
+/* webpackMode: "eager" */
+'@angular/common/locales/nl.js'
+).then(m => storeLocaleData(m.default, 'nl'));
 
 @NgModule({
   imports: [
