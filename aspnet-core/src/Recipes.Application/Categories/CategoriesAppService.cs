@@ -138,9 +138,13 @@ namespace Recipes.Categories
         public virtual async Task<PagedResultDto<LookupDto<Guid>>> GetLookupAsync(LookupInputDto input)
         {
             // Filter
-            IQueryable<Category> categoryQueryable = _categoryRepository.WhereIf(
-                !string.IsNullOrWhiteSpace(input.FilterText),
-                x => x.Name.Contains(input.FilterText));
+            IQueryable<Category> categoryQueryable = _categoryRepository
+                .WhereIf(
+                    !string.IsNullOrWhiteSpace(input.FilterText),
+                    x => x.Name.Contains(input.FilterText))
+                .WhereIf(
+                    input.Id.HasValue,
+                    x => x.Id == input.Id);
 
             // Sort
             categoryQueryable = categoryQueryable.OrderBy(x => x.Name);
