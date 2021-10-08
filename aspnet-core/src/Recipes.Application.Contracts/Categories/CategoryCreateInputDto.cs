@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Recipes.Categories
 {
-    public class CategoryCreateDto
+    public class CategoryCreateInputDto
     {
         [StringLength(CategoryConsts.DescriptionMaxLength)]
         public string Description { get; set; }
@@ -12,7 +12,7 @@ namespace Recipes.Categories
         [StringLength(CategoryConsts.NameMaxLength)]
         public string Name { get; set; }
 
-        public FileDto Photo { get; set; }
+        public FileInputDto Photo { get; set; }
 
         public int? SortOrder { get; set; }
     }

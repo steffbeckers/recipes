@@ -4,7 +4,7 @@ using Volo.Abp.Application.Dtos;
 
 namespace Recipes.Recipes
 {
-    public class RecipeStepUpdateDto : EntityDto<Guid?>
+    public class RecipeStepUpdateInputDto : EntityDto<Guid?>
     {
         [Required]
         [StringLength(RecipeStepConsts.InstructionsMaxLength)]

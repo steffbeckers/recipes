@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Domain.Entities.Events.Distributed;
@@ -11,15 +11,15 @@ namespace Recipes.Tenants
 {
     public class TenantCreatedEventHandler : IDistributedEventHandler<EntityCreatedEto<TenantEto>>, ITransientDependency
     {
-        private readonly IConfiguration _configuration;
         private readonly IClientRepository _clientRepository;
+        private readonly IConfiguration _configuration;
 
         public TenantCreatedEventHandler(
-            IConfiguration configuration,
-            IClientRepository clientRepository)
+            IClientRepository clientRepository,
+            IConfiguration configuration)
         {
-            _configuration = configuration;
             _clientRepository = clientRepository;
+            _configuration = configuration;
         }
 
         [UnitOfWork]
@@ -34,16 +34,20 @@ namespace Recipes.Tenants
             // TODO: Clients update doesn't save the added redirect URI's
 
             Client appClient = await _clientRepository.FindByClientIdAsync("Recipes_App");
+
             if (appClient != null)
             {
                 appClient.AddRedirectUri(string.Format($"https://{multiTenancyDomainFormat}", eventData.Entity.Name));
+
                 await _clientRepository.UpdateAsync(appClient);
             }
 
             Client swaggerClient = await _clientRepository.FindByClientIdAsync("Recipes_Swagger");
+
             if (swaggerClient != null)
             {
                 swaggerClient.AddRedirectUri(string.Format($"https://{multiTenancyDomainFormat}/swagger/oauth2-redirect.html", eventData.Entity.Name));
+
                 await _clientRepository.UpdateAsync(swaggerClient);
             }
         }

@@ -21,7 +21,7 @@ namespace Recipes.Controllers.Recipes
         }
 
         [HttpPost]
-        public virtual Task<RecipeDto> CreateAsync(RecipeCreateDto input)
+        public virtual Task<RecipeDto> CreateAsync(RecipeCreateInputDto input)
         {
             return _recipesAppService.CreateAsync(input);
         }
@@ -41,7 +41,7 @@ namespace Recipes.Controllers.Recipes
         }
 
         [HttpGet]
-        public virtual Task<PagedResultDto<RecipeListDto>> GetListAsync(GetRecipesInput input)
+        public virtual Task<PagedResultDto<RecipeListDto>> GetListAsync(RecipeListInputDto input)
         {
             return _recipesAppService.GetListAsync(input);
         }
@@ -55,9 +55,13 @@ namespace Recipes.Controllers.Recipes
 
         [HttpPut]
         [Route("{id}")]
-        public virtual Task<RecipeDto> UpdateAsync(Guid id, RecipeUpdateDto input)
+        public virtual Task<RecipeDto> UpdateAsync(
+            Guid id,
+            RecipeUpdateInputDto input)
         {
-            return _recipesAppService.UpdateAsync(id, input);
+            return _recipesAppService.UpdateAsync(
+                id,
+                input);
         }
     }
 }

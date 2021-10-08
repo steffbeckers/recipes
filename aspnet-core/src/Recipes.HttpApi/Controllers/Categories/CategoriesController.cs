@@ -22,7 +22,7 @@ namespace Recipes.Controllers.Categories
         }
 
         [HttpPost]
-        public virtual Task<CategoryDto> CreateAsync(CategoryCreateDto input)
+        public virtual Task<CategoryDto> CreateAsync(CategoryCreateInputDto input)
         {
             return _categoriesAppService.CreateAsync(input);
         }
@@ -42,14 +42,14 @@ namespace Recipes.Controllers.Categories
         }
 
         [HttpGet]
-        public virtual Task<PagedResultDto<CategoryListDto>> GetListAsync(GetCategoriesInput input)
+        public virtual Task<PagedResultDto<CategoryListDto>> GetListAsync(CategoryListInputDto input)
         {
             return _categoriesAppService.GetListAsync(input);
         }
 
         [HttpGet]
         [Route("lookup")]
-        public virtual Task<PagedResultDto<LookupDto<Guid>>> GetLookupAsync(LookupRequestDto input)
+        public virtual Task<PagedResultDto<LookupDto<Guid>>> GetLookupAsync(LookupInputDto input)
         {
             return _categoriesAppService.GetLookupAsync(input);
         }
@@ -63,16 +63,24 @@ namespace Recipes.Controllers.Categories
 
         [HttpGet]
         [Route("{id}/recipes")]
-        public virtual Task<PagedResultDto<CategoryRecipeListDto>> GetRecipesListAsync(Guid id, GetCategoryRecipesInput input)
+        public virtual Task<PagedResultDto<CategoryRecipeListDto>> GetRecipeListAsync(
+            Guid id,
+            CategoryRecipeListInputDto input)
         {
-            return _categoriesAppService.GetRecipesListAsync(id, input);
+            return _categoriesAppService.GetRecipeListAsync(
+                id,
+                input);
         }
 
         [HttpPut]
         [Route("{id}")]
-        public virtual Task<CategoryDto> UpdateAsync(Guid id, CategoryUpdateDto input)
+        public virtual Task<CategoryDto> UpdateAsync(
+            Guid id,
+            CategoryUpdateInputDto input)
         {
-            return _categoriesAppService.UpdateAsync(id, input);
+            return _categoriesAppService.UpdateAsync(
+                id,
+                input);
         }
     }
 }

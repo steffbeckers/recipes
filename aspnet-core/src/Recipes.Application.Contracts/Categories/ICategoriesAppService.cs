@@ -8,20 +8,24 @@ namespace Recipes.Categories
 {
     public interface ICategoriesAppService
     {
-        Task<CategoryDto> CreateAsync(CategoryCreateDto input);
+        Task<CategoryDto> CreateAsync(CategoryCreateInputDto input);
 
         Task DeleteAsync(Guid id);
 
         Task<CategoryDto> GetAsync(Guid id);
 
-        Task<PagedResultDto<CategoryListDto>> GetListAsync(GetCategoriesInput input);
+        Task<PagedResultDto<CategoryListDto>> GetListAsync(CategoryListInputDto input);
 
-        Task<PagedResultDto<LookupDto<Guid>>> GetLookupAsync(LookupRequestDto input);
+        Task<PagedResultDto<LookupDto<Guid>>> GetLookupAsync(LookupInputDto input);
 
         Task<FileResult> GetPhotoAsync(Guid id);
 
-        Task<PagedResultDto<CategoryRecipeListDto>> GetRecipesListAsync(Guid id, GetCategoryRecipesInput input);
+        Task<PagedResultDto<CategoryRecipeListDto>> GetRecipeListAsync(
+            Guid id,
+            CategoryRecipeListInputDto input);
 
-        Task<CategoryDto> UpdateAsync(Guid id, CategoryUpdateDto input);
+        Task<CategoryDto> UpdateAsync(
+            Guid id,
+            CategoryUpdateInputDto input);
     }
 }

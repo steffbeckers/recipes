@@ -34,7 +34,7 @@ namespace Recipes.Categories
         }
 
         [Authorize(RecipesPermissions.Categories.Create)]
-        public virtual async Task<CategoryDto> CreateAsync(CategoryCreateDto input)
+        public virtual async Task<CategoryDto> CreateAsync(CategoryCreateInputDto input)
         {
             Category category = new Category(
                 GuidGenerator.Create(),
@@ -48,16 +48,20 @@ namespace Recipes.Categories
             if (input.Photo != null)
             {
                 Guid photoId = GuidGenerator.Create();
+
                 await _blobContainer.SaveAsync(
                     photoId.ToString(),
                     input.Photo.Data);
+
                 category.Photo = new File(
                     photoId,
                     input.Photo.Name,
                     input.Photo.ContentType);
             }
 
-            await _categoryRepository.InsertAsync(category, autoSave: true);
+            category = await _categoryRepository.InsertAsync(
+                category,
+                autoSave: true);
 
             return await GetAsync(category.Id);
         }
@@ -65,7 +69,9 @@ namespace Recipes.Categories
         [Authorize(RecipesPermissions.Categories.Delete)]
         public virtual async Task DeleteAsync(Guid id)
         {
+            // TODO: Move business check to manager
             long recipeCount = await _recipeRepository.Where(x => x.CategoryId == id).LongCountAsync();
+
             if (recipeCount > 0)
             {
                 throw new BusinessException(RecipesDomainErrorCodes.Categories.DeleteNotAllowedWhenRecipesStillLinked)
@@ -77,29 +83,26 @@ namespace Recipes.Categories
 
         public virtual async Task<CategoryDto> GetAsync(Guid id)
         {
-            IQueryable<Category> categoryQueryable = await _categoryRepository.GetQueryableAsync();
-
             CategoryDto categoryDto = await ObjectMapper.GetMapper()
-                .ProjectTo<CategoryDto>(categoryQueryable)
+                .ProjectTo<CategoryDto>(_categoryRepository)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
+
             if (categoryDto == null)
             {
-                // TODO: Throw better BusinessException?
                 throw new EntityNotFoundException(typeof(Category), id);
             }
 
             return categoryDto;
         }
 
-        public virtual async Task<PagedResultDto<CategoryListDto>> GetListAsync(GetCategoriesInput input)
+        public virtual async Task<PagedResultDto<CategoryListDto>> GetListAsync(CategoryListInputDto input)
         {
-            IQueryable<Category> categoryQueryable = await _categoryRepository.GetQueryableAsync();
-
             // Filter
-            categoryQueryable = categoryQueryable.WhereIf(!string.IsNullOrWhiteSpace(input.FilterText), x =>
-                x.Name.Contains(input.FilterText) ||
-                x.Description.Contains(input.FilterText));
+            IQueryable<Category> categoryQueryable = _categoryRepository.WhereIf(
+                !string.IsNullOrWhiteSpace(input.FilterText),
+                x => x.Name.Contains(input.FilterText) ||
+                    x.Description.Contains(input.FilterText));
 
             // Sort
             if (string.IsNullOrEmpty(input.Sorting))
@@ -118,7 +121,9 @@ namespace Recipes.Categories
             long totalCount = await categoryQueryable.LongCountAsync();
 
             // Page
-            categoryQueryable = categoryQueryable.PageBy(input.SkipCount, input.MaxResultCount);
+            categoryQueryable = categoryQueryable.PageBy(
+                input.SkipCount,
+                input.MaxResultCount);
 
             return new PagedResultDto<CategoryListDto>()
             {
@@ -130,13 +135,12 @@ namespace Recipes.Categories
             };
         }
 
-        public virtual async Task<PagedResultDto<LookupDto<Guid>>> GetLookupAsync(LookupRequestDto input)
+        public virtual async Task<PagedResultDto<LookupDto<Guid>>> GetLookupAsync(LookupInputDto input)
         {
-            IQueryable<Category> categoryQueryable = await _categoryRepository.GetQueryableAsync();
-
             // Filter
-            categoryQueryable = categoryQueryable.WhereIf(!string.IsNullOrWhiteSpace(input.FilterText), x =>
-                x.Name.Contains(input.FilterText));
+            IQueryable<Category> categoryQueryable = _categoryRepository.WhereIf(
+                !string.IsNullOrWhiteSpace(input.FilterText),
+                x => x.Name.Contains(input.FilterText));
 
             // Sort
             categoryQueryable = categoryQueryable.OrderBy(x => x.Name);
@@ -145,7 +149,9 @@ namespace Recipes.Categories
             long totalCount = await categoryQueryable.LongCountAsync();
 
             // Page
-            categoryQueryable = categoryQueryable.PageBy(input.SkipCount, input.MaxResultCount);
+            categoryQueryable = categoryQueryable.PageBy(
+                input.SkipCount,
+                input.MaxResultCount);
 
             return new PagedResultDto<LookupDto<Guid>>()
             {
@@ -160,29 +166,33 @@ namespace Recipes.Categories
         public virtual async Task<FileResult> GetPhotoAsync(Guid id)
         {
             Category category = await _categoryRepository.GetAsync(id);
+
             if (category.Photo == null)
             {
                 return null;
             }
 
             byte[] photoData = await _blobContainer.GetAllBytesOrNullAsync(category.Photo.Id.ToString());
+
             if (photoData == null)
             {
                 return null;
             }
 
-            return new FileContentResult(photoData, category.Photo.ContentType);
+            return new FileContentResult(
+                photoData,
+                category.Photo.ContentType);
         }
 
-        public virtual async Task<PagedResultDto<CategoryRecipeListDto>> GetRecipesListAsync(Guid id, GetCategoryRecipesInput input)
+        public virtual async Task<PagedResultDto<CategoryRecipeListDto>> GetRecipeListAsync(
+            Guid id,
+            CategoryRecipeListInputDto input)
         {
-            IQueryable<Recipe> recipeQueryable = await _recipeRepository.GetQueryableAsync();
-
             // Filter
-            recipeQueryable = recipeQueryable
-                .Where(x => x.CategoryId == id)
-                .WhereIf(!string.IsNullOrWhiteSpace(input.FilterText), x =>
-                    x.Name.Contains(input.FilterText));
+            IQueryable<Recipe> recipeQueryable = _recipeRepository.Where(x => x.CategoryId == id)
+                .WhereIf(
+                    !string.IsNullOrWhiteSpace(input.FilterText),
+                    x => x.Name.Contains(input.FilterText));
 
             // Sort
             if (string.IsNullOrEmpty(input.Sorting))
@@ -198,7 +208,9 @@ namespace Recipes.Categories
             long totalCount = await recipeQueryable.LongCountAsync();
 
             // Page
-            recipeQueryable = recipeQueryable.PageBy(input.SkipCount, input.MaxResultCount);
+            recipeQueryable = recipeQueryable.PageBy(
+                input.SkipCount,
+                input.MaxResultCount);
 
             return new PagedResultDto<CategoryRecipeListDto>()
             {
@@ -211,7 +223,9 @@ namespace Recipes.Categories
         }
 
         [Authorize(RecipesPermissions.Categories.Edit)]
-        public virtual async Task<CategoryDto> UpdateAsync(Guid id, CategoryUpdateDto input)
+        public virtual async Task<CategoryDto> UpdateAsync(
+            Guid id,
+            CategoryUpdateInputDto input)
         {
             Category category = await _categoryRepository.GetAsync(id);
 
@@ -222,24 +236,27 @@ namespace Recipes.Categories
             if (category.Photo != null && (input.Photo != null || input.DeletePhoto))
             {
                 await _blobContainer.DeleteAsync(category.Photo.Id.ToString());
+
                 category.Photo = null;
             }
 
             if (input.Photo != null)
             {
                 Guid photoId = GuidGenerator.Create();
+
                 await _blobContainer.SaveAsync(
                     photoId.ToString(),
                     input.Photo.Data);
+
                 category.Photo = new File(
                     photoId,
                     input.Photo.Name,
                     input.Photo.ContentType);
             }
 
-            await _categoryRepository.UpdateAsync(category, autoSave: true);
+            category = await _categoryRepository.UpdateAsync(category, autoSave: true);
 
-            return await GetAsync(id);
+            return await GetAsync(category.Id);
         }
     }
 }

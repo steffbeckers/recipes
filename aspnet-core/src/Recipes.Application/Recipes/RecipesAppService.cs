@@ -34,7 +34,7 @@ namespace Recipes.Recipes
         }
 
         [Authorize(RecipesPermissions.Recipes.Create)]
-        public virtual async Task<RecipeDto> CreateAsync(RecipeCreateDto input)
+        public virtual async Task<RecipeDto> CreateAsync(RecipeCreateInputDto input)
         {
             Recipe recipe = new Recipe(
                 GuidGenerator.Create(),
@@ -50,16 +50,18 @@ namespace Recipes.Recipes
             if (input.Photo != null)
             {
                 Guid photoId = GuidGenerator.Create();
+
                 await _blobContainer.SaveAsync(
                     photoId.ToString(),
                     input.Photo.Data);
+
                 recipe.Photo = new File(
                     photoId,
                     input.Photo.Name,
                     input.Photo.ContentType);
             }
 
-            foreach (RecipeIngredientCreateDto ingredientDto in input.Ingredients)
+            foreach (RecipeIngredientCreateInputDto ingredientDto in input.Ingredients)
             {
                 recipe.Ingredients.Add(
                     new RecipeIngredient(
@@ -74,7 +76,7 @@ namespace Recipes.Recipes
                     });
             }
 
-            foreach (RecipeStepCreateDto stepDto in input.Steps)
+            foreach (RecipeStepCreateInputDto stepDto in input.Steps)
             {
                 recipe.Steps.Add(
                     new RecipeStep(
@@ -85,7 +87,9 @@ namespace Recipes.Recipes
                         CurrentTenant.Id));
             }
 
-            await _recipeRepository.InsertAsync(recipe, autoSave: true);
+            recipe = await _recipeRepository.InsertAsync(
+                recipe,
+                autoSave: true);
 
             return await GetAsync(recipe.Id);
         }
@@ -99,9 +103,9 @@ namespace Recipes.Recipes
         public virtual async Task<RecipeDto> GetAsync(Guid id)
         {
             IQueryable<Recipe> recipeQueryable = await _recipeRepository.WithDetailsAsync();
-            IQueryable<Category> categoryQueryable = await _categoryRepository.GetQueryableAsync();
+
             IQueryable<RecipeWithNavigationProperties> recipeWithNavigationPropertiesQueryable = recipeQueryable.SelectMany(x =>
-                categoryQueryable.Where(y => y.Id == x.CategoryId),
+                _categoryRepository.Where(y => y.Id == x.CategoryId),
                 (recipe, category) => new RecipeWithNavigationProperties()
                 {
                     Recipe = recipe,
@@ -112,9 +116,9 @@ namespace Recipes.Recipes
                 .ProjectTo<RecipeDto>(recipeWithNavigationPropertiesQueryable.AsSingleQuery())
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
+
             if (recipeDto == null)
             {
-                // TODO: Throw better BusinessException?
                 throw new EntityNotFoundException(typeof(Recipe), id);
             }
 
@@ -124,7 +128,7 @@ namespace Recipes.Recipes
             return recipeDto;
         }
 
-        public virtual async Task<PagedResultDto<RecipeListDto>> GetListAsync(GetRecipesInput input)
+        public virtual async Task<PagedResultDto<RecipeListDto>> GetListAsync(RecipeListInputDto input)
         {
             IQueryable<Recipe> recipeQueryable = await _recipeRepository.WithDetailsAsync();
 
@@ -149,11 +153,12 @@ namespace Recipes.Recipes
             long totalCount = await recipeQueryable.LongCountAsync();
 
             // Page
-            recipeQueryable = recipeQueryable.PageBy(input.SkipCount, input.MaxResultCount);
+            recipeQueryable = recipeQueryable.PageBy(
+                input.SkipCount,
+                input.MaxResultCount);
 
-            IQueryable<Category> categoryQueryable = await _categoryRepository.GetQueryableAsync();
             IQueryable<RecipeWithNavigationProperties> recipeWithNavigationPropertiesQueryable = recipeQueryable.SelectMany(x =>
-                categoryQueryable.Where(y => y.Id == x.CategoryId),
+                _categoryRepository.Where(y => y.Id == x.CategoryId),
                 (recipe, category) => new RecipeWithNavigationProperties()
                 {
                     Recipe = recipe,
@@ -173,22 +178,28 @@ namespace Recipes.Recipes
         public virtual async Task<FileResult> GetPhotoAsync(Guid id)
         {
             Recipe recipe = await _recipeRepository.GetAsync(id);
+
             if (recipe.Photo == null)
             {
                 return null;
             }
 
             byte[] photoData = await _blobContainer.GetAllBytesOrNullAsync(recipe.Photo.Id.ToString());
+
             if (photoData == null)
             {
                 return null;
             }
 
-            return new FileContentResult(photoData, recipe.Photo.ContentType);
+            return new FileContentResult(
+                photoData,
+                recipe.Photo.ContentType);
         }
 
         [Authorize(RecipesPermissions.Recipes.Edit)]
-        public virtual async Task<RecipeDto> UpdateAsync(Guid id, RecipeUpdateDto input)
+        public virtual async Task<RecipeDto> UpdateAsync(
+            Guid id,
+            RecipeUpdateInputDto input)
         {
             Recipe recipe = await _recipeRepository.GetAsync(id);
 
@@ -201,15 +212,18 @@ namespace Recipes.Recipes
             if (recipe.Photo != null && (input.Photo != null || input.DeletePhoto))
             {
                 await _blobContainer.DeleteAsync(recipe.Photo.Id.ToString());
+
                 recipe.Photo = null;
             }
 
             if (input.Photo != null)
             {
                 Guid photoId = GuidGenerator.Create();
+
                 await _blobContainer.SaveAsync(
                     photoId.ToString(),
                     input.Photo.Data);
+
                 recipe.Photo = new File(
                     photoId,
                     input.Photo.Name,
@@ -217,7 +231,8 @@ namespace Recipes.Recipes
             }
 
             recipe.Ingredients.RemoveAll(t => !input.Ingredients.Any(x => x.Id == t.Id));
-            foreach (RecipeIngredientUpdateDto ingredientDto in input.Ingredients.Where(x => !recipe.Ingredients.Any(y => y.Id == x.Id)))
+
+            foreach (RecipeIngredientUpdateInputDto ingredientDto in input.Ingredients.Where(x => !recipe.Ingredients.Any(y => y.Id == x.Id)))
             {
                 recipe.Ingredients.Add(
                     new RecipeIngredient(
@@ -227,9 +242,11 @@ namespace Recipes.Recipes
                         ingredientDto.Amount,
                         CurrentTenant.Id));
             }
+
             foreach (RecipeIngredient recipeIngredient in recipe.Ingredients.Where(x => input.Ingredients.Any(y => y.Id == x.Id)))
             {
-                RecipeIngredientUpdateDto ingredientDto = input.Ingredients.First(x => x.Id == recipeIngredient.Id);
+                RecipeIngredientUpdateInputDto ingredientDto = input.Ingredients.First(x => x.Id == recipeIngredient.Id);
+
                 recipeIngredient.Name = ingredientDto.Name;
                 recipeIngredient.Amount = ingredientDto.Amount;
                 recipeIngredient.Unit = ingredientDto.Unit;
@@ -237,7 +254,8 @@ namespace Recipes.Recipes
             }
 
             recipe.Steps.RemoveAll(t => !input.Steps.Any(x => x.Id == t.Id));
-            foreach (RecipeStepUpdateDto stepDto in input.Steps.Where(x => !recipe.Steps.Any(y => y.Id == x.Id)))
+
+            foreach (RecipeStepUpdateInputDto stepDto in input.Steps.Where(x => !recipe.Steps.Any(y => y.Id == x.Id)))
             {
                 recipe.Steps.Add(
                     new RecipeStep(
@@ -247,16 +265,20 @@ namespace Recipes.Recipes
                         stepDto.Instructions,
                         CurrentTenant.Id));
             }
+
             foreach (RecipeStep recipeStep in recipe.Steps.Where(x => input.Steps.Any(y => y.Id == x.Id)))
             {
-                RecipeStepUpdateDto stepDto = input.Steps.First(x => x.Id == recipeStep.Id);
+                RecipeStepUpdateInputDto stepDto = input.Steps.First(x => x.Id == recipeStep.Id);
+
                 recipeStep.Number = stepDto.Number;
                 recipeStep.Instructions = stepDto.Instructions;
             }
 
-            await _recipeRepository.UpdateAsync(recipe, autoSave: true);
+            recipe = await _recipeRepository.UpdateAsync(
+                recipe,
+                autoSave: true);
 
-            return await GetAsync(id);
+            return await GetAsync(recipe.Id);
         }
     }
 }

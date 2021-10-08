@@ -7,16 +7,18 @@ namespace Recipes.Recipes
 {
     public interface IRecipesAppService
     {
-        Task<RecipeDto> CreateAsync(RecipeCreateDto input);
+        Task<RecipeDto> CreateAsync(RecipeCreateInputDto input);
 
         Task DeleteAsync(Guid id);
 
         Task<RecipeDto> GetAsync(Guid id);
 
-        Task<PagedResultDto<RecipeListDto>> GetListAsync(GetRecipesInput input);
+        Task<PagedResultDto<RecipeListDto>> GetListAsync(RecipeListInputDto input);
 
         Task<FileResult> GetPhotoAsync(Guid id);
 
-        Task<RecipeDto> UpdateAsync(Guid id, RecipeUpdateDto input);
+        Task<RecipeDto> UpdateAsync(
+            Guid id,
+            RecipeUpdateInputDto input);
     }
 }

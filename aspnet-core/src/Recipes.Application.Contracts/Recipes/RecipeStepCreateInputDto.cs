@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Recipes.Recipes
 {
-    public class RecipeStepCreateDto
+    public class RecipeStepCreateInputDto
     {
         [Required]
         [StringLength(RecipeStepConsts.InstructionsMaxLength)]

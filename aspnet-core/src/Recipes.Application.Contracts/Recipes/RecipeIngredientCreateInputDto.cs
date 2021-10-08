@@ -1,10 +1,8 @@
-using System;
 using System.ComponentModel.DataAnnotations;
-using Volo.Abp.Application.Dtos;
 
 namespace Recipes.Recipes
 {
-    public class RecipeIngredientUpdateDto : EntityDto<Guid?>
+    public class RecipeIngredientCreateInputDto
     {
         [Required]
         public decimal Amount { get; set; }
