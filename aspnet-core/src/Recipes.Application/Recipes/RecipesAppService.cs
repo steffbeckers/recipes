@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Recipes.Categories;
 using Recipes.Files;
@@ -175,26 +174,27 @@ namespace Recipes.Recipes
             };
         }
 
-        public virtual async Task<FileResult> GetPhotoAsync(Guid id)
-        {
-            Recipe recipe = await _recipeRepository.GetAsync(id);
+        // TODO
+        //public virtual async Task<FileResult> GetPhotoAsync(Guid id)
+        //{
+        //    Recipe recipe = await _recipeRepository.GetAsync(id);
 
-            if (recipe.Photo == null)
-            {
-                return null;
-            }
+        //    if (recipe.Photo == null)
+        //    {
+        //        return null;
+        //    }
 
-            byte[] photoData = await _blobContainer.GetAllBytesOrNullAsync(recipe.Photo.Id.ToString());
+        //    byte[] photoData = await _blobContainer.GetAllBytesOrNullAsync(recipe.Photo.Id.ToString());
 
-            if (photoData == null)
-            {
-                return null;
-            }
+        //    if (photoData == null)
+        //    {
+        //        return null;
+        //    }
 
-            return new FileContentResult(
-                photoData,
-                recipe.Photo.ContentType);
-        }
+        //    return new FileContentResult(
+        //        photoData,
+        //        recipe.Photo.ContentType);
+        //}
 
         [Authorize(RecipesPermissions.Recipes.Edit)]
         public virtual async Task<RecipeDto> UpdateAsync(

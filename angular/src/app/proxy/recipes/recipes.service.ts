@@ -1,4 +1,4 @@
-import type { GetRecipesInput, RecipeCreateDto, RecipeDto, RecipeListDto, RecipeUpdateDto } from './models';
+import type { RecipeCreateInputDto, RecipeDto, RecipeListDto, RecipeListInputDto, RecipeUpdateInputDto } from './models';
 import { RestService } from '@abp/ng.core';
 import type { PagedResultDto } from '@abp/ng.core';
 import { Injectable } from '@angular/core';
@@ -9,7 +9,7 @@ import { Injectable } from '@angular/core';
 export class RecipesService {
   apiName = 'Default';
 
-  create = (input: RecipeCreateDto) =>
+  create = (input: RecipeCreateInputDto) =>
     this.restService.request<any, RecipeDto>({
       method: 'POST',
       url: '/api/recipes',
@@ -31,7 +31,7 @@ export class RecipesService {
     },
     { apiName: this.apiName });
 
-  getList = (input: GetRecipesInput) =>
+  getList = (input: RecipeListInputDto) =>
     this.restService.request<any, PagedResultDto<RecipeListDto>>({
       method: 'GET',
       url: '/api/recipes',
@@ -39,7 +39,7 @@ export class RecipesService {
     },
     { apiName: this.apiName });
 
-  update = (id: string, input: RecipeUpdateDto) =>
+  update = (id: string, input: RecipeUpdateInputDto) =>
     this.restService.request<any, RecipeDto>({
       method: 'PUT',
       url: `/api/recipes/${id}`,

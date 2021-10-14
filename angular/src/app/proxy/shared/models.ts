@@ -4,6 +4,7 @@ export interface LookupDto<TKey> extends EntityDto<TKey> {
   name?: string;
 }
 
-export interface LookupRequestDto extends PagedResultRequestDto {
+export interface LookupInputDto extends PagedResultRequestDto {
   filterText?: string;
+  id?: string;
 }

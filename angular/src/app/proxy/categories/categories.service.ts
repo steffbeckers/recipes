@@ -1,8 +1,8 @@
-import type { CategoryCreateDto, CategoryDto, CategoryListDto, CategoryRecipeListDto, CategoryUpdateDto, GetCategoriesInput, GetCategoryRecipesInput } from './models';
+import type { CategoryCreateInputDto, CategoryDto, CategoryListDto, CategoryListInputDto, CategoryRecipeListDto, CategoryRecipeListInputDto, CategoryUpdateInputDto } from './models';
 import { RestService } from '@abp/ng.core';
 import type { PagedResultDto } from '@abp/ng.core';
 import { Injectable } from '@angular/core';
-import type { LookupDto, LookupRequestDto } from '../shared/models';
+import type { LookupDto, LookupInputDto } from '../shared/models';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +10,7 @@ import type { LookupDto, LookupRequestDto } from '../shared/models';
 export class CategoriesService {
   apiName = 'Default';
 
-  create = (input: CategoryCreateDto) =>
+  create = (input: CategoryCreateInputDto) =>
     this.restService.request<any, CategoryDto>({
       method: 'POST',
       url: '/api/categories',
@@ -32,7 +32,7 @@ export class CategoriesService {
     },
     { apiName: this.apiName });
 
-  getList = (input: GetCategoriesInput) =>
+  getList = (input: CategoryListInputDto) =>
     this.restService.request<any, PagedResultDto<CategoryListDto>>({
       method: 'GET',
       url: '/api/categories',
@@ -40,15 +40,15 @@ export class CategoriesService {
     },
     { apiName: this.apiName });
 
-  getLookup = (input: LookupRequestDto) =>
+  getLookup = (input: LookupInputDto) =>
     this.restService.request<any, PagedResultDto<LookupDto<string>>>({
       method: 'GET',
       url: '/api/categories/lookup',
-      params: { filterText: input.filterText, skipCount: input.skipCount, maxResultCount: input.maxResultCount },
+      params: { filterText: input.filterText, id: input.id, skipCount: input.skipCount, maxResultCount: input.maxResultCount },
     },
     { apiName: this.apiName });
 
-  getRecipesList = (id: string, input: GetCategoryRecipesInput) =>
+  getRecipeList = (id: string, input: CategoryRecipeListInputDto) =>
     this.restService.request<any, PagedResultDto<CategoryRecipeListDto>>({
       method: 'GET',
       url: `/api/categories/${id}/recipes`,
@@ -56,7 +56,7 @@ export class CategoriesService {
     },
     { apiName: this.apiName });
 
-  update = (id: string, input: CategoryUpdateDto) =>
+  update = (id: string, input: CategoryUpdateInputDto) =>
     this.restService.request<any, CategoryDto>({
       method: 'PUT',
       url: `/api/categories/${id}`,

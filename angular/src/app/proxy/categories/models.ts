@@ -1,24 +1,29 @@
+import type { FileDto, FileInputDto } from '../files/models';
 import type { EntityDto, FullAuditedEntityDto, PagedAndSortedResultRequestDto } from '@abp/ng.core';
 
-export interface CategoryCreateDto {
+export interface CategoryCreateInputDto {
   description?: string;
   name: string;
-  photo: number[];
+  photo: FileInputDto;
   sortOrder?: number;
 }
 
 export interface CategoryDto extends FullAuditedEntityDto<string> {
   description?: string;
   name?: string;
-  photoId?: string;
+  photo: FileDto;
   sortOrder?: number;
 }
 
 export interface CategoryListDto extends EntityDto<string> {
   description?: string;
   name?: string;
-  photoId?: string;
+  photo: FileDto;
   sortOrder?: number;
+}
+
+export interface CategoryListInputDto extends PagedAndSortedResultRequestDto {
+  filterText?: string;
 }
 
 export interface CategoryRecipeListDto {
@@ -26,26 +31,23 @@ export interface CategoryRecipeListDto {
   forAmount?: number;
   forUnit?: string;
   name?: string;
-  photoId?: string;
+  photo: FileDto;
+}
+
+export interface CategoryRecipeListInputDto extends PagedAndSortedResultRequestDto {
+  filterText?: string;
 }
 
 export interface CategorySimpleDto extends EntityDto<string> {
   description?: string;
   name?: string;
-  photoId?: string;
+  photo: FileDto;
 }
 
-export interface CategoryUpdateDto {
+export interface CategoryUpdateInputDto {
+  deletePhoto: boolean;
   description?: string;
   name: string;
-  photo: number[];
+  photo: FileInputDto;
   sortOrder?: number;
-}
-
-export interface GetCategoriesInput extends PagedAndSortedResultRequestDto {
-  filterText?: string;
-}
-
-export interface GetCategoryRecipesInput extends PagedAndSortedResultRequestDto {
-  filterText?: string;
 }

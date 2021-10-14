@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Recipes.Files;
 using Recipes.Permissions;
@@ -167,26 +166,27 @@ namespace Recipes.Categories
             };
         }
 
-        public virtual async Task<FileResult> GetPhotoAsync(Guid id)
-        {
-            Category category = await _categoryRepository.GetAsync(id);
+        // TODO
+        //public virtual async Task<FileResult> GetPhotoAsync(Guid id)
+        //{
+        //    Category category = await _categoryRepository.GetAsync(id);
 
-            if (category.Photo == null)
-            {
-                return null;
-            }
+        //    if (category.Photo == null)
+        //    {
+        //        return null;
+        //    }
 
-            byte[] photoData = await _blobContainer.GetAllBytesOrNullAsync(category.Photo.Id.ToString());
+        //    byte[] photoData = await _blobContainer.GetAllBytesOrNullAsync(category.Photo.Id.ToString());
 
-            if (photoData == null)
-            {
-                return null;
-            }
+        //    if (photoData == null)
+        //    {
+        //        return null;
+        //    }
 
-            return new FileContentResult(
-                photoData,
-                category.Photo.ContentType);
-        }
+        //    return new FileContentResult(
+        //        photoData,
+        //        category.Photo.ContentType);
+        //}
 
         public virtual async Task<PagedResultDto<CategoryRecipeListDto>> GetRecipeListAsync(
             Guid id,

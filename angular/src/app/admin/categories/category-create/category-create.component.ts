@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { CategoriesService, CategoryCreateDto } from '@proxy/categories';
+import { CategoriesService, CategoryCreateInputDto } from '@proxy/categories';
 
 @Component({
   selector: 'app-category-create',
@@ -23,7 +23,7 @@ export class CategoryCreateComponent {
     save(event): void {
         event.preventDefault();
 
-        let input: CategoryCreateDto = this.form.getRawValue();
+        let input: CategoryCreateInputDto = this.form.getRawValue();
 
         this.categoriesService.create(input).subscribe(() => {
             this.router.navigateByUrl('admin/categories')

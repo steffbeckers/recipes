@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Mvc;
 using Recipes.Shared;
 using System;
 using System.Threading.Tasks;
@@ -18,7 +17,8 @@ namespace Recipes.Categories
 
         Task<PagedResultDto<LookupDto<Guid>>> GetLookupAsync(LookupInputDto input);
 
-        Task<FileResult> GetPhotoAsync(Guid id);
+        // TODO
+        //Task<FileResult> GetPhotoAsync(Guid id);
 
         Task<PagedResultDto<CategoryRecipeListDto>> GetRecipeListAsync(
             Guid id,

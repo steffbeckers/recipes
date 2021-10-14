@@ -1,7 +1,7 @@
 import { PagedResultDto } from '@abp/ng.core';
 import { state } from '@angular/animations';
 import { createReducer, on } from '@ngrx/store';
-import { GetRecipesInput, RecipeListDto } from '@proxy/recipes';
+import { RecipeListDto, RecipeListInputDto } from '@proxy/recipes';
 
 import * as PublicActions from '../actions/public.actions';
 
@@ -10,14 +10,14 @@ export const publicFeatureKey = 'public';
 export interface State {
     loading: boolean;
     error: any;
-    getRecipesInput: GetRecipesInput;
+    recipesListInput: RecipeListInputDto;
     recipes: PagedResultDto<RecipeListDto>;
 }
 
 export const initialState: State = {
     loading: false,
     error: null,
-    getRecipesInput: null,
+    recipesListInput: null,
     recipes: null
 };
 
@@ -28,7 +28,7 @@ export const reducer = createReducer(
             ...state,
             loading: true,
             error: null,
-            getRecipesInput: input
+            recipesListInput: input
         }
     }),
     on(PublicActions.loadRecipesSuccess, (state, { recipes }) => {

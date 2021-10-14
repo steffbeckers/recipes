@@ -54,12 +54,13 @@ namespace Recipes.Controllers.Categories
             return _categoriesAppService.GetLookupAsync(input);
         }
 
-        [HttpGet]
-        [Route("{id}/photo")]
-        public virtual Task<FileResult> GetPhotoAsync(Guid id)
-        {
-            return _categoriesAppService.GetPhotoAsync(id);
-        }
+        // TODO
+        //[HttpGet]
+        //[Route("{id}/photo")]
+        //public virtual Task<FileResult> GetPhotoAsync(Guid id)
+        //{
+        //    return _categoriesAppService.GetPhotoAsync(id);
+        //}
 
         [HttpGet]
         [Route("{id}/recipes")]
