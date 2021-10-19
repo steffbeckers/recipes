@@ -132,11 +132,12 @@ namespace Recipes.Recipes
             IQueryable<Recipe> recipeQueryable = await _recipeRepository.WithDetailsAsync();
 
             // Filter
-            recipeQueryable = recipeQueryable.WhereIf(!string.IsNullOrWhiteSpace(input.FilterText), x =>
-                x.Name.Contains(input.FilterText) ||
-                x.Description.Contains(input.FilterText) ||
-                x.Ingredients.Any(y => y.Name.Contains(input.FilterText)) ||
-                x.Steps.Any(y => y.Instructions.Contains(input.FilterText)));
+            recipeQueryable = recipeQueryable.WhereIf(
+                !string.IsNullOrWhiteSpace(input.FilterText),
+                x => x.Name.Contains(input.FilterText) ||
+                    x.Description.Contains(input.FilterText) ||
+                    x.Ingredients.Any(y => y.Name.Contains(input.FilterText)) ||
+                    x.Steps.Any(y => y.Instructions.Contains(input.FilterText)));
 
             // Sort
             if (string.IsNullOrEmpty(input.Sorting))

@@ -1,42 +1,34 @@
-import { PagedResultDto } from '@abp/ng.core';
-import { state } from '@angular/animations';
+import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
-import { RecipeListDto, RecipeListInputDto } from '@proxy/recipes';
+import { Recipe } from 'src/app/shared/recipe.model';
 
 import * as PublicActions from '../actions/public.actions';
 
 export const publicFeatureKey = 'public';
 
-export interface State {
+export interface State extends EntityState<Recipe> {
     loading: boolean;
     error: any;
-    recipesListInput: RecipeListInputDto;
-    recipes: PagedResultDto<RecipeListDto>;
 }
 
-export const initialState: State = {
+export const adapter: EntityAdapter<Recipe> = createEntityAdapter<Recipe>();
+
+export const initialState: State = adapter.getInitialState({
     loading: false,
-    error: null,
-    recipesListInput: null,
-    recipes: null
-};
+    error: null
+});
 
 export const reducer = createReducer(
     initialState,
-    on(PublicActions.loadRecipes, (state, { input }) => {
+    on(PublicActions.loadRecipes, (state) => {
         return {
             ...state,
             loading: true,
-            error: null,
-            recipesListInput: input
+            error: null
         }
     }),
     on(PublicActions.loadRecipesSuccess, (state, { recipes }) => {
-        return {
-            ...state,
-            loading: false,
-            recipes
-        }
+        return adapter.upsertMany(recipes.items, state);
     }),
     on(PublicActions.loadRecipesFailure, (state, { error }) => {
         return {

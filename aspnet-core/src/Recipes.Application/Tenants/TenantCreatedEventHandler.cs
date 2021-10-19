@@ -31,7 +31,7 @@ namespace Recipes.Tenants
                 return;
             }
 
-            // TODO: Clients update doesn't save the added redirect URI's
+            // TODO: Clients update doesn't save the added redirect URI's yet
 
             Client appClient = await _clientRepository.FindByClientIdAsync("Recipes_App");
 
@@ -39,7 +39,9 @@ namespace Recipes.Tenants
             {
                 appClient.AddRedirectUri(string.Format($"https://{multiTenancyDomainFormat}", eventData.Entity.Name));
 
-                await _clientRepository.UpdateAsync(appClient);
+                await _clientRepository.UpdateAsync(
+                    appClient,
+                    autoSave: true);
             }
 
             Client swaggerClient = await _clientRepository.FindByClientIdAsync("Recipes_Swagger");
@@ -48,7 +50,9 @@ namespace Recipes.Tenants
             {
                 swaggerClient.AddRedirectUri(string.Format($"https://{multiTenancyDomainFormat}/swagger/oauth2-redirect.html", eventData.Entity.Name));
 
-                await _clientRepository.UpdateAsync(swaggerClient);
+                await _clientRepository.UpdateAsync(
+                    swaggerClient,
+                    autoSave: true);
             }
         }
     }

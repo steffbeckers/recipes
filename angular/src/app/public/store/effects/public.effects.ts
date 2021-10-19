@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { RecipesService } from '@proxy/recipes';
 import { of } from 'rxjs';
-import { catchError, exhaustMap, map } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 
 import * as PublicActions from '../actions/public.actions';
 
@@ -13,7 +13,7 @@ export class PublicEffects {
   loadRecipes$ = createEffect(() => {
     return this.actions$.pipe( 
       ofType(PublicActions.loadRecipes),
-      exhaustMap(({input}) =>
+      switchMap(({input}) =>
         this.recipesService.getList(input).pipe(
           map(recipes => PublicActions.loadRecipesSuccess({ recipes })),
           catchError(error => of(PublicActions.loadRecipesFailure({ error })))
