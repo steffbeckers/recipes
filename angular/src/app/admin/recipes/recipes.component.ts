@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+
+import * as RecipesActions from '../store/actions/recipes.actions';
+import * as fromRecipes from '../store/reducers';
 
 @Component({
   selector: 'app-recipes',
@@ -6,10 +10,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./recipes.component.scss']
 })
 export class RecipesComponent implements OnInit {
+    constructor(private store: Store<fromRecipes.AdminFeatureState>) {}
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+    ngOnInit(): void {
+        this.store.dispatch(RecipesActions.loadRecipes({ input: { maxResultCount: 10 }}));
+    }
 }
