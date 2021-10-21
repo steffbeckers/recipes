@@ -69,12 +69,16 @@ namespace Recipes.Categories
         public virtual async Task DeleteAsync(Guid id)
         {
             // TODO: Move business check to manager
-            long recipeCount = await _recipeRepository.Where(x => x.CategoryId == id).LongCountAsync();
+            long recipeCount = await _recipeRepository
+                .Where(x => x.CategoryId == id)
+                .LongCountAsync();
 
             if (recipeCount > 0)
             {
                 throw new BusinessException(RecipesDomainErrorCodes.Categories.DeleteNotAllowedWhenRecipesStillLinked)
-                    .WithData("RecipeCount", recipeCount);
+                    .WithData(
+                        name: "RecipeCount",
+                        value: recipeCount);
             }
 
             await _categoryRepository.DeleteAsync(id);
@@ -82,14 +86,17 @@ namespace Recipes.Categories
 
         public virtual async Task<CategoryDto> GetAsync(Guid id)
         {
-            CategoryDto categoryDto = await ObjectMapper.GetMapper()
+            CategoryDto categoryDto = await ObjectMapper
+                .GetMapper()
                 .ProjectTo<CategoryDto>(_categoryRepository)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             if (categoryDto == null)
             {
-                throw new EntityNotFoundException(typeof(Category), id);
+                throw new EntityNotFoundException(
+                    typeof(Category),
+                    id);
             }
 
             return categoryDto;
@@ -98,10 +105,11 @@ namespace Recipes.Categories
         public virtual async Task<PagedResultDto<CategoryListDto>> GetListAsync(CategoryListInputDto input)
         {
             // Filter
-            IQueryable<Category> categoryQueryable = _categoryRepository.WhereIf(
-                !string.IsNullOrWhiteSpace(input.FilterText),
-                x => x.Name.Contains(input.FilterText) ||
-                    x.Description.Contains(input.FilterText));
+            IQueryable<Category> categoryQueryable = _categoryRepository
+                .WhereIf(
+                    !string.IsNullOrWhiteSpace(input.FilterText),
+                    x => x.Name.Contains(input.FilterText) ||
+                        x.Description.Contains(input.FilterText));
 
             // Sort
             if (string.IsNullOrEmpty(input.Sorting))
@@ -193,7 +201,8 @@ namespace Recipes.Categories
             CategoryRecipeListInputDto input)
         {
             // Filter
-            IQueryable<Recipe> recipeQueryable = _recipeRepository.Where(x => x.CategoryId == id)
+            IQueryable<Recipe> recipeQueryable = _recipeRepository
+                .Where(x => x.CategoryId == id)
                 .WhereIf(
                     !string.IsNullOrWhiteSpace(input.FilterText),
                     x => x.Name.Contains(input.FilterText));
@@ -258,7 +267,9 @@ namespace Recipes.Categories
                     input.Photo.ContentType);
             }
 
-            category = await _categoryRepository.UpdateAsync(category, autoSave: true);
+            category = await _categoryRepository.UpdateAsync(
+                category,
+                autoSave: true);
 
             return await GetAsync(category.Id);
         }

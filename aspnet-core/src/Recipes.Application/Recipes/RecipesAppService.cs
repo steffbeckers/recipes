@@ -111,18 +111,25 @@ namespace Recipes.Recipes
                     Category = category
                 });
 
-            RecipeDto recipeDto = await ObjectMapper.GetMapper()
+            RecipeDto recipeDto = await ObjectMapper
+                .GetMapper()
                 .ProjectTo<RecipeDto>(recipeWithNavigationPropertiesQueryable.AsSingleQuery())
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             if (recipeDto == null)
             {
-                throw new EntityNotFoundException(typeof(Recipe), id);
+                throw new EntityNotFoundException(
+                    typeof(Recipe),
+                    id);
             }
 
-            recipeDto.Ingredients = recipeDto.Ingredients.OrderBy(x => x.SortOrder).ToList();
-            recipeDto.Steps = recipeDto.Steps.OrderBy(x => x.Number).ToList();
+            recipeDto.Ingredients = recipeDto.Ingredients
+                .OrderBy(x => x.SortOrder)
+                .ToList();
+            recipeDto.Steps = recipeDto.Steps
+                .OrderBy(x => x.Number)
+                .ToList();
 
             return recipeDto;
         }
@@ -132,12 +139,13 @@ namespace Recipes.Recipes
             IQueryable<Recipe> recipeQueryable = await _recipeRepository.WithDetailsAsync();
 
             // Filter
-            recipeQueryable = recipeQueryable.WhereIf(
-                !string.IsNullOrWhiteSpace(input.FilterText),
-                x => x.Name.Contains(input.FilterText) ||
-                    x.Description.Contains(input.FilterText) ||
-                    x.Ingredients.Any(y => y.Name.Contains(input.FilterText)) ||
-                    x.Steps.Any(y => y.Instructions.Contains(input.FilterText)));
+            recipeQueryable = recipeQueryable
+                .WhereIf(
+                    !string.IsNullOrWhiteSpace(input.FilterText),
+                    x => x.Name.Contains(input.FilterText) ||
+                        x.Description.Contains(input.FilterText) ||
+                        x.Ingredients.Any(y => y.Name.Contains(input.FilterText)) ||
+                        x.Steps.Any(y => y.Instructions.Contains(input.FilterText)));
 
             // Sort
             if (string.IsNullOrEmpty(input.Sorting))
