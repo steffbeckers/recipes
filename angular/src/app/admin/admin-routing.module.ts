@@ -1,3 +1,4 @@
+import { AuthGuard } from '@abp/ng.core';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
@@ -7,6 +8,7 @@ const routes: Routes = [
     {
         path: '',
         component: AdminComponent,
+        canActivate: [AuthGuard],
         children: [
             {
                 path: 'categories',

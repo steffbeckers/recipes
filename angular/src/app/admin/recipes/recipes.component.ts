@@ -10,9 +10,9 @@ import * as fromRecipes from '../store/reducers';
   styleUrls: ['./recipes.component.scss']
 })
 export class RecipesComponent implements OnInit {
-    constructor(private store: Store<fromRecipes.AdminFeatureState>) {}
+    constructor(private store$: Store<fromRecipes.AdminFeatureState>) {}
 
     ngOnInit(): void {
-        this.store.dispatch(RecipesActions.loadRecipes({ input: { maxResultCount: 10 }}));
+        this.store$.dispatch(RecipesActions.loadRecipes());
     }
 }
