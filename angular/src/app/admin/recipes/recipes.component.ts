@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 
 import * as RecipesActions from './store/actions/recipes.actions';
 import * as fromRecipes from './store/reducers/recipes.reducer';
-import { selectListInput } from './store/selectors/recipes.selectors';
+import { selectAll, selectListInput } from './store/selectors/recipes.selectors';
 
 @Component({
     selector: 'app-admin-recipes',
@@ -12,6 +12,7 @@ import { selectListInput } from './store/selectors/recipes.selectors';
 })
 export class RecipesComponent implements OnInit {
     listInput$ = this.store$.select(selectListInput);
+    recipes$ = this.store$.select(selectAll);
 
     constructor(private store$: Store<fromRecipes.State>) {}
 
