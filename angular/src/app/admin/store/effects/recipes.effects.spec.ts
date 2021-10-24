@@ -5,21 +5,18 @@ import { Observable } from 'rxjs';
 import { RecipesEffects } from './recipes.effects';
 
 describe('RecipesEffects', () => {
-  let actions$: Observable<any>;
-  let effects: RecipesEffects;
+    let actions$: Observable<any>;
+    let effects: RecipesEffects;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [
-        RecipesEffects,
-        provideMockActions(() => actions$)
-      ]
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+            providers: [RecipesEffects, provideMockActions(() => actions$)],
+        });
+
+        effects = TestBed.inject(RecipesEffects);
     });
 
-    effects = TestBed.inject(RecipesEffects);
-  });
-
-  it('should be created', () => {
-    expect(effects).toBeTruthy();
-  });
+    it('should be created', () => {
+        expect(effects).toBeTruthy();
+    });
 });

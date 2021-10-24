@@ -2,12 +2,12 @@ import { PagedResultDto } from '@abp/ng.core';
 import { createAction, props } from '@ngrx/store';
 import { RecipeListDto } from '@proxy/recipes';
 
-export const loadRecipes = createAction('[Admin/Recipes] Load Recipes');
-export const loadRecipesSuccess = createAction(
-    '[Admin/Recipes] Load Recipes Success',
+export const pageLoaded = createAction('[Admin/Recipes] Page loaded');
+export const listDataLoaded = createAction(
+    '[Admin/Recipes] List data loaded',
     props<{ data: PagedResultDto<RecipeListDto> }>()
 );
-export const loadRecipesFailure = createAction(
-    '[Admin/Recipes] Load Recipes Failure',
+export const listDataLoadFailed = createAction(
+    '[Admin/Recipes] List data load failed',
     props<{ error: any }>()
 );

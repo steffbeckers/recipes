@@ -21,9 +21,9 @@ export const initialState: State = adapter.getInitialState({
 
 export const reducer = createReducer(
     initialState,
-    on(RecipesActions.loadRecipes, state => state),
-    on(RecipesActions.loadRecipesSuccess, (state, { data }) => {
+    on(RecipesActions.pageLoaded, state => state),
+    on(RecipesActions.listDataLoaded, (state, { data }) => {
         return adapter.upsertMany(data.items, state);
     }),
-    on(RecipesActions.loadRecipesFailure, (state, action) => state)
+    on(RecipesActions.listDataLoadFailed, (state, action) => state)
 );
