@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { RecipeListInputDto } from '@proxy/recipes';
 
-import * as RecipesActions from '../store/actions/recipes.actions';
-import * as fromRecipes from '../store/reducers/recipes.reducer';
+import * as RecipesActions from './store/actions/recipes.actions';
+import * as fromRecipes from './store/reducers/recipes.reducer';
+import { selectListInput } from './store/selectors/recipes.selectors';
 
 @Component({
     selector: 'app-admin-recipes',
@@ -11,7 +11,7 @@ import * as fromRecipes from '../store/reducers/recipes.reducer';
     styleUrls: ['./recipes.component.scss'],
 })
 export class RecipesComponent implements OnInit {
-    listInput: RecipeListInputDto = { maxResultCount: 10 };
+    listInput$ = this.store$.select(selectListInput);
 
     constructor(private store$: Store<fromRecipes.State>) {}
 
