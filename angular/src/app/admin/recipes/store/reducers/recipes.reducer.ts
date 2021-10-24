@@ -35,6 +35,12 @@ export const reducer = createReducer(
             loading: true,
         };
     }),
+    on(RecipesActions.listInputChanged, (state, { input }) => {
+        return {
+            ...state,
+            listInput: input,
+        };
+    }),
     on(RecipesActions.listDataLoaded, (state, { data }) => {
         let pages = Array(Math.ceil(data.totalCount / state.listInput.maxResultCount))
             .fill(1)

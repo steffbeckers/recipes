@@ -18,4 +18,9 @@ export class RecipesComponent implements OnInit {
     ngOnInit(): void {
         this.store$.dispatch(RecipesActions.pageLoaded());
     }
+
+    // TODO: Test input changed dispatch
+    testListInputChange(): void {
+        this.store$.dispatch(RecipesActions.listInputChanged({ input: { maxResultCount: 2 } }));
+    }
 }

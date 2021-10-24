@@ -1,9 +1,12 @@
 import { PagedResultDto } from '@abp/ng.core';
 import { createAction, props } from '@ngrx/store';
-import { RecipeListDto } from '@proxy/recipes';
+import { RecipeListDto, RecipeListInputDto } from '@proxy/recipes';
 
 export const pageLoaded = createAction('[Admin/Recipes] Page loaded');
-export const listInputChanged = createAction('[Admin/Recipes] List input changed');
+export const listInputChanged = createAction(
+    '[Admin/Recipes] List input changed',
+    props<{ input: RecipeListInputDto }>()
+);
 export const listDataLoaded = createAction(
     '[Admin/Recipes] List data loaded',
     props<{ data: PagedResultDto<RecipeListDto> }>()
