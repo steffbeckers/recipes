@@ -6,43 +6,19 @@
         </button>
     </div>
     <div class="row">
-        <div class="col">
-            <div class="row">
-                <div class="table-responsive">
-                    <table class="table">
-                        <thead>
-                            <th>{{ '::Name' | abpLocalization }}</th>
-                            <th>{{ '::Description' | abpLocalization }}</th>
-                            <th>{{ '::Actions' | abpLocalization }}</th>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let category of categories">
-                                <td>{{ category.name }}</td>
-                                <td>{{ category.description }}</td>
-                                <td>
-                                    <button class="btn btn-primary">
-                                        {{ '::Edit' | abpLocalization }}
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <nav>
-                    <ul class="pagination">
-                        <li
-                            class="page-item"
-                            [ngClass]="{ active: page === currentPage }"
-                            *ngFor="let page of pages"
-                        >
-                            <a (click.stop)="setCurrentPage(page)" class="page-link">{{
-                                page + 1
-                            }}</a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <th>{{ '::Name' | abpLocalization }}</th>
+                    <th>{{ '::Description' | abpLocalization }}</th>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let category of categories$ | async">
+                        <td>{{ category.name }}</td>
+                        <td>{{ category.description }}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-        <router-outlet></router-outlet>
     </div>
 </div>

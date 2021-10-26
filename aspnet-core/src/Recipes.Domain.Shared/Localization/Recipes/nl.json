@@ -1,23 +1,25 @@
 {
-    "culture": "nl",
-    "texts": {
-        "Actions": "Acties",
-        "AddNewCategory": "Nieuwe categorie toevoegen",
-        "Categories": "Categorieën",
-        "Categories:DeleteNotAllowedWhenRecipesStillLinked": "Categorie kan niet verwijderd worden omdat er nog reeds {RecipeCount} recepten gelinkt zijn aan de categorie.",
-        "Create": "Nieuw",
-        "Description": "Beschrijving",
-        "Menu:Categories": "Categorieën",
-        "Menu:Recipes": "Recepten",
-        "Name": "Naam",
-        "Permission:Categories": "Categorieën",
-        "Permission:Create": "Toevoegen",
-        "Permission:Delete": "Verwijderen",
-        "Permission:Edit": "Bewerken",
-        "Permission:Recipes": "Recepten",
-        "Recipes": "Recepten",
-        "Recipes:AtLeastOneIngredientIsRequired": "Ten minste één ingredient is verplicht.",
-        "Recipes:AtLeastOneStepIsRequired": "Ten minste één stap is verplicht.",
-        "SortOrder": "Sorteervolgorde"
-    }
+  "Culture": "nl",
+  "Texts": {
+    "Actions": "Acties",
+    "AddNewCategory": "Nieuwe categorie toevoegen",
+    "AddNewRecipe": "Nieuw recept toevoegen",
+    "Categories": "Categorieën",
+    "Categories:DeleteNotAllowedWhenRecipesStillLinked": "Categorie kan niet verwijderd worden omdat er nog reeds {RecipeCount} recepten gelinkt zijn aan de categorie.",
+    "Category": "Categorie",
+    "Create": "Nieuw",
+    "Description": "Beschrijving",
+    "Menu:Categories": "Categorieën",
+    "Menu:Recipes": "Recepten",
+    "Name": "Naam",
+    "Permission:Categories": "Categorieën",
+    "Permission:Create": "Toevoegen",
+    "Permission:Delete": "Verwijderen",
+    "Permission:Edit": "Bewerken",
+    "Permission:Recipes": "Recepten",
+    "Recipes": "Recepten",
+    "Recipes:AtLeastOneIngredientIsRequired": "Ten minste één ingredient is verplicht.",
+    "Recipes:AtLeastOneStepIsRequired": "Ten minste één stap is verplicht.",
+    "SortOrder": "Sorteervolgorde"
+  }
 }

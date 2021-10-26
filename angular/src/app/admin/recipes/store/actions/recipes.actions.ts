@@ -1,4 +1,5 @@
 import { PagedResultDto } from '@abp/ng.core';
+import { FormGroup } from '@angular/forms';
 import { createAction, props } from '@ngrx/store';
 import { RecipeListDto, RecipeListInputDto } from '@proxy/recipes';
 
@@ -14,4 +15,8 @@ export const listDataLoaded = createAction(
 export const listDataLoadFailed = createAction(
     '[Admin/Recipes] List data load failed',
     props<{ error: any }>()
+);
+export const createFormSubmitted = createAction(
+    '[Admin/Recipes] Create form submitted',
+    props<{ form: FormGroup }>()
 );

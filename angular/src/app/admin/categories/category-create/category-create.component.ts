@@ -1,32 +1,27 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { CategoriesService, CategoryCreateInputDto } from '@proxy/categories';
+import { Store } from '@ngrx/store';
+
+import * as fromCategories from '../store';
+import * as CategoriesActions from '../store/actions/categories.actions';
 
 @Component({
-  selector: 'app-category-create',
-  templateUrl: './category-create.component.html',
-  styleUrls: ['./category-create.component.scss']
+    selector: 'app-admin-category-create',
+    templateUrl: './category-create.component.html',
+    styleUrls: ['./category-create.component.scss'],
 })
 export class CategoryCreateComponent {
     form: FormGroup = this.fb.group({
         name: [null, [Validators.required]],
         description: [null],
-        sortOrder: [null]
+        sortOrder: [null],
     });
 
-    constructor(
-        private fb: FormBuilder,
-        private categoriesService: CategoriesService,
-        private router: Router) { }
+    constructor(private fb: FormBuilder, private store: Store<fromCategories.State>) {}
 
     save(event): void {
         event.preventDefault();
 
-        let input: CategoryCreateInputDto = this.form.getRawValue();
-
-        this.categoriesService.create(input).subscribe(() => {
-            this.router.navigateByUrl('admin/categories')
-        })
+        this.store.dispatch(CategoriesActions.createFormSubmitted({ form: this.form }));
     }
 }

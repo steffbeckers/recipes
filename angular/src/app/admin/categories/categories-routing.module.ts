@@ -8,17 +8,15 @@ const routes: Routes = [
     {
         path: '',
         component: CategoriesComponent,
-        children: [
-            {
-                path: 'create',
-                component: CategoryCreateComponent
-            }
-        ]
-    }
+    },
+    {
+        path: 'create',
+        component: CategoryCreateComponent,
+    },
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule],
 })
-export class CategoriesRoutingModule { }
+export class CategoriesRoutingModule {}

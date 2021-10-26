@@ -1,6 +1,8 @@
-import { PagedResultDto } from '@abp/ng.core';
 import { Component, OnInit } from '@angular/core';
-import { CategoriesService, CategoryListDto } from '@proxy/categories';
+import { Store } from '@ngrx/store';
+
+import * as fromCategories from './store';
+import * as CategoriesActions from './store/actions/categories.actions';
 
 @Component({
     selector: 'app-admin-categories',
@@ -8,35 +10,11 @@ import { CategoriesService, CategoryListDto } from '@proxy/categories';
     styleUrls: ['./categories.component.scss'],
 })
 export class CategoriesComponent implements OnInit {
-    categories: CategoryListDto[] = [];
-    totalCount: number;
-    maxResultCount: number = 5;
-    pages: number[] = [];
-    currentPage: number = 0;
+    categories$ = this.store$.select(fromCategories.selectAll);
 
-    constructor(private categoriesService: CategoriesService) {}
+    constructor(private store$: Store<fromCategories.State>) {}
 
     ngOnInit(): void {
-        this.getCategoriesList();
-    }
-
-    getCategoriesList(): void {
-        this.categoriesService
-            .getList({
-                maxResultCount: this.maxResultCount,
-                skipCount: this.currentPage * this.maxResultCount,
-            })
-            .subscribe((result: PagedResultDto<CategoryListDto>) => {
-                this.categories = result.items;
-                this.totalCount = result.totalCount;
-                this.pages = Array(Math.ceil(this.totalCount / this.maxResultCount))
-                    .fill(1)
-                    .map((x, i) => i);
-            });
-    }
-
-    setCurrentPage(pageIndex: number): void {
-        this.currentPage = pageIndex;
-        this.getCategoriesList();
+        this.store$.dispatch(CategoriesActions.pageLoaded());
     }
 }
