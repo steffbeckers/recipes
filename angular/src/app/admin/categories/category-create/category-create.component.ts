@@ -20,7 +20,7 @@ export class CategoryCreateComponent {
     constructor(private fb: FormBuilder, private store: Store<fromCategories.State>) {}
 
     save(event): void {
-        event.preventDefault();
+        event?.preventDefault();
 
         this.store.dispatch(CategoriesActions.createFormSubmitted({ form: this.form }));
     }

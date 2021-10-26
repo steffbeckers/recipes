@@ -33,7 +33,7 @@ export class RecipesComponent implements OnInit {
     constructor(private store$: Store<fromRecipes.State>) {}
 
     ngOnInit(): void {
-        this.store$.dispatch(RecipesActions.pageLoaded());
+        this.store$.dispatch(RecipesActions.listPageLoaded());
     }
 
     // TODO: Test input changed dispatch

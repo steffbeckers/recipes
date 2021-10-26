@@ -29,7 +29,7 @@ export const initialState: State = adapter.getInitialState({
 
 export const reducer = createReducer(
     initialState,
-    on(RecipesActions.pageLoaded, state => {
+    on(RecipesActions.listPageLoaded, state => {
         return {
             ...state,
             loading: true,
