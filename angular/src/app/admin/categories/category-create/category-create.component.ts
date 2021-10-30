@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 
@@ -9,6 +9,7 @@ import * as CategoriesActions from '../store/actions/categories.actions';
     selector: 'app-admin-category-create',
     templateUrl: './category-create.component.html',
     styleUrls: ['./category-create.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CategoryCreateComponent {
     form: FormGroup = this.fb.group({

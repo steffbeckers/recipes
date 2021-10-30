@@ -30,7 +30,12 @@ export class AppEffects {
                 AdminRecipesActions.listDataLoaded,
                 AdminRecipesActions.detailDataLoaded
             ),
-            mapTo(AppActions.showNotification({ message: '::DataLoaded', severity: 'info' }))
+            mapTo(
+                AppActions.showNotification({
+                    message: '::DataLoaded',
+                    severity: 'info',
+                })
+            )
         )
     );
 }

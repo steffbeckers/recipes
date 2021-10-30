@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { RecipeCreateInputDto } from '@proxy/recipes';
@@ -11,6 +11,7 @@ import * as RecipesActions from '../store/actions/recipes.actions';
     selector: 'app-admin-recipe-create',
     templateUrl: './recipe-create.component.html',
     styleUrls: ['./recipe-create.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RecipeCreateComponent implements OnInit {
     form: FormGroup = this.fb.group({
