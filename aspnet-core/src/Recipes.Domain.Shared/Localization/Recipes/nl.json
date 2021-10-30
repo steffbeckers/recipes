@@ -18,6 +18,7 @@
     "Permission:Delete": "Verwijderen",
     "Permission:Edit": "Bewerken",
     "Permission:Recipes": "Recepten",
+    "RecipeCreated": "Recept toegevoegd",
     "Recipes": "Recepten",
     "RecipesLoaded": "Recepten geladen",
     "Recipes:AtLeastOneIngredientIsRequired": "Ten minste één ingredient is verplicht.",

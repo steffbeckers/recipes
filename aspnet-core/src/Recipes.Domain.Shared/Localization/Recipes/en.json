@@ -18,6 +18,7 @@
     "Permission:Delete": "Delete",
     "Permission:Edit": "Edit",
     "Permission:Recipes": "Recipes",
+    "RecipeCreated": "Recipe created",
     "Recipes": "Recipes",
     "RecipesLoaded": "Recipes loaded",
     "Recipes:AtLeastOneIngredientIsRequired": "At least one ingredient is required.",
