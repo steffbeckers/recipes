@@ -91,15 +91,7 @@ export const reducer = createReducer(
                 name: x.category.name,
                 description: x.category.description,
                 photoId: x.category.photo?.id,
-                recipeIds: [],
             } as Category;
-        });
-
-        data.items.forEach(recipe => {
-            let categoryIndex = categories.findIndex(x => x.id == recipe.categoryId);
-            if (categoryIndex != -1) {
-                categories[categoryIndex].recipeIds.push(recipe.id);
-            }
         });
 
         return adapter.upsertMany(categories, state);
