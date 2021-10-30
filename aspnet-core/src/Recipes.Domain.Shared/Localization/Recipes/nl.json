@@ -8,6 +8,7 @@
     "Categories:DeleteNotAllowedWhenRecipesStillLinked": "Categorie kan niet verwijderd worden omdat er nog reeds {RecipeCount} recepten gelinkt zijn aan de categorie.",
     "Category": "Categorie",
     "Create": "Nieuw",
+    "DataLoaded": "Data geladen test",
     "Description": "Beschrijving",
     "Menu:Categories": "Categorieën",
     "Menu:Recipes": "Recepten",
@@ -18,6 +19,7 @@
     "Permission:Edit": "Bewerken",
     "Permission:Recipes": "Recepten",
     "Recipes": "Recepten",
+    "RecipesLoaded": "Recepten geladen",
     "Recipes:AtLeastOneIngredientIsRequired": "Ten minste één ingredient is verplicht.",
     "Recipes:AtLeastOneStepIsRequired": "Ten minste één stap is verplicht.",
     "SortOrder": "Sorteervolgorde"

@@ -4,10 +4,19 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { RecipesService } from '@proxy/recipes';
 import { of } from 'rxjs';
-import { catchError, exhaustMap, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import {
+    catchError,
+    exhaustMap,
+    map,
+    mergeMap,
+    switchMap,
+    tap,
+    withLatestFrom,
+} from 'rxjs/operators';
 import { selectRouteParam } from 'src/app/store/selectors/router.selectors';
 
 import * as RecipesActions from '../actions/recipes.actions';
+import * as AppActions from 'src/app/store/actions/app.actions';
 
 @Injectable()
 export class RecipesEffects {
@@ -23,7 +32,13 @@ export class RecipesEffects {
             ofType(RecipesActions.listPageLoaded),
             exhaustMap(() =>
                 this.recipesService.getList({ maxResultCount: 10 }).pipe(
-                    map(data => RecipesActions.listDataLoaded({ data })),
+                    mergeMap(data => [
+                        RecipesActions.listDataLoaded({ data }),
+                        AppActions.showNotification({
+                            message: '::RecipesLoaded',
+                            severity: 'info',
+                        }),
+                    ]),
                     catchError(error => of(RecipesActions.listDataLoadFailed({ error })))
                 )
             )
@@ -46,12 +61,15 @@ export class RecipesEffects {
     createRecipe$ = createEffect(() =>
         this.actions$.pipe(
             ofType(RecipesActions.createFormSubmitted),
-            switchMap(({ input }) => {
-                return this.recipesService.create(input).pipe(
-                    map(data => RecipesActions.recipeCreated({ data })),
+            switchMap(({ input }) =>
+                this.recipesService.create(input).pipe(
+                    mergeMap(data => [
+                        RecipesActions.recipeCreated({ data }),
+                        AppActions.showNotification({ message: '::RecipeCreated' }),
+                    ]),
                     catchError(error => of(RecipesActions.recipeCreationFailed({ error })))
-                );
-            })
+                )
+            )
         )
     );
 

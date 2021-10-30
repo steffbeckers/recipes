@@ -8,6 +8,7 @@
     "Categories:DeleteNotAllowedWhenRecipesStillLinked": "Category can't be deleted since there are still {RecipeCount} recipes linked to the category.",
     "Category": "Category",
     "Create": "Create",
+    "DataLoaded": "Data loaded test",
     "Description": "Description",
     "Menu:Categories": "Categories",
     "Menu:Recipes": "Recipes",
@@ -18,6 +19,7 @@
     "Permission:Edit": "Edit",
     "Permission:Recipes": "Recipes",
     "Recipes": "Recipes",
+    "RecipesLoaded": "Recipes loaded",
     "Recipes:AtLeastOneIngredientIsRequired": "At least one ingredient is required.",
     "Recipes:AtLeastOneStepIsRequired": "At least one step is required.",
     "SortOrder": "Sort order"
