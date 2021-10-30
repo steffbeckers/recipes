@@ -1,9 +1,12 @@
-import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { createSelector } from '@ngrx/store';
+import { selectAdminState } from 'src/app/admin/store/selectors/admin.selectors';
 
+import * as fromAdmin from '../../../store/reducers/admin.reducer';
 import * as fromCategories from '../reducers/categories.reducer';
 
-export const selectCategoriesState = createFeatureSelector<fromCategories.State>(
-    fromCategories.categoriesFeatureKey
+export const selectCategoriesState = createSelector(
+    selectAdminState,
+    (state: fromAdmin.State) => state.categories
 );
 
 export const selectListInput = createSelector(

@@ -6,7 +6,7 @@ import { Category } from 'src/app/shared/models/category.model';
 import * as RecipesActions from '../../../recipes/store/actions/recipes.actions';
 import * as CategoriesActions from '../actions/categories.actions';
 
-export const categoriesFeatureKey = 'admin.categories';
+export const categoriesFeatureKey = 'categories';
 
 export interface State extends EntityState<Category> {
     loading: boolean;

@@ -4,7 +4,7 @@ import { Recipe } from 'src/app/shared/models/recipe.model';
 
 import * as RecipesActions from '../actions/recipes.actions';
 
-export const recipesFeatureKey = 'admin.recipes';
+export const recipesFeatureKey = 'recipes';
 
 export interface State extends EntityState<Recipe> {
     loading: boolean;

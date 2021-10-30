@@ -1,10 +1,13 @@
-import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { createSelector } from '@ngrx/store';
+import { selectAdminState } from 'src/app/admin/store/selectors/admin.selectors';
 import { selectRouteParams } from 'src/app/store/selectors/router.selectors';
 
+import * as fromAdmin from '../../../store/reducers/admin.reducer';
 import * as fromRecipes from '../reducers/recipes.reducer';
 
-export const selectRecipesState = createFeatureSelector<fromRecipes.State>(
-    fromRecipes.recipesFeatureKey
+export const selectRecipesState = createSelector(
+    selectAdminState,
+    (state: fromAdmin.State) => state.recipes
 );
 
 export const { selectIds, selectEntities, selectAll, selectTotal } =
