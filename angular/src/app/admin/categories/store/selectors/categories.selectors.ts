@@ -9,10 +9,12 @@ export const selectCategoriesState = createSelector(
     (state: fromAdmin.State) => state.categories
 );
 
+export const { selectIds, selectEntities, selectAll, selectTotal } =
+    fromCategories.adapter.getSelectors(selectCategoriesState);
+
+export const selectCategories = selectAll;
+
 export const selectListInput = createSelector(
     selectCategoriesState,
     (state: fromCategories.State) => state.listInput
 );
-
-export const { selectIds, selectEntities, selectAll, selectTotal } =
-    fromCategories.adapter.getSelectors(selectCategoriesState);
