@@ -1,0 +1,37 @@
+<ng-container *ngIf="recipe$ | async as recipe">
+    <form [formGroup]="form" (ngSubmit)="save($event)">
+        <div class="row d-flex justify-content-between align-items-center mb-2">
+            <div class="col">
+                <h1>{{ recipe.name }}</h1>
+            </div>
+        </div>
+        <div class="row mb-5">
+            <div class="col">
+                <div class="form-group">
+                    <label for="name">{{ '::Name' | abpLocalization }}</label>
+                    <input formControlName="name" type="text" class="form-control" id="name" />
+                </div>
+                <div class="form-group">
+                    <label for="description">{{ '::Description' | abpLocalization }}</label>
+                    <textarea
+                        formControlName="description"
+                        class="form-control"
+                        id="description"
+                        rows="3"
+                    ></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="category">{{ '::Category' | abpLocalization }}</label>
+                    <select formControlName="categoryId" class="form-control" id="category">
+                        <option *ngFor="let category of categories$ | async" [value]="category.id">
+                            {{ category.name }}
+                        </option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">
+                    {{ '::Save' | abpLocalization }}
+                </button>
+            </div>
+        </div>
+    </form>
+</ng-container>

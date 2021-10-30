@@ -1,3 +1,4 @@
+import { File } from './file.model';
 import { Recipe } from './recipe.model';
 
 export class Category {
@@ -5,7 +6,8 @@ export class Category {
     name: string;
     description?: string;
     photoId?: string;
+    photo: File;
     sortOrder: number;
-    recipeIds: string[];
-    recipes: Recipe[];
+    recipeIds: string[] = [];
+    recipes: Recipe[] = [];
 }

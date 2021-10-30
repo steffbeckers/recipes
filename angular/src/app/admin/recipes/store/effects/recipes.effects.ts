@@ -1,33 +1,28 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { CategoriesService } from '@proxy/categories';
-import { RecipeCreateInputDto, RecipesService } from '@proxy/recipes';
+import { RecipesService } from '@proxy/recipes';
 import { of } from 'rxjs';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, exhaustMap, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import { selectRouteParam } from 'src/app/store/selectors/router.selectors';
 
-import * as CategoriesActions from '../../../categories/store/actions/categories.actions';
 import * as RecipesActions from '../actions/recipes.actions';
-import * as fromRecipes from '../reducers/recipes.reducer';
-import { selectListInput } from '../selectors/recipes.selectors';
 
 @Injectable()
 export class RecipesEffects {
     constructor(
-        private store$: Store<fromRecipes.State>,
         private actions$: Actions,
-        private categoriesService: CategoriesService,
+        private store$: Store,
         private recipesService: RecipesService,
         private router: Router
     ) {}
 
     loadRecipes$ = createEffect(() =>
         this.actions$.pipe(
-            ofType(RecipesActions.listPageLoaded, RecipesActions.listInputChanged),
-            concatLatestFrom(() => this.store$.select(selectListInput)),
-            switchMap(([_, input]) =>
-                this.recipesService.getList(input).pipe(
+            ofType(RecipesActions.listPageLoaded),
+            exhaustMap(() =>
+                this.recipesService.getList({ maxResultCount: 10 }).pipe(
                     map(data => RecipesActions.listDataLoaded({ data })),
                     catchError(error => of(RecipesActions.listDataLoadFailed({ error })))
                 )
@@ -35,13 +30,14 @@ export class RecipesEffects {
         )
     );
 
-    loadCategoriesLookup$ = createEffect(() =>
+    loadRecipe$ = createEffect(() =>
         this.actions$.pipe(
-            ofType(RecipesActions.createPageLoaded),
-            switchMap(() =>
-                this.categoriesService.getLookup({ maxResultCount: 10 }).pipe(
-                    map(data => CategoriesActions.lookupDataLoaded({ data })),
-                    catchError(error => of(CategoriesActions.lookupDataLoadFailed({ error })))
+            ofType(RecipesActions.detailPageLoaded),
+            withLatestFrom(this.store$.select(selectRouteParam('id')), (_, id) => id),
+            exhaustMap(id =>
+                this.recipesService.get(id).pipe(
+                    map(data => RecipesActions.detailDataLoaded({ data })),
+                    catchError(error => of(RecipesActions.detailDataLoadFailed({ error })))
                 )
             )
         )
@@ -50,23 +46,7 @@ export class RecipesEffects {
     createRecipe$ = createEffect(() =>
         this.actions$.pipe(
             ofType(RecipesActions.createFormSubmitted),
-            switchMap(({ form }) => {
-                if (form.invalid) {
-                    return;
-                }
-
-                const formValue = form.getRawValue();
-
-                let input: RecipeCreateInputDto = {
-                    name: formValue.name,
-                    description: formValue.description,
-                    categoryId: formValue.categoryId,
-                    // TODO
-                    photo: null,
-                    ingredients: [{ name: 'test', amount: 1 }],
-                    steps: [{ number: 1, instructions: 'test' }],
-                };
-
+            switchMap(({ input }) => {
                 return this.recipesService.create(input).pipe(
                     map(data => RecipesActions.recipeCreated({ data })),
                     catchError(error => of(RecipesActions.recipeCreationFailed({ error })))
@@ -75,6 +55,7 @@ export class RecipesEffects {
         )
     );
 
+    // TODO: Router action needed?
     navigateAfterCreated$ = createEffect(
         () =>
             this.actions$.pipe(

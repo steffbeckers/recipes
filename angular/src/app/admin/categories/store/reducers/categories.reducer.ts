@@ -1,7 +1,7 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 import { CategoryListInputDto } from '@proxy/categories';
-import { Category } from 'src/app/shared/category.model';
+import { Category } from 'src/app/shared/models/category.model';
 
 import * as RecipesActions from '../../../recipes/store/actions/recipes.actions';
 import * as CategoriesActions from '../actions/categories.actions';
@@ -17,7 +17,7 @@ export interface State extends EntityState<Category> {
     currentPage: number;
 }
 
-export const adapter: EntityAdapter<Category> = createEntityAdapter<Category>({});
+export const adapter: EntityAdapter<Category> = createEntityAdapter<Category>();
 
 export const initialState: State = adapter.getInitialState({
     loading: false,

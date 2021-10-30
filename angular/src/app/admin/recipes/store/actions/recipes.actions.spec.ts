@@ -1,7 +1,7 @@
 import * as fromRecipes from './recipes.actions';
 
-describe('pageLoaded', () => {
+describe('listPageLoaded', () => {
     it('should return an action', () => {
-        expect(fromRecipes.pageLoaded().type).toBe('[Admin/Recipes] Page loaded');
+        expect(fromRecipes.listPageLoaded().type).toBe('[Admin/Recipes] List page loaded');
     });
 });

@@ -3,10 +3,11 @@ import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { CategoriesService } from '@proxy/categories';
 import { of } from 'rxjs';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { catchError, exhaustMap, map } from 'rxjs/operators';
 
 import { selectListInput } from '..';
 import * as CategoriesActions from '../actions/categories.actions';
+import * as RecipesActions from '../../../recipes/store/actions/recipes.actions';
 import * as fromCategories from '../reducers/categories.reducer';
 
 @Injectable()
@@ -21,10 +22,22 @@ export class CategoriesEffects {
         this.actions$.pipe(
             ofType(CategoriesActions.pageLoaded),
             concatLatestFrom(() => this.store$.select(selectListInput)),
-            switchMap(([_, input]) =>
+            exhaustMap(([_, input]) =>
                 this.categoriesService.getList(input).pipe(
                     map(data => CategoriesActions.listDataLoaded({ data })),
                     catchError(error => of(CategoriesActions.listDataLoadFailed({ error })))
+                )
+            )
+        )
+    );
+
+    loadCategoriesLookup$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(RecipesActions.createPageLoaded, RecipesActions.detailPageLoaded),
+            exhaustMap(() =>
+                this.categoriesService.getLookup({ maxResultCount: 10 }).pipe(
+                    map(data => CategoriesActions.lookupDataLoaded({ data })),
+                    catchError(error => of(CategoriesActions.lookupDataLoadFailed({ error })))
                 )
             )
         )

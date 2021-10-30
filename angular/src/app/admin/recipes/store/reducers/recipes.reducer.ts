@@ -1,7 +1,6 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
-import { RecipeListInputDto } from '@proxy/recipes';
-import { Recipe } from 'src/app/shared/recipe.model';
+import { Recipe } from 'src/app/shared/models/recipe.model';
 
 import * as RecipesActions from '../actions/recipes.actions';
 
@@ -10,21 +9,21 @@ export const recipesFeatureKey = 'admin.recipes';
 export interface State extends EntityState<Recipe> {
     loading: boolean;
     error: string;
-    listInput: RecipeListInputDto;
     totalCount: number;
     pages: number[];
     currentPage: number;
+    pageContents: { [page: number]: string[] };
 }
 
-export const adapter: EntityAdapter<Recipe> = createEntityAdapter<Recipe>({});
+export const adapter: EntityAdapter<Recipe> = createEntityAdapter<Recipe>();
 
 export const initialState: State = adapter.getInitialState({
     loading: false,
     error: null,
-    listInput: { maxResultCount: 10 },
     totalCount: null,
     pages: [],
     currentPage: null,
+    pageContents: {},
 });
 
 export const reducer = createReducer(
@@ -35,16 +34,15 @@ export const reducer = createReducer(
             loading: true,
         };
     }),
-    on(RecipesActions.listInputChanged, (state, { input }) => {
-        return {
-            ...state,
-            listInput: input,
-        };
-    }),
     on(RecipesActions.listDataLoaded, (state, { data }) => {
-        let pages = Array(Math.ceil(data.totalCount / state.listInput.maxResultCount))
+        let pages = Array(Math.ceil(data.totalCount / data.items.length))
             .fill(1)
             .map((_, i) => i + 1);
+
+        let currentPage = state.currentPage ? state.currentPage : pages[0] ? pages[0] : null;
+
+        let pageContents = { ...state.pageContents };
+        pageContents[currentPage] = data.items.map(x => x.id);
 
         return adapter.upsertMany(
             data.items.map(x => {
@@ -64,7 +62,8 @@ export const reducer = createReducer(
                 error: null,
                 totalCount: data.totalCount,
                 pages,
-                currentPage: state.currentPage ? state.currentPage : pages[0] ? pages[0] : null,
+                currentPage,
+                pageContents,
             }
         );
     }),
@@ -74,5 +73,28 @@ export const reducer = createReducer(
             loading: false,
             error: action.error,
         };
+    }),
+    on(RecipesActions.detailPageLoaded, state => {
+        return {
+            ...state,
+            loading: true,
+        };
+    }),
+    on(RecipesActions.detailDataLoaded, (state, { data }) => {
+        return adapter.upsertOne({ ...data } as Recipe, {
+            ...state,
+            loading: false,
+            error: null,
+        });
+    }),
+    on(RecipesActions.detailDataLoadFailed, (state, action) => {
+        return {
+            ...state,
+            loading: false,
+            error: action.error,
+        };
+    }),
+    on(RecipesActions.recipeCreated, (state, { data }) => {
+        return adapter.addOne({ ...data } as Recipe, state);
     })
 );
