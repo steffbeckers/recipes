@@ -9,7 +9,7 @@
 <div class="row mb-5">
     <div class="col">
         <div class="table-responsive">
-            <table class="table">
+            <table class="table table-hover mb-2">
                 <thead>
                     <th>{{ '::Name' | abpLocalization }}</th>
                     <th>{{ '::Description' | abpLocalization }}</th>
@@ -35,15 +35,12 @@
                         <option value="25">25</option>
                         <option value="50">50</option>
                     </select>
-                    <span>{{ '::items' | abpLocalization }}</span>
+                    <span class="mr-2">{{ '::categories' | abpLocalization }}.</span>
+                    <span>{{ '::TotalCount' | abpLocalization }}: {{ totalCount$ | async }}</span>
                 </div>
-                <div class="d-inline-block">
-                    <span class="mr-2">
-                        {{ '::Total' | abpLocalization }} {{ '::categories' | abpLocalization }}:
-                        {{ totalCount$ | async }}
-                    </span>
-                    <nav *ngIf="pagination$ | async as pagination">
-                        <ul class="pagination">
+                <ng-container *ngIf="pagination$ | async as pagination">
+                    <nav *ngIf="pagination.pages.length > 1">
+                        <ul class="pagination mb-0">
                             <li
                                 *ngFor="let page of pagination.pages"
                                 class="page-item clickable"
@@ -57,7 +54,7 @@
                             </li>
                         </ul>
                     </nav>
-                </div>
+                </ng-container>
             </div>
         </div>
     </div>

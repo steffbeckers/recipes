@@ -4,8 +4,8 @@
     "Actions": "Actions",
     "AddNewCategory": "Add new category",
     "AddNewRecipe": "Add new recipe",
-    "Categories": "Categories",
     "categories": "categories",
+    "Categories": "Categories",
     "Categories:DeleteNotAllowedWhenRecipesStillLinked": "Category can't be deleted since there are still {RecipeCount} recipes linked to the category.",
     "Category": "Category",
     "Create": "Create",
@@ -21,10 +21,11 @@
     "Permission:Recipes": "Recipes",
     "RecipeCreated": "Recipe created",
     "Recipes": "Recipes",
-    "RecipesLoaded": "Recipes loaded",
     "Recipes:AtLeastOneIngredientIsRequired": "At least one ingredient is required.",
     "Recipes:AtLeastOneStepIsRequired": "At least one step is required.",
+    "RecipesLoaded": "Recipes loaded",
+    "Show": "Show",
     "SortOrder": "Sort order",
-    "Total": "Total"
+    "TotalCount": "Total count"
   }
 }

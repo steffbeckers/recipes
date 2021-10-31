@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { RecipeUpdateInputDto } from '@proxy/recipes';
 import { Recipe } from 'src/app/shared/models/recipe.model';
 
-import { selectAll as selectAllRecipes } from '../../categories/store/selectors/categories.selectors';
+import { selectCategories } from '../../categories/store/selectors/categories.selectors';
 import * as fromRecipes from '../store';
 import { selectRecipe } from '../store';
 import * as RecipesActions from '../store/actions/recipes.actions';
@@ -24,7 +24,7 @@ export class RecipeDetailComponent implements OnInit {
     });
 
     recipe$ = this.store.select(selectRecipe);
-    categories$ = this.store.select(selectAllRecipes);
+    categories$ = this.store.select(selectCategories);
 
     constructor(private fb: FormBuilder, private store: Store<fromRecipes.State>) {}
 

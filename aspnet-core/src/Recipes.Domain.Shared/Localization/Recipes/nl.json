@@ -4,6 +4,7 @@
     "Actions": "Acties",
     "AddNewCategory": "Nieuwe categorie toevoegen",
     "AddNewRecipe": "Nieuw recept toevoegen",
+    "categories": "categorieën",
     "Categories": "Categorieën",
     "Categories:DeleteNotAllowedWhenRecipesStillLinked": "Categorie kan niet verwijderd worden omdat er nog reeds {RecipeCount} recepten gelinkt zijn aan de categorie.",
     "Category": "Categorie",
@@ -20,9 +21,11 @@
     "Permission:Recipes": "Recepten",
     "RecipeCreated": "Recept toegevoegd",
     "Recipes": "Recepten",
-    "RecipesLoaded": "Recepten geladen",
     "Recipes:AtLeastOneIngredientIsRequired": "Ten minste één ingredient is verplicht.",
     "Recipes:AtLeastOneStepIsRequired": "Ten minste één stap is verplicht.",
-    "SortOrder": "Sorteervolgorde"
+    "RecipesLoaded": "Recepten geladen",
+    "Show": "Toon",
+    "SortOrder": "Sorteervolgorde",
+    "TotalCount": "Totaal aantal"
   }
 }
