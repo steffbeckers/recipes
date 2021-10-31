@@ -1,7 +1,7 @@
 import * as fromCategories from './categories.actions';
 
-describe('pageLoaded', () => {
+describe('listPageLoaded', () => {
     it('should return an action', () => {
-        expect(fromCategories.pageLoaded().type).toBe('[Admin/Categories] Page loaded');
+        expect(fromCategories.listPageLoaded().type).toBe('[Admin/Categories] List page loaded');
     });
 });

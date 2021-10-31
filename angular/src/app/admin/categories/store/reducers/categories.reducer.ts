@@ -1,6 +1,5 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
-import { CategoryListInputDto } from '@proxy/categories';
 import { Category } from 'src/app/shared/models/category.model';
 
 import * as RecipesActions from '../../../recipes/store/actions/recipes.actions';
@@ -11,10 +10,11 @@ export const categoriesFeatureKey = 'categories';
 export interface State extends EntityState<Category> {
     loading: boolean;
     error: string;
-    listInput: CategoryListInputDto;
     totalCount: number;
     pages: number[];
+    itemsPerPage: number;
     currentPage: number;
+    pageContents: { [page: number]: string[] };
 }
 
 export const adapter: EntityAdapter<Category> = createEntityAdapter<Category>();
@@ -22,24 +22,35 @@ export const adapter: EntityAdapter<Category> = createEntityAdapter<Category>();
 export const initialState: State = adapter.getInitialState({
     loading: false,
     error: null,
-    listInput: { maxResultCount: 10 },
     totalCount: null,
     pages: [],
-    currentPage: null,
+    itemsPerPage: 5,
+    currentPage: 1,
+    pageContents: {},
 });
 
 export const reducer = createReducer(
     initialState,
-    on(CategoriesActions.pageLoaded, state => {
+    on(CategoriesActions.listPageLoaded, state => {
         return {
             ...state,
             loading: true,
         };
     }),
+    on(CategoriesActions.listPaginationChanged, (state, { currentPage, itemsPerPage }) => {
+        return {
+            ...state,
+            currentPage: currentPage != null ? currentPage : state.currentPage,
+            itemsPerPage: itemsPerPage != null ? itemsPerPage : state.itemsPerPage,
+        };
+    }),
     on(CategoriesActions.listDataLoaded, (state, { data }) => {
-        let pages = Array(Math.ceil(data.totalCount / state.listInput.maxResultCount))
+        let pages = Array(Math.ceil(data.totalCount / state.itemsPerPage))
             .fill(1)
             .map((_, i) => i + 1);
+
+        let pageContents = { ...state.pageContents };
+        pageContents[state.currentPage] = data.items.map(x => x.id);
 
         return adapter.upsertMany(
             data.items.map(x => {
@@ -56,7 +67,7 @@ export const reducer = createReducer(
                 error: null,
                 totalCount: data.totalCount,
                 pages,
-                currentPage: state.currentPage ? state.currentPage : pages[0] ? pages[0] : null,
+                pageContents,
             }
         );
     }),

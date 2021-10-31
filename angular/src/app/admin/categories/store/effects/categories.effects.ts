@@ -5,9 +5,9 @@ import { CategoriesService } from '@proxy/categories';
 import { of } from 'rxjs';
 import { catchError, exhaustMap, map } from 'rxjs/operators';
 
-import { selectListInput } from '..';
-import * as CategoriesActions from '../actions/categories.actions';
+import { selectCategoriesListInput } from '..';
 import * as RecipesActions from '../../../recipes/store/actions/recipes.actions';
+import * as CategoriesActions from '../actions/categories.actions';
 import * as fromCategories from '../reducers/categories.reducer';
 
 @Injectable()
@@ -20,8 +20,8 @@ export class CategoriesEffects {
 
     loadCategories$ = createEffect(() =>
         this.actions$.pipe(
-            ofType(CategoriesActions.pageLoaded),
-            concatLatestFrom(() => this.store$.select(selectListInput)),
+            ofType(CategoriesActions.listPageLoaded, CategoriesActions.listPaginationChanged),
+            concatLatestFrom(() => this.store$.select(selectCategoriesListInput)),
             exhaustMap(([_, input]) =>
                 this.categoriesService.getList(input).pipe(
                     map(data => CategoriesActions.listDataLoaded({ data })),
