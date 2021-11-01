@@ -95,6 +95,29 @@ export const reducer = createReducer(
             error: action.error,
         };
     }),
+    on(CategoriesActions.detailPageLoaded, state => {
+        return {
+            ...state,
+            loading: true,
+        };
+    }),
+    on(CategoriesActions.detailDataLoaded, (state, { data }) => {
+        return adapter.upsertOne({ ...data } as Category, {
+            ...state,
+            loading: false,
+            error: null,
+        });
+    }),
+    on(CategoriesActions.detailDataLoadFailed, (state, action) => {
+        return {
+            ...state,
+            loading: false,
+            error: action.error,
+        };
+    }),
+    on(CategoriesActions.categoryCreated, (state, { data }) => {
+        return adapter.addOne({ ...data } as Category, state);
+    }),
     on(RecipesActions.listDataLoaded, (state, { data }) => {
         let categories: Category[] = data.items.map(x => {
             return {

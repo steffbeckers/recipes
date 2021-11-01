@@ -1,6 +1,11 @@
 import { PagedResultDto } from '@abp/ng.core';
 import { createAction, props } from '@ngrx/store';
-import { RecipeCreateInputDto, RecipeDto, RecipeListDto } from '@proxy/recipes';
+import {
+    RecipeCreateInputDto,
+    RecipeDto,
+    RecipeListDto,
+    RecipeUpdateInputDto,
+} from '@proxy/recipes';
 
 export const listPageLoaded = createAction('[Admin/Recipes] List page loaded');
 export const listDataLoaded = createAction(
@@ -38,7 +43,7 @@ export const recipeCreationFailed = createAction(
 
 export const updateFormSubmitted = createAction(
     '[Admin/Recipes] Update form submitted',
-    props<{ id: string; input: RecipeCreateInputDto }>()
+    props<{ id: string; input: RecipeUpdateInputDto }>()
 );
 export const recipeUpdated = createAction(
     '[Admin/Recipes] Recipe updated',

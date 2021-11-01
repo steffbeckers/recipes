@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { CategoriesComponent } from './categories.component';
 import { CategoryCreateComponent } from './category-create/category-create.component';
+import { CategoryDetailComponent } from './category-detail/category-detail.component';
 
 const routes: Routes = [
     {
@@ -12,6 +13,10 @@ const routes: Routes = [
     {
         path: 'create',
         component: CategoryCreateComponent,
+    },
+    {
+        path: ':id',
+        component: CategoryDetailComponent,
     },
 ];
 

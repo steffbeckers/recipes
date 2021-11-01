@@ -2,6 +2,7 @@ import { createSelector } from '@ngrx/store';
 import { CategoryListInputDto } from '@proxy/categories';
 import { selectAdminState } from 'src/app/admin/store/selectors/admin.selectors';
 import { Category } from 'src/app/shared/models/category.model';
+import { selectRouteParams } from 'src/app/store/selectors/router.selectors';
 
 import * as fromAdmin from '../../../store/reducers/admin.reducer';
 import * as fromCategories from '../reducers/categories.reducer';
@@ -49,4 +50,10 @@ export const selectCategoriesListPagination = createSelector(
             totalCount: state.totalCount,
         };
     }
+);
+
+export const selectCategory = createSelector(
+    selectEntities,
+    selectRouteParams,
+    (categories, { id }) => categories[id]
 );

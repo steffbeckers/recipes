@@ -41,10 +41,9 @@ export class RecipeCreateComponent implements OnInit {
             name: formValue.name,
             description: formValue.description,
             categoryId: formValue.categoryId,
-            // TODO
             photo: null,
-            ingredients: [{ name: 'test', amount: 1 }],
-            steps: [{ number: 1, instructions: 'test' }],
+            ingredients: [],
+            steps: [],
         };
 
         this.store.dispatch(RecipesActions.createFormSubmitted({ input }));

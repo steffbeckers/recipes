@@ -11,6 +11,7 @@ export interface State extends EntityState<Recipe> {
     error: string;
     totalCount: number;
     pages: number[];
+    itemsPerPage: number;
     currentPage: number;
     pageContents: { [page: number]: string[] };
 }
@@ -22,7 +23,8 @@ export const initialState: State = adapter.getInitialState({
     error: null,
     totalCount: null,
     pages: [],
-    currentPage: null,
+    itemsPerPage: 5,
+    currentPage: 1,
     pageContents: {},
 });
 
@@ -39,10 +41,8 @@ export const reducer = createReducer(
             .fill(1)
             .map((_, i) => i + 1);
 
-        let currentPage = state.currentPage ? state.currentPage : pages[0] ? pages[0] : null;
-
         let pageContents = { ...state.pageContents };
-        pageContents[currentPage] = data.items.map(x => x.id);
+        pageContents[state.currentPage] = data.items.map(x => x.id);
 
         return adapter.upsertMany(
             data.items.map(x => {
@@ -62,7 +62,6 @@ export const reducer = createReducer(
                 error: null,
                 totalCount: data.totalCount,
                 pages,
-                currentPage,
                 pageContents,
             }
         );

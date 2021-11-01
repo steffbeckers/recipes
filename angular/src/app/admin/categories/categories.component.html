@@ -15,7 +15,11 @@
                     <th>{{ '::Description' | abpLocalization }}</th>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let category of categories$ | async">
+                    <tr
+                        class="clickable"
+                        *ngFor="let category of categories$ | async"
+                        [routerLink]="category.id"
+                    >
                         <td>{{ category.name }}</td>
                         <td>{{ category.description }}</td>
                     </tr>
