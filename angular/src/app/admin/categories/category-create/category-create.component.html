@@ -1,4 +1,4 @@
-<form [formGroup]="form" (ngSubmit)="save($event)">
+<form [formGroup]="form" (ngSubmit)="formSubmitted($event)">
     <div class="row d-flex justify-content-between align-items-center mb-2">
         <div class="col">
             <h1>{{ '::AddNewCategory' | abpLocalization }}</h1>

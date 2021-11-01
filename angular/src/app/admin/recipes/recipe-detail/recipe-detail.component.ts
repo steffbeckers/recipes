@@ -36,7 +36,7 @@ export class RecipeDetailComponent implements OnInit {
         });
     }
 
-    save(event): void {
+    formSubmitted(event): void {
         event?.preventDefault();
 
         if (this.form.invalid) {

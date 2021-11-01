@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { CategoriesService } from '@proxy/categories';
@@ -12,14 +13,13 @@ import {
     tap,
     withLatestFrom,
 } from 'rxjs/operators';
+import * as AppActions from 'src/app/store/actions/app.actions';
 import { selectRouteParam } from 'src/app/store/selectors/router.selectors';
 
 import { selectCategoriesListInput } from '..';
 import * as RecipesActions from '../../../recipes/store/actions/recipes.actions';
 import * as CategoriesActions from '../actions/categories.actions';
 import * as fromCategories from '../reducers/categories.reducer';
-import * as AppActions from 'src/app/store/actions/app.actions';
-import { Router } from '@angular/router';
 
 @Injectable()
 export class CategoriesEffects {
@@ -89,6 +89,56 @@ export class CategoriesEffects {
             this.actions$.pipe(
                 ofType(CategoriesActions.categoryCreated),
                 tap(({ data }) => this.router.navigateByUrl('/admin/categories/' + data.id))
+            ),
+        { dispatch: false }
+    );
+
+    updateCategory$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(CategoriesActions.updateFormSubmitted),
+            switchMap(({ id, input }) =>
+                this.categoriesService.update(id, input).pipe(
+                    mergeMap(data => [
+                        CategoriesActions.categoryUpdated({ data }),
+                        AppActions.showNotification({ message: '::CategoryUpdated' }),
+                    ]),
+                    catchError(error => of(CategoriesActions.categoryUpdateFailed({ error })))
+                )
+            )
+        )
+    );
+
+    // TODO: Router action needed?
+    navigateAfterUpdated$ = createEffect(
+        () =>
+            this.actions$.pipe(
+                ofType(CategoriesActions.categoryUpdated),
+                tap(({ data }) => this.router.navigateByUrl('/admin/categories'))
+            ),
+        { dispatch: false }
+    );
+
+    deleteCategory$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(CategoriesActions.deletionRequested),
+            switchMap(({ id }) =>
+                this.categoriesService.delete(id).pipe(
+                    mergeMap(() => [
+                        CategoriesActions.categoryDeleted({ id }),
+                        AppActions.showNotification({ message: '::CategoryDeleted' }),
+                    ]),
+                    catchError(error => of(CategoriesActions.categoryDeletionFailed({ error })))
+                )
+            )
+        )
+    );
+
+    // TODO: Router action needed?
+    navigateAfterDeleted$ = createEffect(
+        () =>
+            this.actions$.pipe(
+                ofType(CategoriesActions.categoryDeleted),
+                tap(() => this.router.navigateByUrl('/admin/categories'))
             ),
         { dispatch: false }
     );

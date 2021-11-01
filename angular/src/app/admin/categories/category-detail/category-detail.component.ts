@@ -15,24 +15,26 @@ import * as CategoriesActions from '../store/actions/categories.actions';
 })
 export class CategoryDetailComponent implements OnInit {
     form: FormGroup = this.fb.group({
+        id: [null, [Validators.required]],
         name: [null, [Validators.required]],
         description: [null],
         sortOrder: [null],
+        photo: [null],
     });
 
-    category$ = this.store.select(selectCategory);
+    category$ = this.store$.select(selectCategory);
 
-    constructor(private fb: FormBuilder, private store: Store<fromCategories.State>) {}
+    constructor(private fb: FormBuilder, private store$: Store<fromCategories.State>) {}
 
     ngOnInit(): void {
-        this.store.dispatch(CategoriesActions.detailPageLoaded());
+        this.store$.dispatch(CategoriesActions.detailPageLoaded());
 
         this.category$.subscribe((category: Category) => {
             this.form.patchValue(category);
         });
     }
 
-    save(event): void {
+    formSubmitted(event): void {
         event?.preventDefault();
 
         if (this.form.invalid) {
@@ -44,10 +46,15 @@ export class CategoryDetailComponent implements OnInit {
         let input: CategoryUpdateInputDto = {
             name: formValue.name,
             description: formValue.description,
+            sortOrder: formValue.sortOrder,
             photo: null,
             deletePhoto: false,
         };
 
-        this.store.dispatch(CategoriesActions.updateFormSubmitted({ id: formValue.id, input }));
+        this.store$.dispatch(CategoriesActions.updateFormSubmitted({ id: formValue.id, input }));
+    }
+
+    deletionRequested(): void {
+        this.store$.dispatch(CategoriesActions.deletionRequested({ id: this.form.value.id }));
     }
 }

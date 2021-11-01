@@ -118,6 +118,9 @@ export const reducer = createReducer(
     on(CategoriesActions.categoryCreated, (state, { data }) => {
         return adapter.addOne({ ...data } as Category, state);
     }),
+    on(CategoriesActions.categoryUpdated, (state, { data }) => {
+        return adapter.upsertOne({ ...data } as Category, state);
+    }),
     on(RecipesActions.listDataLoaded, (state, { data }) => {
         let categories: Category[] = data.items.map(x => {
             return {

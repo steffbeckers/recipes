@@ -26,7 +26,7 @@ export class CategoryCreateComponent implements OnInit {
         this.store.dispatch(CategoriesActions.createPageLoaded());
     }
 
-    save(event): void {
+    formSubmitted(event): void {
         event?.preventDefault();
 
         if (this.form.invalid) {

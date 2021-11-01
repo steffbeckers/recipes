@@ -68,3 +68,16 @@ export const categoryUpdateFailed = createAction(
     '[Admin/Categories] Category update failed',
     props<{ error: any }>()
 );
+
+export const deletionRequested = createAction(
+    '[Admin/Categories] Deletion requested',
+    props<{ id: string }>()
+);
+export const categoryDeleted = createAction(
+    '[Admin/Categories] Category deleted',
+    props<{ id: string }>()
+);
+export const categoryDeletionFailed = createAction(
+    '[Admin/Categories] Category deletion failed',
+    props<{ error: any }>()
+);

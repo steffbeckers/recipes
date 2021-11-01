@@ -28,7 +28,7 @@ export class RecipeCreateComponent implements OnInit {
         this.store.dispatch(RecipesActions.createPageLoaded());
     }
 
-    save(event): void {
+    formSubmitted(event): void {
         event?.preventDefault();
 
         if (this.form.invalid) {
