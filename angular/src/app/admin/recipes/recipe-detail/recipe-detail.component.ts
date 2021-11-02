@@ -21,6 +21,8 @@ export class RecipeDetailComponent implements OnInit {
         name: [null, [Validators.required]],
         description: [null],
         categoryId: [null, [Validators.required]],
+        ingredients: [null],
+        steps: [null],
     });
 
     recipe$ = this.store$.select(selectRecipe);
@@ -52,11 +54,10 @@ export class RecipeDetailComponent implements OnInit {
             name: formValue.name,
             description: formValue.description,
             categoryId: formValue.categoryId,
-            // TODO
             photo: null,
             deletePhoto: false,
-            ingredients: [{ name: 'test', amount: 1 }],
-            steps: [{ number: 1, instructions: 'test' }],
+            ingredients: formValue.ingredients,
+            steps: formValue.steps,
         };
 
         this.store$.dispatch(RecipesActions.updateRecipe({ id: formValue.id, input }));
