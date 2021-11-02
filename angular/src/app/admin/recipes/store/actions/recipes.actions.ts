@@ -53,3 +53,16 @@ export const recipeUpdateFailed = createAction(
     '[Admin/Recipes] Recipe update failed',
     props<{ error: any }>()
 );
+
+export const deletionRequested = createAction(
+    '[Admin/Recipes] Deletion requested',
+    props<{ id: string }>()
+);
+export const recipeDeleted = createAction(
+    '[Admin/Recipes] Recipe deleted',
+    props<{ id: string }>()
+);
+export const recipeDeletionFailed = createAction(
+    '[Admin/Recipes] Recipe deletion failed',
+    props<{ error: any }>()
+);

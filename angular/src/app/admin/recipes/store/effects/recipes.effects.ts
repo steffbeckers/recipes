@@ -82,4 +82,54 @@ export class RecipesEffects {
             ),
         { dispatch: false }
     );
+
+    updateRecipe$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(RecipesActions.updateFormSubmitted),
+            switchMap(({ id, input }) =>
+                this.recipesService.update(id, input).pipe(
+                    mergeMap(data => [
+                        RecipesActions.recipeUpdated({ data }),
+                        AppActions.showNotification({ message: '::RecipeUpdated' }),
+                    ]),
+                    catchError(error => of(RecipesActions.recipeUpdateFailed({ error })))
+                )
+            )
+        )
+    );
+
+    // TODO: Router action needed?
+    navigateAfterUpdated$ = createEffect(
+        () =>
+            this.actions$.pipe(
+                ofType(RecipesActions.recipeUpdated),
+                tap(({ data }) => this.router.navigateByUrl('/admin/recipes'))
+            ),
+        { dispatch: false }
+    );
+
+    deleteRecipe$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(RecipesActions.deletionRequested),
+            switchMap(({ id }) =>
+                this.recipesService.delete(id).pipe(
+                    mergeMap(() => [
+                        RecipesActions.recipeDeleted({ id }),
+                        AppActions.showNotification({ message: '::RecipeDeleted' }),
+                    ]),
+                    catchError(error => of(RecipesActions.recipeDeletionFailed({ error })))
+                )
+            )
+        )
+    );
+
+    // TODO: Router action needed?
+    navigateAfterDeleted$ = createEffect(
+        () =>
+            this.actions$.pipe(
+                ofType(RecipesActions.recipeDeleted),
+                tap(() => this.router.navigateByUrl('/admin/recipes'))
+            ),
+        { dispatch: false }
+    );
 }

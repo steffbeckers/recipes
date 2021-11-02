@@ -95,5 +95,11 @@ export const reducer = createReducer(
     }),
     on(RecipesActions.recipeCreated, (state, { data }) => {
         return adapter.addOne({ ...data } as Recipe, state);
+    }),
+    on(RecipesActions.recipeUpdated, (state, { data }) => {
+        return adapter.upsertOne({ ...data } as Recipe, state);
+    }),
+    on(RecipesActions.recipeDeleted, (state, { id }) => {
+        return adapter.removeOne(id, state);
     })
 );

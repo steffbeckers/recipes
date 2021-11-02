@@ -23,12 +23,12 @@ export class RecipeDetailComponent implements OnInit {
         categoryId: [null, [Validators.required]],
     });
 
-    recipe$ = this.store.select(selectRecipe);
+    recipe$ = this.store$.select(selectRecipe);
 
-    constructor(private fb: FormBuilder, private store: Store<fromRecipes.State>) {}
+    constructor(private fb: FormBuilder, private store$: Store<fromRecipes.State>) {}
 
     ngOnInit(): void {
-        this.store.dispatch(RecipesActions.detailPageLoaded());
+        this.store$.dispatch(RecipesActions.detailPageLoaded());
 
         this.recipe$.subscribe((recipe: Recipe) => {
             this.form.patchValue(recipe);
@@ -59,6 +59,10 @@ export class RecipeDetailComponent implements OnInit {
             steps: [{ number: 1, instructions: 'test' }],
         };
 
-        this.store.dispatch(RecipesActions.updateFormSubmitted({ id: formValue.id, input }));
+        this.store$.dispatch(RecipesActions.updateFormSubmitted({ id: formValue.id, input }));
+    }
+
+    deletionRequested(): void {
+        this.store$.dispatch(RecipesActions.deletionRequested({ id: this.form.value.id }));
     }
 }

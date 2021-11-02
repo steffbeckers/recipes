@@ -1,8 +1,15 @@
 <ng-container *ngIf="recipe$ | async as recipe">
     <form [formGroup]="form" (ngSubmit)="formSubmitted($event)">
         <div class="row d-flex justify-content-between align-items-center mb-2">
-            <div class="col">
+            <div class="col d-flex justify-content-between align-items-center">
                 <h1>{{ recipe.name }}</h1>
+                <button
+                    (click)="deletionRequested()"
+                    type="button"
+                    class="btn btn-danger btn-outline"
+                >
+                    {{ '::Delete' | abpLocalization }}
+                </button>
             </div>
         </div>
         <div class="row mb-5">
