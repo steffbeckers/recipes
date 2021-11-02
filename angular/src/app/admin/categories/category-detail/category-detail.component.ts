@@ -31,6 +31,7 @@ export class CategoryDetailComponent implements OnInit {
 
         this.category$.subscribe((category: Category) => {
             this.form.patchValue(category);
+            this.form.markAsPristine();
         });
     }
 

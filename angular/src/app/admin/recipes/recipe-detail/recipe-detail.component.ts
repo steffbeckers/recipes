@@ -34,6 +34,7 @@ export class RecipeDetailComponent implements OnInit {
 
         this.recipe$.subscribe((recipe: Recipe) => {
             this.form.patchValue(recipe);
+            this.form.markAsPristine();
         });
     }
 
