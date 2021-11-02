@@ -51,10 +51,10 @@ export class CategoryDetailComponent implements OnInit {
             deletePhoto: false,
         };
 
-        this.store$.dispatch(CategoriesActions.updateFormSubmitted({ id: formValue.id, input }));
+        this.store$.dispatch(CategoriesActions.updateCategory({ id: formValue.id, input }));
     }
 
-    deletionRequested(): void {
-        this.store$.dispatch(CategoriesActions.deletionRequested({ id: this.form.value.id }));
+    deleteCategory(): void {
+        this.store$.dispatch(CategoriesActions.deleteCategory({ id: this.form.value.id }));
     }
 }

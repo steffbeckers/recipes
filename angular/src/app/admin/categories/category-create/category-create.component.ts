@@ -42,7 +42,7 @@ export class CategoryCreateComponent implements OnInit {
             photo: formValue.photo,
         };
 
-        this.store.dispatch(CategoriesActions.createFormSubmitted({ input }));
+        this.store.dispatch(CategoriesActions.createCategory({ input }));
     }
 
     async photoSelected(files: File[]): Promise<void> {

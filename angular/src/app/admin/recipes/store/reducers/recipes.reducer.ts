@@ -93,12 +93,15 @@ export const reducer = createReducer(
             error: action.error,
         };
     }),
+    // TODO: createRecipe
     on(RecipesActions.recipeCreated, (state, { data }) => {
         return adapter.addOne({ ...data } as Recipe, state);
     }),
+    // TODO: updateRecipe
     on(RecipesActions.recipeUpdated, (state, { data }) => {
         return adapter.upsertOne({ ...data } as Recipe, state);
     }),
+    // TODO: deleteRecipe
     on(RecipesActions.recipeDeleted, (state, { id }) => {
         return adapter.removeOne(id, state);
     })

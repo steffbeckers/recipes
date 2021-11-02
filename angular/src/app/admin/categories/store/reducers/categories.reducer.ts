@@ -98,12 +98,15 @@ export const reducer = createReducer(
             error: action.error,
         };
     }),
+    // TODO: createCategory
     on(CategoriesActions.categoryCreated, (state, { data }) => {
         return adapter.addOne({ ...data } as Category, state);
     }),
+    // TODO: updateCategory
     on(CategoriesActions.categoryUpdated, (state, { data }) => {
         return adapter.upsertOne({ ...data } as Category, state);
     }),
+    // TODO: deleteCategory
     on(CategoriesActions.categoryDeleted, (state, { id }) => {
         return adapter.removeOne(id, state);
     }),

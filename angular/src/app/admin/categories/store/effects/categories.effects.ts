@@ -17,7 +17,6 @@ import * as AppActions from 'src/app/store/actions/app.actions';
 import { selectRouteParam } from 'src/app/store/selectors/router.selectors';
 
 import { selectCategoriesListInput } from '..';
-import * as RecipesActions from '../../../recipes/store/actions/recipes.actions';
 import * as CategoriesActions from '../actions/categories.actions';
 import * as fromCategories from '../reducers/categories.reducer';
 
@@ -58,7 +57,7 @@ export class CategoriesEffects {
 
     createCategory$ = createEffect(() =>
         this.actions$.pipe(
-            ofType(CategoriesActions.createFormSubmitted),
+            ofType(CategoriesActions.createCategory),
             switchMap(({ input }) =>
                 this.categoriesService.create(input).pipe(
                     mergeMap(data => [
@@ -83,7 +82,7 @@ export class CategoriesEffects {
 
     updateCategory$ = createEffect(() =>
         this.actions$.pipe(
-            ofType(CategoriesActions.updateFormSubmitted),
+            ofType(CategoriesActions.updateCategory),
             switchMap(({ id, input }) =>
                 this.categoriesService.update(id, input).pipe(
                     mergeMap(data => [
@@ -108,7 +107,7 @@ export class CategoriesEffects {
 
     deleteCategory$ = createEffect(() =>
         this.actions$.pipe(
-            ofType(CategoriesActions.deletionRequested),
+            ofType(CategoriesActions.deleteCategory),
             switchMap(({ id }) =>
                 this.categoriesService.delete(id).pipe(
                     mergeMap(() => [

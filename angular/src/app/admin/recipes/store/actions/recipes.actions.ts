@@ -28,8 +28,8 @@ export const detailDataLoadFailed = createAction(
 );
 
 export const createPageLoaded = createAction('[Admin/Recipes] Create page loaded');
-export const createFormSubmitted = createAction(
-    '[Admin/Recipes] Create form submitted',
+export const createRecipe = createAction(
+    '[Admin/Recipes] Create recipe',
     props<{ input: RecipeCreateInputDto }>()
 );
 export const recipeCreated = createAction(
@@ -41,8 +41,8 @@ export const recipeCreationFailed = createAction(
     props<{ error: any }>()
 );
 
-export const updateFormSubmitted = createAction(
-    '[Admin/Recipes] Update form submitted',
+export const updateRecipe = createAction(
+    '[Admin/Recipes] Update recipe',
     props<{ id: string; input: RecipeUpdateInputDto }>()
 );
 export const recipeUpdated = createAction(
@@ -54,10 +54,7 @@ export const recipeUpdateFailed = createAction(
     props<{ error: any }>()
 );
 
-export const deletionRequested = createAction(
-    '[Admin/Recipes] Deletion requested',
-    props<{ id: string }>()
-);
+export const deleteRecipe = createAction('[Admin/Recipes] Delete recipe', props<{ id: string }>());
 export const recipeDeleted = createAction(
     '[Admin/Recipes] Recipe deleted',
     props<{ id: string }>()

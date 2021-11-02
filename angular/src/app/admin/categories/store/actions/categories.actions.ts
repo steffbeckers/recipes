@@ -32,8 +32,8 @@ export const detailDataLoadFailed = createAction(
 );
 
 export const createPageLoaded = createAction('[Admin/Categories] Create page loaded');
-export const createFormSubmitted = createAction(
-    '[Admin/Categories] Create form submitted',
+export const createCategory = createAction(
+    '[Admin/Categories] Create category',
     props<{ input: CategoryCreateInputDto }>()
 );
 export const categoryCreated = createAction(
@@ -45,8 +45,8 @@ export const categoryCreationFailed = createAction(
     props<{ error: any }>()
 );
 
-export const updateFormSubmitted = createAction(
-    '[Admin/Categories] Update form submitted',
+export const updateCategory = createAction(
+    '[Admin/Categories] Update category',
     props<{ id: string; input: CategoryUpdateInputDto }>()
 );
 export const categoryUpdated = createAction(
@@ -58,8 +58,8 @@ export const categoryUpdateFailed = createAction(
     props<{ error: any }>()
 );
 
-export const deletionRequested = createAction(
-    '[Admin/Categories] Deletion requested',
+export const deleteCategory = createAction(
+    '[Admin/Categories] Delete category',
     props<{ id: string }>()
 );
 export const categoryDeleted = createAction(

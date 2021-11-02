@@ -60,7 +60,7 @@ export class RecipesEffects {
 
     createRecipe$ = createEffect(() =>
         this.actions$.pipe(
-            ofType(RecipesActions.createFormSubmitted),
+            ofType(RecipesActions.createRecipe),
             switchMap(({ input }) =>
                 this.recipesService.create(input).pipe(
                     mergeMap(data => [
@@ -85,7 +85,7 @@ export class RecipesEffects {
 
     updateRecipe$ = createEffect(() =>
         this.actions$.pipe(
-            ofType(RecipesActions.updateFormSubmitted),
+            ofType(RecipesActions.updateRecipe),
             switchMap(({ id, input }) =>
                 this.recipesService.update(id, input).pipe(
                     mergeMap(data => [
@@ -110,7 +110,7 @@ export class RecipesEffects {
 
     deleteRecipe$ = createEffect(() =>
         this.actions$.pipe(
-            ofType(RecipesActions.deletionRequested),
+            ofType(RecipesActions.deleteRecipe),
             switchMap(({ id }) =>
                 this.recipesService.delete(id).pipe(
                     mergeMap(() => [

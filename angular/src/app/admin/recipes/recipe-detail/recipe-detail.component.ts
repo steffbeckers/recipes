@@ -59,10 +59,10 @@ export class RecipeDetailComponent implements OnInit {
             steps: [{ number: 1, instructions: 'test' }],
         };
 
-        this.store$.dispatch(RecipesActions.updateFormSubmitted({ id: formValue.id, input }));
+        this.store$.dispatch(RecipesActions.updateRecipe({ id: formValue.id, input }));
     }
 
-    deletionRequested(): void {
-        this.store$.dispatch(RecipesActions.deletionRequested({ id: this.form.value.id }));
+    deleteRecipe(): void {
+        this.store$.dispatch(RecipesActions.deleteRecipe({ id: this.form.value.id }));
     }
 }

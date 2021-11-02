@@ -48,6 +48,6 @@ export class RecipeCreateComponent implements OnInit {
             steps: [],
         };
 
-        this.store.dispatch(RecipesActions.createFormSubmitted({ input }));
+        this.store.dispatch(RecipesActions.createRecipe({ input }));
     }
 }
