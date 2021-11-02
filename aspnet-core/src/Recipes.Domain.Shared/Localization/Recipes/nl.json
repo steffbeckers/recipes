@@ -4,6 +4,7 @@
     "Actions": "Acties",
     "AddNewCategory": "Nieuwe categorie toevoegen",
     "AddNewRecipe": "Nieuw recept toevoegen",
+    "Amount": "Hoeveelheid",
     "categories": "categorieën",
     "Categories": "Categorieën",
     "Categories:DeleteNotAllowedWhenRecipesStillLinked": "Categorie kan niet verwijderd worden omdat er nog reeds {RecipeCount} recepten gelinkt zijn aan de categorie.",
@@ -12,9 +13,11 @@
     "DataLoaded": "Data geladen test",
     "Description": "Beschrijving",
     "Ingredients": "Ingrediënten",
+    "Instructions": "Instructies",
     "Menu:Categories": "Categorieën",
     "Menu:Recipes": "Recepten",
     "Name": "Naam",
+    "Number": "Nummer",
     "Permission:Categories": "Categorieën",
     "Permission:Create": "Toevoegen",
     "Permission:Delete": "Verwijderen",
@@ -27,6 +30,8 @@
     "RecipesLoaded": "Recepten geladen",
     "Show": "Toon",
     "SortOrder": "Sorteervolgorde",
-    "TotalCount": "Totaal aantal"
+    "Steps": "Stappen",
+    "TotalCount": "Totaal aantal",
+    "Unit": "Eenheid"
   }
 }

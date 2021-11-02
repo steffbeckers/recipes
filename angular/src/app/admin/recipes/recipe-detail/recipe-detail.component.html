@@ -29,7 +29,7 @@
                 ></app-admin-category-lookup>
                 <h2>{{ '::Ingredients' | abpLocalization }}</h2>
                 <div class="table-responsive">
-                    <table class="table table-hover mb-2">
+                    <table class="table mb-2">
                         <thead>
                             <th>{{ '::Name' | abpLocalization }}</th>
                             <th>{{ '::Amount' | abpLocalization }}</th>
@@ -37,7 +37,7 @@
                             <th>{{ '::Actions' | abpLocalization }}</th>
                         </thead>
                         <tbody>
-                            <tr class="clickable" *ngFor="let ingredient of form.value.ingredients">
+                            <tr *ngFor="let ingredient of form.value.ingredients">
                                 <td>{{ ingredient.name }}</td>
                                 <td>{{ ingredient.amount }}</td>
                                 <td>{{ ingredient.unit }}</td>
@@ -48,19 +48,16 @@
                 </div>
                 <h2>{{ '::Steps' | abpLocalization }}</h2>
                 <div class="table-responsive">
-                    <table class="table table-hover mb-2">
+                    <table class="table mb-2">
                         <thead>
                             <th>{{ '::Number' | abpLocalization }}</th>
                             <th>{{ '::Instructions' | abpLocalization }}</th>
                             <th>{{ '::Actions' | abpLocalization }}</th>
                         </thead>
                         <tbody>
-                            <tr
-                                class="clickable"
-                                *ngFor="let instruction of form.value.instructions"
-                            >
+                            <tr *ngFor="let instruction of form.value.steps">
                                 <td>{{ instruction.number }}</td>
-                                <td>{{ instruction.instructions }}</td>
+                                <td [innerHTML]="instruction.instructions"></td>
                                 <td></td>
                             </tr>
                         </tbody>

@@ -4,6 +4,7 @@
     "Actions": "Actions",
     "AddNewCategory": "Add new category",
     "AddNewRecipe": "Add new recipe",
+    "Amount": "Amount",
     "categories": "categories",
     "Categories": "Categories",
     "Categories:DeleteNotAllowedWhenRecipesStillLinked": "Category can't be deleted since there are still {RecipeCount} recipes linked to the category.",
@@ -12,9 +13,11 @@
     "DataLoaded": "Data loaded test",
     "Description": "Description",
     "Ingredients": "Ingredients",
+    "Instructions": "Instructions",
     "Menu:Categories": "Categories",
     "Menu:Recipes": "Recipes",
     "Name": "Name",
+    "Number": "Number",
     "Permission:Categories": "Categories",
     "Permission:Create": "Create",
     "Permission:Delete": "Delete",
@@ -27,6 +30,8 @@
     "RecipesLoaded": "Recipes loaded",
     "Show": "Show",
     "SortOrder": "Sort order",
-    "TotalCount": "Total count"
+    "Steps": "Steps",
+    "TotalCount": "Total count",
+    "Unit": "Unit"
   }
 }
