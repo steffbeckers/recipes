@@ -43,18 +43,6 @@ export class CategoriesEffects {
         )
     );
 
-    loadCategoriesLookup$ = createEffect(() =>
-        this.actions$.pipe(
-            ofType(RecipesActions.createPageLoaded, RecipesActions.detailPageLoaded),
-            exhaustMap(() =>
-                this.categoriesService.getLookup({ maxResultCount: 1000 }).pipe(
-                    map(data => CategoriesActions.lookupDataLoaded({ data })),
-                    catchError(error => of(CategoriesActions.lookupDataLoadFailed({ error })))
-                )
-            )
-        )
-    );
-
     loadCategory$ = createEffect(() =>
         this.actions$.pipe(
             ofType(CategoriesActions.detailPageLoaded),

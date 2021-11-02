@@ -78,23 +78,6 @@ export const reducer = createReducer(
             error: action.error,
         };
     }),
-    on(CategoriesActions.lookupDataLoaded, (state, { data }) => {
-        return adapter.upsertMany(
-            data.items.map(x => {
-                return {
-                    id: x.id,
-                    name: x.name,
-                } as Category;
-            }),
-            state
-        );
-    }),
-    on(CategoriesActions.lookupDataLoadFailed, (state, action) => {
-        return {
-            ...state,
-            error: action.error,
-        };
-    }),
     on(CategoriesActions.detailPageLoaded, state => {
         return {
             ...state,

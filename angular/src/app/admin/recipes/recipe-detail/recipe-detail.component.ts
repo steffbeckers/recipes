@@ -2,9 +2,9 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { RecipeUpdateInputDto } from '@proxy/recipes';
+import { LookupDto } from '@proxy/shared';
 import { Recipe } from 'src/app/shared/models/recipe.model';
 
-import { selectCategories } from '../../categories/store/selectors/categories.selectors';
 import * as fromRecipes from '../store';
 import { selectRecipe } from '../store';
 import * as RecipesActions from '../store/actions/recipes.actions';
@@ -24,7 +24,6 @@ export class RecipeDetailComponent implements OnInit {
     });
 
     recipe$ = this.store.select(selectRecipe);
-    categories$ = this.store.select(selectCategories);
 
     constructor(private fb: FormBuilder, private store: Store<fromRecipes.State>) {}
 
@@ -34,6 +33,10 @@ export class RecipeDetailComponent implements OnInit {
         this.recipe$.subscribe((recipe: Recipe) => {
             this.form.patchValue(recipe);
         });
+    }
+
+    categorySelected(category: LookupDto<string>): void {
+        this.form.patchValue({ categoryId: category.id });
     }
 
     formSubmitted(event): void {

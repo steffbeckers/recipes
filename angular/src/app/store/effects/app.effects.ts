@@ -27,7 +27,7 @@ export class AppEffects {
             this.actions$.pipe(
                 ofType(
                     AdminCategoriesActions.listDataLoaded,
-                    AdminCategoriesActions.lookupDataLoaded,
+                    AdminCategoriesActions.detailDataLoaded,
                     AdminRecipesActions.listDataLoaded,
                     AdminRecipesActions.detailDataLoaded
                 )

@@ -9,7 +9,7 @@ import { selectCategory } from '../store';
 import * as CategoriesActions from '../store/actions/categories.actions';
 
 @Component({
-    selector: 'app-category-detail',
+    selector: 'app-admin-category-detail',
     templateUrl: './category-detail.component.html',
     styleUrls: ['./category-detail.component.scss'],
 })

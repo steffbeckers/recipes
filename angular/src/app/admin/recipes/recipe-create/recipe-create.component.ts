@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { RecipeCreateInputDto } from '@proxy/recipes';
+import { LookupDto } from '@proxy/shared';
 
-import { selectAll } from '../../categories/store/selectors/categories.selectors';
 import * as fromRecipes from '../store';
 import * as RecipesActions from '../store/actions/recipes.actions';
 
@@ -20,12 +20,14 @@ export class RecipeCreateComponent implements OnInit {
         categoryId: [null, [Validators.required]],
     });
 
-    categories$ = this.store.select(selectAll);
-
     constructor(private fb: FormBuilder, private store: Store<fromRecipes.State>) {}
 
     ngOnInit(): void {
         this.store.dispatch(RecipesActions.createPageLoaded());
+    }
+
+    categorySelected(category: LookupDto<string>): void {
+        this.form.patchValue({ categoryId: category.id });
     }
 
     formSubmitted(event): void {

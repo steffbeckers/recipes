@@ -1,0 +1,17 @@
+<div class="form-group">
+    <label for="category">{{ '::Category' | abpLocalization }}</label>
+    <ng-template #resultTemplate let-r="result" let-t="term">
+        {{ r.name }}
+    </ng-template>
+    <input
+        [(ngModel)]="category"
+        (change)="onChange()"
+        [ngbTypeahead]="search"
+        [resultTemplate]="resultTemplate"
+        [inputFormatter]="formatter"
+        [resultFormatter]="formatter"
+        type="text"
+        class="form-control"
+        id="category"
+    />
+</div>

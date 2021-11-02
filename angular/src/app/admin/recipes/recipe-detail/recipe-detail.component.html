@@ -20,14 +20,10 @@
                         rows="3"
                     ></textarea>
                 </div>
-                <div class="form-group">
-                    <label for="category">{{ '::Category' | abpLocalization }}</label>
-                    <select formControlName="categoryId" class="form-control" id="category">
-                        <option *ngFor="let category of categories$ | async" [value]="category.id">
-                            {{ category.name }}
-                        </option>
-                    </select>
-                </div>
+                <app-admin-category-lookup
+                    [categoryId]="recipe.categoryId"
+                    (categorySelected)="categorySelected($event)"
+                ></app-admin-category-lookup>
                 <button type="submit" class="btn btn-primary btn-block">
                     {{ '::Save' | abpLocalization }}
                 </button>
