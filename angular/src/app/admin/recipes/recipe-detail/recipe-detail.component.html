@@ -54,7 +54,14 @@
                 </div>
                 <div *ngIf="recipe.photo?.id" class="row">
                     <div class="col">
-                        <img src="" alt="Photo" srcset="" />
+                        <img
+                            [src]="environment.apis.default.url + '/api/files/' + recipe.photo.id"
+                            alt="Photo"
+                            width="100%"
+                        />
+                        <span (click)="deletePhoto = true" class="clickable">{{
+                            '::Remove' | abpLocalization
+                        }}</span>
                     </div>
                 </div>
             </div>
@@ -77,7 +84,11 @@
                                 <td>{{ ingredient.unit }}</td>
                                 <td></td>
                             </tr>
-                            <tr *ngIf="form.value.ingredients.length === 0">
+                            <tr
+                                *ngIf="
+                                    !form.value.ingredients || form.value.ingredients.length === 0
+                                "
+                            >
                                 <td colspan="4">
                                     {{ '::NoIngredientsAddedYet' | abpLocalization }}
                                 </td>
@@ -103,7 +114,7 @@
                                 <td [innerHTML]="instruction.instructions"></td>
                                 <td></td>
                             </tr>
-                            <tr *ngIf="form.value.steps.length === 0">
+                            <tr *ngIf="!form.value.steps || form.value.steps.length === 0">
                                 <td colspan="4">
                                     {{ '::NoStepsAddedYet' | abpLocalization }}
                                 </td>

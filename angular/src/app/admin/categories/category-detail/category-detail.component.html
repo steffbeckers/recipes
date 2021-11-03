@@ -59,7 +59,14 @@
                 </div>
                 <div *ngIf="category.photo?.id" class="row">
                     <div class="col">
-                        <img src="" alt="Photo" srcset="" />
+                        <img
+                            [src]="environment.apis.default.url + '/api/files/' + category.photo.id"
+                            alt="Photo"
+                            width="100%"
+                        />
+                        <span (click)="deletePhoto = true" class="clickable">{{
+                            '::Remove' | abpLocalization
+                        }}</span>
                     </div>
                 </div>
             </div>

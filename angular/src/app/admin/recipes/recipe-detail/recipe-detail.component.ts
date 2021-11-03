@@ -5,6 +5,7 @@ import { FileInputDto } from '@proxy/files';
 import { RecipeUpdateInputDto } from '@proxy/recipes';
 import { LookupDto } from '@proxy/shared';
 import { Recipe } from 'src/app/shared/models/recipe.model';
+import { environment } from 'src/environments/environment';
 
 import * as fromRecipes from '../store';
 import { selectRecipe } from '../store';
@@ -17,6 +18,8 @@ import * as RecipesActions from '../store/actions/recipes.actions';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RecipeDetailComponent implements OnInit {
+    environment = environment;
+
     form: FormGroup = this.fb.group({
         id: [null, [Validators.required]],
         name: [null, [Validators.required]],
@@ -27,6 +30,7 @@ export class RecipeDetailComponent implements OnInit {
     });
 
     photo: FileInputDto = null;
+    deletePhoto = false;
 
     recipe$ = this.store$.select(selectRecipe);
 
@@ -59,12 +63,14 @@ export class RecipeDetailComponent implements OnInit {
             description: formValue.description,
             categoryId: formValue.categoryId,
             photo: this.photo ? this.photo : null,
-            deletePhoto: false,
+            deletePhoto: this.deletePhoto,
             ingredients: formValue.ingredients,
             steps: formValue.steps,
         };
 
         this.store$.dispatch(RecipesActions.updateRecipe({ id: formValue.id, input }));
+
+        this.deletePhoto = false;
     }
 
     deleteRecipe(): void {
@@ -75,6 +81,8 @@ export class RecipeDetailComponent implements OnInit {
         if (!files) {
             return;
         }
+
+        this.deletePhoto = false;
 
         let photo = files[0];
 

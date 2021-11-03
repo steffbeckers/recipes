@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import { CategoryUpdateInputDto } from '@proxy/categories';
 import { FileInputDto } from '@proxy/files';
 import { Category } from 'src/app/shared/models/category.model';
+import { environment } from 'src/environments/environment';
 
 import * as fromCategories from '../store';
 import { selectCategory } from '../store';
@@ -15,6 +16,8 @@ import * as CategoriesActions from '../store/actions/categories.actions';
     styleUrls: ['./category-detail.component.scss'],
 })
 export class CategoryDetailComponent implements OnInit {
+    environment = environment;
+
     form: FormGroup = this.fb.group({
         id: [null, [Validators.required]],
         name: [null, [Validators.required]],
@@ -23,6 +26,7 @@ export class CategoryDetailComponent implements OnInit {
     });
 
     photo: FileInputDto = null;
+    deletePhoto = false;
 
     category$ = this.store$.select(selectCategory);
 
@@ -51,10 +55,12 @@ export class CategoryDetailComponent implements OnInit {
             description: formValue.description,
             sortOrder: formValue.sortOrder,
             photo: this.photo ? this.photo : null,
-            deletePhoto: false,
+            deletePhoto: this.deletePhoto,
         };
 
         this.store$.dispatch(CategoriesActions.updateCategory({ id: formValue.id, input }));
+
+        this.deletePhoto = false;
     }
 
     deleteCategory(): void {
@@ -65,6 +71,8 @@ export class CategoryDetailComponent implements OnInit {
         if (!files) {
             return;
         }
+
+        this.deletePhoto = false;
 
         let photo = files[0];
 
