@@ -174,28 +174,6 @@ namespace Recipes.Categories
             };
         }
 
-        // TODO
-        //public virtual async Task<FileResult> GetPhotoAsync(Guid id)
-        //{
-        //    Category category = await _categoryRepository.GetAsync(id);
-
-        //    if (category.Photo == null)
-        //    {
-        //        return null;
-        //    }
-
-        //    byte[] photoData = await _blobContainer.GetAllBytesOrNullAsync(category.Photo.Id.ToString());
-
-        //    if (photoData == null)
-        //    {
-        //        return null;
-        //    }
-
-        //    return new FileContentResult(
-        //        photoData,
-        //        category.Photo.ContentType);
-        //}
-
         public virtual async Task<PagedResultDto<CategoryRecipeListDto>> GetRecipeListAsync(
             Guid id,
             CategoryRecipeListInputDto input)

@@ -17,9 +17,6 @@ namespace Recipes.Categories
 
         Task<PagedResultDto<LookupDto<Guid>>> GetLookupAsync(LookupInputDto input);
 
-        // TODO
-        //Task<FileResult> GetPhotoAsync(Guid id);
-
         Task<PagedResultDto<CategoryRecipeListDto>> GetRecipeListAsync(
             Guid id,
             CategoryRecipeListInputDto input);

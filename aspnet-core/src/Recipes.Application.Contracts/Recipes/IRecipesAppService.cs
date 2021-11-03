@@ -14,9 +14,6 @@ namespace Recipes.Recipes
 
         Task<PagedResultDto<RecipeListDto>> GetListAsync(RecipeListInputDto input);
 
-        // TODO
-        //Task<FileResult> GetPhotoAsync(Guid id);
-
         Task<RecipeDto> UpdateAsync(
             Guid id,
             RecipeUpdateInputDto input);

@@ -183,28 +183,6 @@ namespace Recipes.Recipes
             };
         }
 
-        // TODO
-        //public virtual async Task<FileResult> GetPhotoAsync(Guid id)
-        //{
-        //    Recipe recipe = await _recipeRepository.GetAsync(id);
-
-        //    if (recipe.Photo == null)
-        //    {
-        //        return null;
-        //    }
-
-        //    byte[] photoData = await _blobContainer.GetAllBytesOrNullAsync(recipe.Photo.Id.ToString());
-
-        //    if (photoData == null)
-        //    {
-        //        return null;
-        //    }
-
-        //    return new FileContentResult(
-        //        photoData,
-        //        recipe.Photo.ContentType);
-        //}
-
         [Authorize(RecipesPermissions.Recipes.Edit)]
         public virtual async Task<RecipeDto> UpdateAsync(
             Guid id,

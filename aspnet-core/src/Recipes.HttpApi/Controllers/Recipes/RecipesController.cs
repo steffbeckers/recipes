@@ -46,14 +46,6 @@ namespace Recipes.Controllers.Recipes
             return _recipesAppService.GetListAsync(input);
         }
 
-        // TODO
-        //[HttpGet]
-        //[Route("{id}/photo")]
-        //public virtual Task<FileResult> GetPhotoAsync(Guid id)
-        //{
-        //    return _recipesAppService.GetPhotoAsync(id);
-        //}
-
         [HttpPut]
         [Route("{id}")]
         public virtual Task<RecipeDto> UpdateAsync(
