@@ -11,14 +11,14 @@
                     >
                         {{ '::Delete' | abpLocalization }}
                     </button>
-                    <button type="submit" class="btn btn-primary" [disabled]="form.pristine">
+                    <button type="submit" class="btn btn-primary">
                         {{ '::Save' | abpLocalization }}
                     </button>
                 </div>
             </div>
         </div>
-        <div class="row mb-5">
-            <div class="col">
+        <div class="row">
+            <div class="col-8">
                 <div class="form-group">
                     <label for="name">{{ '::Name' | abpLocalization }}</label>
                     <input formControlName="name" type="text" class="form-control" id="name" />
@@ -36,6 +36,31 @@
                     [categoryId]="recipe.categoryId"
                     (categorySelected)="categorySelected($event)"
                 ></app-admin-category-lookup>
+            </div>
+            <div class="col-4">
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="photo">{{ '::Photo' | abpLocalization }}</label>
+                            <input
+                                (change)="photoSelected($event.target.files)"
+                                type="file"
+                                class="form-control-file"
+                                id="photo"
+                                accept="image/*"
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="recipe.photo?.id" class="row">
+                    <div class="col">
+                        <img src="" alt="Photo" srcset="" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
                 <h2>{{ '::Ingredients' | abpLocalization }}</h2>
                 <div class="table-responsive">
                     <table class="table mb-2">
@@ -52,9 +77,18 @@
                                 <td>{{ ingredient.unit }}</td>
                                 <td></td>
                             </tr>
+                            <tr *ngIf="form.value.ingredients.length === 0">
+                                <td colspan="4">
+                                    {{ '::NoIngredientsAddedYet' | abpLocalization }}
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
                 <h2>{{ '::Steps' | abpLocalization }}</h2>
                 <div class="table-responsive">
                     <table class="table mb-2">
@@ -69,10 +103,19 @@
                                 <td [innerHTML]="instruction.instructions"></td>
                                 <td></td>
                             </tr>
+                            <tr *ngIf="form.value.steps.length === 0">
+                                <td colspan="4">
+                                    {{ '::NoStepsAddedYet' | abpLocalization }}
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
-                <button type="submit" class="btn btn-primary btn-block" [disabled]="form.pristine">
+            </div>
+        </div>
+        <div class="row mb-5">
+            <div class="col">
+                <button type="submit" class="btn btn-primary btn-block">
                     {{ '::Save' | abpLocalization }}
                 </button>
             </div>

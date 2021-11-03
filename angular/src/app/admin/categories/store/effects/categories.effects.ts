@@ -95,16 +95,6 @@ export class CategoriesEffects {
         )
     );
 
-    // TODO: Router action needed?
-    navigateAfterUpdated$ = createEffect(
-        () =>
-            this.actions$.pipe(
-                ofType(CategoriesActions.categoryUpdated),
-                tap(({ data }) => this.router.navigateByUrl('/admin/categories'))
-            ),
-        { dispatch: false }
-    );
-
     deleteCategory$ = createEffect(() =>
         this.actions$.pipe(
             ofType(CategoriesActions.deleteCategory),

@@ -52,7 +52,7 @@ namespace Recipes.Recipes
 
                 await _blobContainer.SaveAsync(
                     photoId.ToString(),
-                    input.Photo.Data);
+                    Convert.FromBase64String(input.Photo.Data));
 
                 recipe.Photo = new File(
                     photoId,
@@ -231,7 +231,7 @@ namespace Recipes.Recipes
 
                 await _blobContainer.SaveAsync(
                     photoId.ToString(),
-                    input.Photo.Data);
+                    Convert.FromBase64String(input.Photo.Data));
 
                 recipe.Photo = new File(
                     photoId,
@@ -239,7 +239,7 @@ namespace Recipes.Recipes
                     input.Photo.ContentType);
             }
 
-            recipe.Ingredients.RemoveAll(t => !input.Ingredients.Any(x => x.Id == t.Id));
+            recipe.Ingredients.RemoveAll(x => !input.Ingredients.Any(y => y.Id == x.Id));
 
             foreach (RecipeIngredientUpdateInputDto ingredientDto in input.Ingredients.Where(x => !recipe.Ingredients.Any(y => y.Id == x.Id)))
             {
@@ -262,7 +262,7 @@ namespace Recipes.Recipes
                 recipeIngredient.SortOrder = ingredientDto.SortOrder;
             }
 
-            recipe.Steps.RemoveAll(t => !input.Steps.Any(x => x.Id == t.Id));
+            recipe.Steps.RemoveAll(x => !input.Steps.Any(y => y.Id == x.Id));
 
             foreach (RecipeStepUpdateInputDto stepDto in input.Steps.Where(x => !recipe.Steps.Any(y => y.Id == x.Id)))
             {

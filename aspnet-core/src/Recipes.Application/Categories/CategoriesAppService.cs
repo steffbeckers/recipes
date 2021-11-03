@@ -50,7 +50,7 @@ namespace Recipes.Categories
 
                 await _blobContainer.SaveAsync(
                     photoId.ToString(),
-                    input.Photo.Data);
+                    Convert.FromBase64String(input.Photo.Data));
 
                 category.Photo = new File(
                     photoId,
@@ -259,7 +259,7 @@ namespace Recipes.Categories
 
                 await _blobContainer.SaveAsync(
                     photoId.ToString(),
-                    input.Photo.Data);
+                    Convert.FromBase64String(input.Photo.Data));
 
                 category.Photo = new File(
                     photoId,

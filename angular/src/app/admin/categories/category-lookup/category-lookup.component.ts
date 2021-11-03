@@ -1,8 +1,15 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CategoriesService } from '@proxy/categories';
 import { LookupDto, LookupInputDto } from '@proxy/shared';
 import { Observable, of, OperatorFunction } from 'rxjs';
-import { debounceTime, distinctUntilChanged, first, map, switchMap } from 'rxjs/operators';
+import {
+    catchError,
+    debounceTime,
+    distinctUntilChanged,
+    first,
+    map,
+    switchMap,
+} from 'rxjs/operators';
 
 @Component({
     selector: 'app-admin-category-lookup',
@@ -32,13 +39,18 @@ export class CategoryLookupComponent implements OnInit {
                         filterText: text,
                         id: text === '' ? this.input.id : null,
                     })
-                    .pipe(map(data => data.items))
+                    .pipe(
+                        map(data => data.items),
+                        catchError(() => {
+                            return of([]);
+                        })
+                    )
             )
         );
 
     formatter = (x: { name: string }) => x.name;
 
-    constructor(private categoriesService: CategoriesService) {}
+    constructor(private categoriesService: CategoriesService, private cdr: ChangeDetectorRef) {}
 
     ngOnInit(): void {
         if (this.categoryId) {
@@ -47,6 +59,7 @@ export class CategoryLookupComponent implements OnInit {
                 .pipe(first())
                 .subscribe((categories: LookupDto<string>[]) => {
                     this.category = categories[0];
+                    this.cdr.detectChanges();
                 });
         }
     }

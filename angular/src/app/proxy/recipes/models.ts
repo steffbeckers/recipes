@@ -3,7 +3,7 @@ import type { EntityDto, FullAuditedEntityDto, PagedAndSortedResultRequestDto } 
 import type { CategorySimpleDto } from '../categories/models';
 
 export interface RecipeCreateInputDto {
-  categoryId?: string;
+  categoryId: string;
   description?: string;
   forAmount?: number;
   forUnit?: string;

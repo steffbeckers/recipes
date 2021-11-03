@@ -9,7 +9,7 @@ namespace Recipes.Files
         public string ContentType { get; set; }
 
         [Required]
-        public byte[] Data { get; set; }
+        public string Data { get; set; }
 
         [Required]
         [StringLength(FileConsts.NameMaxLength)]

@@ -98,16 +98,6 @@ export class RecipesEffects {
         )
     );
 
-    // TODO: Router action needed?
-    navigateAfterUpdated$ = createEffect(
-        () =>
-            this.actions$.pipe(
-                ofType(RecipesActions.recipeUpdated),
-                tap(({ data }) => this.router.navigateByUrl('/admin/recipes'))
-            ),
-        { dispatch: false }
-    );
-
     deleteRecipe$ = createEffect(() =>
         this.actions$.pipe(
             ofType(RecipesActions.deleteRecipe),

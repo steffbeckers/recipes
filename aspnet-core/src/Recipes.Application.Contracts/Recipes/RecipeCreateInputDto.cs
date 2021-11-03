@@ -1,7 +1,4 @@
-using FluentValidation;
-using Microsoft.Extensions.Localization;
 using Recipes.Files;
-using Recipes.Localization;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,6 +8,7 @@ namespace Recipes.Recipes
 {
     public class RecipeCreateInputDto
     {
+        [Required]
         public Guid CategoryId { get; set; }
 
         [StringLength(RecipeConsts.DescriptionMaxLength)]
@@ -38,17 +36,17 @@ namespace Recipes.Recipes
         }
     }
 
-    public class RecipeCreateInputDtoValidator : AbstractValidator<RecipeCreateInputDto>
-    {
-        public RecipeCreateInputDtoValidator(IStringLocalizer<RecipesResource> stringLocalizer)
-        {
-            RuleFor(x => x.Ingredients)
-                .NotEmpty()
-                .WithMessage(stringLocalizer[RecipesDomainErrorCodes.Recipes.AtLeastOneIngredientIsRequired]);
+    //public class RecipeCreateInputDtoValidator : AbstractValidator<RecipeCreateInputDto>
+    //{
+    //    public RecipeCreateInputDtoValidator(IStringLocalizer<RecipesResource> stringLocalizer)
+    //    {
+    //        RuleFor(x => x.Ingredients)
+    //            .NotEmpty()
+    //            .WithMessage(stringLocalizer[RecipesDomainErrorCodes.Recipes.AtLeastOneIngredientIsRequired]);
 
-            RuleFor(x => x.Steps)
-                .NotEmpty()
-                .WithMessage(stringLocalizer[RecipesDomainErrorCodes.Recipes.AtLeastOneStepIsRequired]);
-        }
-    }
+    //        RuleFor(x => x.Steps)
+    //            .NotEmpty()
+    //            .WithMessage(stringLocalizer[RecipesDomainErrorCodes.Recipes.AtLeastOneStepIsRequired]);
+    //    }
+    //}
 }

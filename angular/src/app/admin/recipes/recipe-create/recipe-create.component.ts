@@ -16,7 +16,6 @@ import * as RecipesActions from '../store/actions/recipes.actions';
 export class RecipeCreateComponent implements OnInit {
     form: FormGroup = this.fb.group({
         name: [null, [Validators.required]],
-        description: [null],
         categoryId: [null, [Validators.required]],
     });
 
@@ -41,7 +40,6 @@ export class RecipeCreateComponent implements OnInit {
 
         let input: RecipeCreateInputDto = {
             name: formValue.name,
-            description: formValue.description,
             categoryId: formValue.categoryId,
             photo: null,
             ingredients: [],
