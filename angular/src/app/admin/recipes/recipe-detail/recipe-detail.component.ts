@@ -143,6 +143,10 @@ export class RecipeDetailComponent implements OnInit {
     moveIngredient(ingredient: RecipeIngredient, positions: number): void {
         const index = this.ingredients$.value.indexOf(ingredient);
 
+        if (index + positions < 0 || index + positions > this.ingredients$.value.length - 1) {
+            return;
+        }
+
         let sortedIngredients = [...this.ingredients$.value];
         this.arrayMove(sortedIngredients, index, index + positions);
 
@@ -162,6 +166,47 @@ export class RecipeDetailComponent implements OnInit {
             newIngredients.splice(index, 1);
 
             this.ingredients$.next(newIngredients);
+        }
+    }
+
+    addStep(): void {
+        this.steps$.next([
+            ...this.steps$.value,
+            {
+                id: null,
+                number: this.steps$.value.length + 1,
+                instructions: null,
+                editing: true,
+            },
+        ]);
+    }
+
+    moveStep(step: RecipeStep, positions: number): void {
+        const index = this.steps$.value.indexOf(step);
+
+        if (index + positions < 0 || index + positions > this.steps$.value.length - 1) {
+            return;
+        }
+
+        let sortedSteps = [...this.steps$.value];
+        this.arrayMove(sortedSteps, index, index + positions);
+
+        sortedSteps.forEach((x, i) => {
+            sortedSteps[i] = { ...sortedSteps[i], number: i + 1 };
+        });
+
+        this.steps$.next(sortedSteps);
+    }
+
+    deleteStep(step: RecipeStep): void {
+        // TODO: Better confirmation modal
+        if (confirm('Are you sure?')) {
+            const index = this.steps$.value.indexOf(step);
+
+            let newSteps = [...this.steps$.value];
+            newSteps.splice(index, 1);
+
+            this.steps$.next(newSteps);
         }
     }
 
