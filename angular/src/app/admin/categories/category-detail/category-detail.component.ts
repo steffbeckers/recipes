@@ -64,7 +64,10 @@ export class CategoryDetailComponent implements OnInit {
     }
 
     deleteCategory(): void {
-        this.store$.dispatch(CategoriesActions.deleteCategory({ id: this.form.value.id }));
+        // TODO: Create seperate action to trigger confirmation modal?
+        if (confirm('Are you sure?')) {
+            this.store$.dispatch(CategoriesActions.deleteCategory({ id: this.form.value.id }));
+        }
     }
 
     async photoSelected(files: File[]): Promise<void> {

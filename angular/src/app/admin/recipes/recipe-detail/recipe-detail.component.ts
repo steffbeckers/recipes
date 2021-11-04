@@ -74,7 +74,10 @@ export class RecipeDetailComponent implements OnInit {
     }
 
     deleteRecipe(): void {
-        this.store$.dispatch(RecipesActions.deleteRecipe({ id: this.form.value.id }));
+        // TODO: Create seperate action to trigger confirmation modal?
+        if (confirm('Are you sure?')) {
+            this.store$.dispatch(RecipesActions.deleteRecipe({ id: this.form.value.id }));
+        }
     }
 
     async photoSelected(files: File[]): Promise<void> {
