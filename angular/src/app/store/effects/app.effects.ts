@@ -1,6 +1,7 @@
 import { ToasterService } from '@abp/ng.theme.shared';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { mapTo, tap } from 'rxjs/operators';
 import * as AdminCategoriesActions from 'src/app/admin/categories/store/actions/categories.actions';
 import * as AdminRecipesActions from 'src/app/admin/recipes/store/actions/recipes.actions';
 
@@ -13,11 +14,10 @@ export class AppEffects {
     showNotification$ = createEffect(
         () =>
             this.actions$.pipe(
-                ofType(AppActions.showNotification)
-                // TODO: Enable to test
-                // tap(({ message, title, severity, options }) =>
-                //     this.toasterService.show(message, title, severity, options)
-                // )
+                ofType(AppActions.showNotification),
+                tap(({ message, title, severity, options }) =>
+                    this.toasterService.show(message, title, severity, options)
+                )
             ),
         { dispatch: false }
     );

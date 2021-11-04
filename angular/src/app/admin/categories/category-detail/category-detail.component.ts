@@ -64,7 +64,7 @@ export class CategoryDetailComponent implements OnInit {
     }
 
     deleteCategory(): void {
-        // TODO: Create seperate action to trigger confirmation modal?
+        // TODO: Better confirmation modal
         if (confirm('Are you sure?')) {
             this.store$.dispatch(CategoriesActions.deleteCategory({ id: this.form.value.id }));
         }

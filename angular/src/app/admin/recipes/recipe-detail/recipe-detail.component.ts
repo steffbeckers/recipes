@@ -8,6 +8,7 @@ import {
     RecipeUpdateInputDto,
 } from '@proxy/recipes';
 import { LookupDto } from '@proxy/shared';
+import { BehaviorSubject } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { Recipe, RecipeIngredient, RecipeStep } from 'src/app/shared/models/recipe.model';
 import { environment } from 'src/environments/environment';
@@ -30,8 +31,8 @@ export class RecipeDetailComponent implements OnInit {
     photo: FileInputDto = null;
     deletePhoto = false;
 
-    ingredients: RecipeIngredient[] = [];
-    steps: RecipeStep[] = [];
+    ingredients$: BehaviorSubject<RecipeIngredient[]> = new BehaviorSubject<RecipeIngredient[]>([]);
+    steps$: BehaviorSubject<RecipeStep[]> = new BehaviorSubject<RecipeStep[]>([]);
 
     form: FormGroup = this.fb.group({
         id: [null, [Validators.required]],
@@ -49,8 +50,8 @@ export class RecipeDetailComponent implements OnInit {
             this.form.patchValue(recipe);
             this.form.markAsPristine();
 
-            this.ingredients = recipe.ingredients;
-            this.steps = recipe.steps;
+            this.ingredients$.next(recipe.ingredients);
+            this.steps$.next(recipe.steps);
         });
     }
 
@@ -73,12 +74,12 @@ export class RecipeDetailComponent implements OnInit {
             categoryId: formValue.categoryId,
             photo: this.photo ? this.photo : null,
             deletePhoto: this.deletePhoto,
-            ingredients: this.ingredients.map(ingredient => {
+            ingredients: this.ingredients$.value.map(ingredient => {
                 return {
                     ...ingredient,
                 } as RecipeIngredientUpdateInputDto;
             }),
-            steps: this.steps.map(step => {
+            steps: this.steps$.value.map(step => {
                 return {
                     ...step,
                 } as RecipeStepUpdateInputDto;
@@ -91,7 +92,7 @@ export class RecipeDetailComponent implements OnInit {
     }
 
     deleteRecipe(): void {
-        // TODO: Create seperate action to trigger confirmation modal?
+        // TODO: Better confirmation modal
         if (confirm('Are you sure?')) {
             this.store$.dispatch(RecipesActions.deleteRecipe({ id: this.form.value.id }));
         }
@@ -121,5 +122,72 @@ export class RecipeDetailComponent implements OnInit {
         } else {
             this.photo = null;
         }
+    }
+
+    addIngredient(): void {
+        this.ingredients$.next([
+            ...this.ingredients$.value,
+            {
+                id: null,
+                name: null,
+                amount: 1,
+                unit: null,
+                sortOrder: this.ingredients$.value.length + 1,
+                editing: true,
+            },
+        ]);
+    }
+
+    moveIngredientDown(ingredient: RecipeIngredient): void {
+        const index = this.ingredients$.value.indexOf(ingredient);
+
+        let sortedIngredients = [...this.ingredients$.value];
+
+        this.arrayMove(sortedIngredients, index, index + 1);
+
+        sortedIngredients.forEach((x, i) => {
+            sortedIngredients[i].sortOrder = i + 1;
+        });
+
+        this.ingredients$.next(sortedIngredients);
+    }
+
+    // TODO: DRY code
+    moveIngredientUp(ingredient: RecipeIngredient): void {
+        const index = this.ingredients$.value.indexOf(ingredient);
+
+        let sortedIngredients = [...this.ingredients$.value];
+
+        this.arrayMove(sortedIngredients, index, index - 1);
+
+        sortedIngredients.forEach((x, i) => {
+            sortedIngredients[i].sortOrder = i + 1;
+        });
+
+        this.ingredients$.next(sortedIngredients);
+    }
+
+    deleteIngredient(ingredient: RecipeIngredient): void {
+        // TODO: Better confirmation modal
+        if (confirm('Are you sure?')) {
+            const index = this.ingredients$.value.indexOf(ingredient);
+
+            let newIngredients = [...this.ingredients$.value];
+
+            newIngredients.splice(index, 1);
+
+            this.ingredients$.next(newIngredients);
+        }
+    }
+
+    arrayMove(array: any[], index, newIndex) {
+        if (newIndex >= array.length) {
+            var x = newIndex - array.length + 1;
+            while (x--) {
+                array.push(undefined);
+            }
+        }
+
+        array.splice(newIndex, 0, array.splice(index, 1)[0]);
     }
 }

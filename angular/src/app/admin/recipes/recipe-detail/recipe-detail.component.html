@@ -66,13 +66,13 @@
                 </div>
             </div>
         </div>
-        <div class="row mb-2">
+        <div *ngIf="ingredients$ | async as ingredients" class="row mb-2">
             <div class="col">
                 <div class="row mb-2">
                     <div class="col d-flex justify-content-between align-items-center">
                         <h2>{{ '::Ingredients' | abpLocalization }}</h2>
                         <div>
-                            <button type="button" class="btn btn-primary">
+                            <button (click)="addIngredient()" type="button" class="btn btn-primary">
                                 {{ '::AddNewIngredient' | abpLocalization }}
                             </button>
                         </div>
@@ -84,7 +84,7 @@
                             <th>{{ '::Name' | abpLocalization }}</th>
                             <th>{{ '::Amount' | abpLocalization }}</th>
                             <th>{{ '::Unit' | abpLocalization }}</th>
-                            <th>{{ '::Actions' | abpLocalization }}</th>
+                            <th style="width: 160px">{{ '::Actions' | abpLocalization }}</th>
                         </thead>
                         <tbody>
                             <tr
@@ -94,23 +94,60 @@
                                     let last = last
                                 "
                             >
-                                <td>{{ ingredient.name }}</td>
-                                <td>{{ ingredient.amount }}</td>
-                                <td>{{ ingredient.unit }}</td>
                                 <td>
-                                    <div>
-                                        <i class="fas fa-edit mr-4"></i>
-                                        <i
-                                            class="fas fa-arrow-up mr-4"
-                                            [ngClass]="{ 'fa-disabled': first }"
-                                            [disabled]="first"
-                                        ></i>
-                                        <i
-                                            class="fas fa-arrow-down mr-4"
-                                            [ngClass]="{ 'fa-disabled': last }"
-                                            [disabled]="last"
-                                        ></i>
-                                        <i class="fas fa-trash-alt"></i>
+                                    <span *ngIf="!ingredient.editing">{{ ingredient.name }}</span>
+                                    <input
+                                        *ngIf="ingredient.editing"
+                                        [(ngModel)]="ingredient.name"
+                                        [ngModelOptions]="{ standalone: true }"
+                                        type="text"
+                                        class="form-control"
+                                    />
+                                </td>
+                                <td>
+                                    <span *ngIf="!ingredient.editing">{{ ingredient.amount }}</span>
+                                    <input
+                                        *ngIf="ingredient.editing"
+                                        [(ngModel)]="ingredient.amount"
+                                        [ngModelOptions]="{ standalone: true }"
+                                        type="number"
+                                        class="form-control"
+                                        required
+                                        min="1"
+                                    />
+                                </td>
+                                <td>
+                                    <span *ngIf="!ingredient.editing">{{ ingredient.unit }}</span>
+                                    <input
+                                        *ngIf="ingredient.editing"
+                                        [(ngModel)]="ingredient.unit"
+                                        [ngModelOptions]="{ standalone: true }"
+                                        type="text"
+                                        class="form-control"
+                                    />
+                                </td>
+                                <td>
+                                    <div class="d-flex">
+                                        <div (click)="ingredient.editing = !ingredient.editing">
+                                            <i class="fas fa-edit mr-4"></i>
+                                        </div>
+                                        <div (click)="moveIngredientUp(ingredient)">
+                                            <i
+                                                class="fas fa-arrow-up mr-4"
+                                                [ngClass]="{ 'fa-disabled': first }"
+                                                [disabled]="first"
+                                            ></i>
+                                        </div>
+                                        <div (click)="moveIngredientDown(ingredient)">
+                                            <i
+                                                class="fas fa-arrow-down mr-4"
+                                                [ngClass]="{ 'fa-disabled': last }"
+                                                [disabled]="last"
+                                            ></i>
+                                        </div>
+                                        <div (click)="deleteIngredient(ingredient)">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </div>
                                     </div>
                                 </td>
                             </tr>
@@ -124,13 +161,13 @@
                 </div>
             </div>
         </div>
-        <div class="row mb-2">
+        <div *ngIf="steps$ | async as steps" class="row mb-2">
             <div class="col">
                 <div class="row mb-2">
                     <div class="col d-flex justify-content-between align-items-center">
                         <h2>{{ '::Steps' | abpLocalization }}</h2>
                         <div>
-                            <button type="button" class="btn btn-primary">
+                            <button (click)="addStep()" type="button" class="btn btn-primary">
                                 {{ '::AddNewStep' | abpLocalization }}
                             </button>
                         </div>
@@ -141,7 +178,7 @@
                         <thead>
                             <th>{{ '::Number' | abpLocalization }}</th>
                             <th>{{ '::Instructions' | abpLocalization }}</th>
-                            <th>{{ '::Actions' | abpLocalization }}</th>
+                            <th style="width: 160px">{{ '::Actions' | abpLocalization }}</th>
                         </thead>
                         <tbody>
                             <tr
@@ -152,21 +189,41 @@
                                 "
                             >
                                 <td>{{ step.number }}</td>
-                                <td [innerHTML]="step.instructions"></td>
                                 <td>
-                                    <div>
-                                        <i class="fas fa-edit mr-4"></i>
-                                        <i
-                                            class="fas fa-arrow-up mr-4"
-                                            [ngClass]="{ 'fa-disabled': first }"
-                                            [disabled]="first"
-                                        ></i>
-                                        <i
-                                            class="fas fa-arrow-down mr-4"
-                                            [ngClass]="{ 'fa-disabled': last }"
-                                            [disabled]="last"
-                                        ></i>
-                                        <i class="fas fa-trash-alt"></i>
+                                    <div
+                                        *ngIf="!step.editing"
+                                        [innerHTML]="step.instructions"
+                                    ></div>
+                                    <textarea
+                                        *ngIf="step.editing"
+                                        [(ngModel)]="step.instructions"
+                                        [ngModelOptions]="{ standalone: true }"
+                                        rows="3"
+                                        class="form-control"
+                                    ></textarea>
+                                </td>
+                                <td>
+                                    <div class="d-flex">
+                                        <div (click)="step.editing = !step.editing">
+                                            <i class="fas fa-edit mr-4"></i>
+                                        </div>
+                                        <div>
+                                            <i
+                                                class="fas fa-arrow-up mr-4"
+                                                [ngClass]="{ 'fa-disabled': first }"
+                                                [disabled]="first"
+                                            ></i>
+                                        </div>
+                                        <div>
+                                            <i
+                                                class="fas fa-arrow-down mr-4"
+                                                [ngClass]="{ 'fa-disabled': last }"
+                                                [disabled]="last"
+                                            ></i>
+                                        </div>
+                                        <div>
+                                            <i class="fas fa-trash-alt"></i>
+                                        </div>
                                     </div>
                                 </td>
                             </tr>
