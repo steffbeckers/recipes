@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { RecipesService } from '@proxy/recipes';
 import { of } from 'rxjs';
@@ -17,6 +17,7 @@ import { selectRouteParam } from 'src/app/store/selectors/router.selectors';
 
 import * as RecipesActions from '../actions/recipes.actions';
 import * as AppActions from 'src/app/store/actions/app.actions';
+import { selectRecipesListInput } from '..';
 
 @Injectable()
 export class RecipesEffects {
@@ -29,16 +30,11 @@ export class RecipesEffects {
 
     loadRecipes$ = createEffect(() =>
         this.actions$.pipe(
-            ofType(RecipesActions.listPageLoaded),
-            exhaustMap(() =>
-                this.recipesService.getList({ maxResultCount: 10 }).pipe(
-                    mergeMap(data => [
-                        RecipesActions.listDataLoaded({ data }),
-                        AppActions.showNotification({
-                            message: '::RecipesLoaded',
-                            severity: 'info',
-                        }),
-                    ]),
+            ofType(RecipesActions.listPageLoaded, RecipesActions.listPaginationChanged),
+            concatLatestFrom(() => this.store$.select(selectRecipesListInput)),
+            exhaustMap(([_, input]) =>
+                this.recipesService.getList(input).pipe(
+                    map(data => RecipesActions.listDataLoaded({ data })),
                     catchError(error => of(RecipesActions.listDataLoadFailed({ error })))
                 )
             )

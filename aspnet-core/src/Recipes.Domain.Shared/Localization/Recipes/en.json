@@ -28,6 +28,7 @@
     "Permission:Edit": "Edit",
     "Permission:Recipes": "Recipes",
     "RecipeCreated": "Recipe created",
+    "recipes": "recipes",
     "Recipes": "Recipes",
     "Recipes:AtLeastOneIngredientIsRequired": "At least one ingredient is required.",
     "Recipes:AtLeastOneStepIsRequired": "At least one step is required.",

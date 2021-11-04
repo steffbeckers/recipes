@@ -28,5 +28,40 @@
                 </tbody>
             </table>
         </div>
+        <div class="row">
+            <div class="col d-flex justify-content-between align-items-center">
+                <div class="d-inline-block">
+                    <span class="mr-2">{{ '::Show' | abpLocalization }}</span>
+                    <select
+                        (change)="itemsPerPageChanged($event.target.value)"
+                        class="form-select form-select-sm mr-2"
+                    >
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                    </select>
+                    <span class="mr-2">{{ '::recipes' | abpLocalization }}.</span>
+                    <span>{{ '::TotalCount' | abpLocalization }}: {{ totalCount$ | async }}</span>
+                </div>
+                <ng-container *ngIf="pagination$ | async as pagination">
+                    <nav *ngIf="pagination.pages.length > 1">
+                        <ul class="pagination mb-0">
+                            <li
+                                *ngFor="let page of pagination.pages"
+                                class="page-item clickable"
+                                [ngClass]="{
+                                    active: page === pagination.currentPage,
+                                    clickable: page !== pagination.currentPage
+                                }"
+                                (click)="currentPageChanged(page)"
+                            >
+                                <a class="page-link">{{ page }}</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </ng-container>
+            </div>
+        </div>
     </div>
 </div>

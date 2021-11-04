@@ -8,6 +8,10 @@ import {
 } from '@proxy/recipes';
 
 export const listPageLoaded = createAction('[Admin/Recipes] List page loaded');
+export const listPaginationChanged = createAction(
+    '[Admin/Recipes] List pagination changed',
+    props<{ currentPage?: number; itemsPerPage?: number }>()
+);
 export const listDataLoaded = createAction(
     '[Admin/Recipes] List data loaded',
     props<{ data: PagedResultDto<RecipeListDto> }>()

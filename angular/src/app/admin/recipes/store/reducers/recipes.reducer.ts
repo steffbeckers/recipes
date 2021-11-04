@@ -36,8 +36,16 @@ export const reducer = createReducer(
             loading: true,
         };
     }),
+    on(RecipesActions.listPaginationChanged, (state, { currentPage, itemsPerPage }) => {
+        return {
+            ...state,
+            loading: true,
+            currentPage: currentPage != null ? currentPage : state.currentPage,
+            itemsPerPage: itemsPerPage != null ? itemsPerPage : state.itemsPerPage,
+        };
+    }),
     on(RecipesActions.listDataLoaded, (state, { data }) => {
-        let pages = Array(Math.ceil(data.totalCount / data.items.length))
+        let pages = Array(Math.ceil(data.totalCount / state.itemsPerPage))
             .fill(1)
             .map((_, i) => i + 1);
 
@@ -66,11 +74,11 @@ export const reducer = createReducer(
             }
         );
     }),
-    on(RecipesActions.listDataLoadFailed, (state, action) => {
+    on(RecipesActions.listDataLoadFailed, (state, { error }) => {
         return {
             ...state,
             loading: false,
-            error: action.error,
+            error,
         };
     }),
     on(RecipesActions.detailPageLoaded, state => {
@@ -86,23 +94,71 @@ export const reducer = createReducer(
             error: null,
         });
     }),
-    on(RecipesActions.detailDataLoadFailed, (state, action) => {
+    on(RecipesActions.detailDataLoadFailed, (state, { error }) => {
         return {
             ...state,
             loading: false,
-            error: action.error,
+            error,
         };
     }),
-    // TODO: createRecipe
+    on(RecipesActions.createRecipe, state => {
+        return {
+            ...state,
+            loading: true,
+        };
+    }),
     on(RecipesActions.recipeCreated, (state, { data }) => {
-        return adapter.addOne({ ...data } as Recipe, state);
+        return adapter.addOne({ ...data } as Recipe, {
+            ...state,
+            loading: false,
+            error: null,
+        });
     }),
-    // TODO: updateRecipe
+    on(RecipesActions.recipeCreationFailed, (state, { error }) => {
+        return {
+            ...state,
+            loading: false,
+            error,
+        };
+    }),
+    on(RecipesActions.updateRecipe, state => {
+        return {
+            ...state,
+            loading: true,
+        };
+    }),
     on(RecipesActions.recipeUpdated, (state, { data }) => {
-        return adapter.upsertOne({ ...data } as Recipe, state);
+        return adapter.upsertOne({ ...data } as Recipe, {
+            ...state,
+            loading: false,
+            error: null,
+        });
     }),
-    // TODO: deleteRecipe
+    on(RecipesActions.recipeUpdateFailed, (state, { error }) => {
+        return {
+            ...state,
+            loading: false,
+            error,
+        };
+    }),
+    on(RecipesActions.deleteRecipe, state => {
+        return {
+            ...state,
+            loading: true,
+        };
+    }),
     on(RecipesActions.recipeDeleted, (state, { id }) => {
-        return adapter.removeOne(id, state);
+        return adapter.removeOne(id, {
+            ...state,
+            loading: false,
+            error: null,
+        });
+    }),
+    on(RecipesActions.recipeDeletionFailed, (state, { error }) => {
+        return {
+            ...state,
+            loading: false,
+            error,
+        };
     })
 );

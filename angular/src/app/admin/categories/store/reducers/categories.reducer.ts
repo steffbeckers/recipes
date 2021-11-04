@@ -2,8 +2,8 @@ import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 import { Category } from 'src/app/shared/models/category.model';
 
-import * as RecipesActions from '../../../recipes/store/actions/recipes.actions';
 import * as CategoriesActions from '../actions/categories.actions';
+import * as RecipesActions from '../../../recipes/store/actions/recipes.actions';
 
 export const categoriesFeatureKey = 'categories';
 
@@ -71,11 +71,11 @@ export const reducer = createReducer(
             }
         );
     }),
-    on(CategoriesActions.listDataLoadFailed, (state, action) => {
+    on(CategoriesActions.listDataLoadFailed, (state, { error }) => {
         return {
             ...state,
             loading: false,
-            error: action.error,
+            error,
         };
     }),
     on(CategoriesActions.detailPageLoaded, state => {
@@ -91,24 +91,72 @@ export const reducer = createReducer(
             error: null,
         });
     }),
-    on(CategoriesActions.detailDataLoadFailed, (state, action) => {
+    on(CategoriesActions.detailDataLoadFailed, (state, { error }) => {
         return {
             ...state,
             loading: false,
-            error: action.error,
+            error,
         };
     }),
-    // TODO: createCategory
+    on(CategoriesActions.createCategory, state => {
+        return {
+            ...state,
+            loading: true,
+        };
+    }),
     on(CategoriesActions.categoryCreated, (state, { data }) => {
-        return adapter.addOne({ ...data } as Category, state);
+        return adapter.addOne({ ...data } as Category, {
+            ...state,
+            loading: false,
+            error: null,
+        });
     }),
-    // TODO: updateCategory
+    on(CategoriesActions.categoryCreationFailed, (state, { error }) => {
+        return {
+            ...state,
+            loading: false,
+            error,
+        };
+    }),
+    on(CategoriesActions.updateCategory, state => {
+        return {
+            ...state,
+            loading: true,
+        };
+    }),
     on(CategoriesActions.categoryUpdated, (state, { data }) => {
-        return adapter.upsertOne({ ...data } as Category, state);
+        return adapter.upsertOne({ ...data } as Category, {
+            ...state,
+            loading: false,
+            error: null,
+        });
     }),
-    // TODO: deleteCategory
+    on(CategoriesActions.categoryUpdateFailed, (state, { error }) => {
+        return {
+            ...state,
+            loading: false,
+            error,
+        };
+    }),
+    on(CategoriesActions.deleteCategory, state => {
+        return {
+            ...state,
+            loading: true,
+        };
+    }),
     on(CategoriesActions.categoryDeleted, (state, { id }) => {
-        return adapter.removeOne(id, state);
+        return adapter.removeOne(id, {
+            ...state,
+            loading: false,
+            error: null,
+        });
+    }),
+    on(CategoriesActions.categoryDeletionFailed, (state, { error }) => {
+        return {
+            ...state,
+            loading: false,
+            error,
+        };
     }),
     on(RecipesActions.listDataLoaded, (state, { data }) => {
         let categories: Category[] = data.items.map(x => {
