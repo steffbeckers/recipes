@@ -14,10 +14,11 @@ export class AppEffects {
     showNotification$ = createEffect(
         () =>
             this.actions$.pipe(
-                ofType(AppActions.showNotification),
-                tap(({ message, title, severity, options }) =>
-                    this.toasterService.show(message, title, severity, options)
-                )
+                ofType(AppActions.showNotification)
+                // TODO: Enable to test
+                // tap(({ message, title, severity, options }) =>
+                //     this.toasterService.show(message, title, severity, options)
+                // )
             ),
         { dispatch: false }
     );

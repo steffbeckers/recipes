@@ -131,14 +131,14 @@
                                         <div (click)="ingredient.editing = !ingredient.editing">
                                             <i class="fas fa-edit mr-4"></i>
                                         </div>
-                                        <div (click)="moveIngredientUp(ingredient)">
+                                        <div (click)="moveIngredient(ingredient, -1)">
                                             <i
                                                 class="fas fa-arrow-up mr-4"
                                                 [ngClass]="{ 'fa-disabled': first }"
                                                 [disabled]="first"
                                             ></i>
                                         </div>
-                                        <div (click)="moveIngredientDown(ingredient)">
+                                        <div (click)="moveIngredient(ingredient, 1)">
                                             <i
                                                 class="fas fa-arrow-down mr-4"
                                                 [ngClass]="{ 'fa-disabled': last }"

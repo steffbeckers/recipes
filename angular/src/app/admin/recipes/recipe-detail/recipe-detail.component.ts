@@ -27,10 +27,8 @@ export class RecipeDetailComponent implements OnInit {
     environment = environment;
 
     recipe$ = this.store$.select(selectRecipe);
-
     photo: FileInputDto = null;
     deletePhoto = false;
-
     ingredients$: BehaviorSubject<RecipeIngredient[]> = new BehaviorSubject<RecipeIngredient[]>([]);
     steps$: BehaviorSubject<RecipeStep[]> = new BehaviorSubject<RecipeStep[]>([]);
 
@@ -74,16 +72,20 @@ export class RecipeDetailComponent implements OnInit {
             categoryId: formValue.categoryId,
             photo: this.photo ? this.photo : null,
             deletePhoto: this.deletePhoto,
-            ingredients: this.ingredients$.value.map(ingredient => {
-                return {
-                    ...ingredient,
-                } as RecipeIngredientUpdateInputDto;
-            }),
-            steps: this.steps$.value.map(step => {
-                return {
-                    ...step,
-                } as RecipeStepUpdateInputDto;
-            }),
+            ingredients: this.ingredients$.value
+                .filter(x => !!x.name)
+                .map(ingredient => {
+                    return {
+                        ...ingredient,
+                    } as RecipeIngredientUpdateInputDto;
+                }),
+            steps: this.steps$.value
+                .filter(x => !!x.instructions)
+                .map(step => {
+                    return {
+                        ...step,
+                    } as RecipeStepUpdateInputDto;
+                }),
         };
 
         this.store$.dispatch(RecipesActions.updateRecipe({ id: formValue.id, input }));
@@ -138,30 +140,14 @@ export class RecipeDetailComponent implements OnInit {
         ]);
     }
 
-    moveIngredientDown(ingredient: RecipeIngredient): void {
+    moveIngredient(ingredient: RecipeIngredient, positions: number): void {
         const index = this.ingredients$.value.indexOf(ingredient);
 
         let sortedIngredients = [...this.ingredients$.value];
-
-        this.arrayMove(sortedIngredients, index, index + 1);
-
-        sortedIngredients.forEach((x, i) => {
-            sortedIngredients[i].sortOrder = i + 1;
-        });
-
-        this.ingredients$.next(sortedIngredients);
-    }
-
-    // TODO: DRY code
-    moveIngredientUp(ingredient: RecipeIngredient): void {
-        const index = this.ingredients$.value.indexOf(ingredient);
-
-        let sortedIngredients = [...this.ingredients$.value];
-
-        this.arrayMove(sortedIngredients, index, index - 1);
+        this.arrayMove(sortedIngredients, index, index + positions);
 
         sortedIngredients.forEach((x, i) => {
-            sortedIngredients[i].sortOrder = i + 1;
+            sortedIngredients[i] = { ...sortedIngredients[i], sortOrder: i + 1 };
         });
 
         this.ingredients$.next(sortedIngredients);
@@ -173,14 +159,13 @@ export class RecipeDetailComponent implements OnInit {
             const index = this.ingredients$.value.indexOf(ingredient);
 
             let newIngredients = [...this.ingredients$.value];
-
             newIngredients.splice(index, 1);
 
             this.ingredients$.next(newIngredients);
         }
     }
 
-    arrayMove(array: any[], index, newIndex) {
+    private arrayMove(array: any[], index, newIndex): void {
         if (newIndex >= array.length) {
             var x = newIndex - array.length + 1;
             while (x--) {

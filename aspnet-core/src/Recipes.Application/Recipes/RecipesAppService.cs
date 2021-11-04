@@ -227,7 +227,11 @@ namespace Recipes.Recipes
                         recipe.Id,
                         ingredientDto.Name,
                         ingredientDto.Amount,
-                        CurrentTenant.Id));
+                        CurrentTenant.Id)
+                    {
+                        Unit = ingredientDto.Unit,
+                        SortOrder = ingredientDto.SortOrder
+                    });
             }
 
             foreach (RecipeIngredient recipeIngredient in recipe.Ingredients.Where(x => input.Ingredients.Any(y => y.Id == x.Id)))
