@@ -2,9 +2,14 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { FileInputDto } from '@proxy/files';
-import { RecipeUpdateInputDto } from '@proxy/recipes';
+import {
+    RecipeIngredientUpdateInputDto,
+    RecipeStepUpdateInputDto,
+    RecipeUpdateInputDto,
+} from '@proxy/recipes';
 import { LookupDto } from '@proxy/shared';
-import { Recipe } from 'src/app/shared/models/recipe.model';
+import { filter } from 'rxjs/operators';
+import { Recipe, RecipeIngredient, RecipeStep } from 'src/app/shared/models/recipe.model';
 import { environment } from 'src/environments/environment';
 
 import * as fromRecipes from '../store';
@@ -20,28 +25,32 @@ import * as RecipesActions from '../store/actions/recipes.actions';
 export class RecipeDetailComponent implements OnInit {
     environment = environment;
 
+    recipe$ = this.store$.select(selectRecipe);
+
+    photo: FileInputDto = null;
+    deletePhoto = false;
+
+    ingredients: RecipeIngredient[] = [];
+    steps: RecipeStep[] = [];
+
     form: FormGroup = this.fb.group({
         id: [null, [Validators.required]],
         name: [null, [Validators.required]],
         description: [null],
         categoryId: [null, [Validators.required]],
-        ingredients: [null],
-        steps: [null],
     });
-
-    photo: FileInputDto = null;
-    deletePhoto = false;
-
-    recipe$ = this.store$.select(selectRecipe);
 
     constructor(private fb: FormBuilder, private store$: Store<fromRecipes.State>) {}
 
     ngOnInit(): void {
         this.store$.dispatch(RecipesActions.detailPageLoaded());
 
-        this.recipe$.subscribe((recipe: Recipe) => {
+        this.recipe$.pipe(filter(x => !!x)).subscribe((recipe: Recipe) => {
             this.form.patchValue(recipe);
             this.form.markAsPristine();
+
+            this.ingredients = recipe.ingredients;
+            this.steps = recipe.steps;
         });
     }
 
@@ -64,8 +73,16 @@ export class RecipeDetailComponent implements OnInit {
             categoryId: formValue.categoryId,
             photo: this.photo ? this.photo : null,
             deletePhoto: this.deletePhoto,
-            ingredients: formValue.ingredients,
-            steps: formValue.steps,
+            ingredients: this.ingredients.map(ingredient => {
+                return {
+                    ...ingredient,
+                } as RecipeIngredientUpdateInputDto;
+            }),
+            steps: this.steps.map(step => {
+                return {
+                    ...step,
+                } as RecipeStepUpdateInputDto;
+            }),
         };
 
         this.store$.dispatch(RecipesActions.updateRecipe({ id: formValue.id, input }));

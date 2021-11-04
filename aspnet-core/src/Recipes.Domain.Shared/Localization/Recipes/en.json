@@ -3,7 +3,9 @@
   "Texts": {
     "Actions": "Actions",
     "AddNewCategory": "Add new category",
+    "AddNewIngredient": "Add new ingredient",
     "AddNewRecipe": "Add new recipe",
+    "AddNewStep": "Add new step",
     "Amount": "Amount",
     "categories": "categories",
     "Categories": "Categories",

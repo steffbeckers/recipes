@@ -1,6 +1,6 @@
 <ng-container *ngIf="recipe$ | async as recipe">
     <form [formGroup]="form" (ngSubmit)="formSubmitted($event)">
-        <div class="row d-flex justify-content-between align-items-center mb-2">
+        <div class="row mb-2">
             <div class="col d-flex justify-content-between align-items-center">
                 <h1>{{ recipe.name }}</h1>
                 <div>
@@ -17,7 +17,7 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row mb-2">
             <div class="col-8">
                 <div class="form-group">
                     <label for="name">{{ '::Name' | abpLocalization }}</label>
@@ -66,9 +66,18 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row mb-2">
             <div class="col">
-                <h2>{{ '::Ingredients' | abpLocalization }}</h2>
+                <div class="row mb-2">
+                    <div class="col d-flex justify-content-between align-items-center">
+                        <h2>{{ '::Ingredients' | abpLocalization }}</h2>
+                        <div>
+                            <button type="button" class="btn btn-primary">
+                                {{ '::AddNewIngredient' | abpLocalization }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
                 <div class="table-responsive">
                     <table class="table mb-2">
                         <thead>
@@ -78,17 +87,34 @@
                             <th>{{ '::Actions' | abpLocalization }}</th>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let ingredient of form.value.ingredients">
+                            <tr
+                                *ngFor="
+                                    let ingredient of ingredients | abpSort: 'asc':'sortOrder';
+                                    let first = first;
+                                    let last = last
+                                "
+                            >
                                 <td>{{ ingredient.name }}</td>
                                 <td>{{ ingredient.amount }}</td>
                                 <td>{{ ingredient.unit }}</td>
-                                <td></td>
+                                <td>
+                                    <div>
+                                        <i class="fas fa-edit mr-4"></i>
+                                        <i
+                                            class="fas fa-arrow-up mr-4"
+                                            [ngClass]="{ 'fa-disabled': first }"
+                                            [disabled]="first"
+                                        ></i>
+                                        <i
+                                            class="fas fa-arrow-down mr-4"
+                                            [ngClass]="{ 'fa-disabled': last }"
+                                            [disabled]="last"
+                                        ></i>
+                                        <i class="fas fa-trash-alt"></i>
+                                    </div>
+                                </td>
                             </tr>
-                            <tr
-                                *ngIf="
-                                    !form.value.ingredients || form.value.ingredients.length === 0
-                                "
-                            >
+                            <tr *ngIf="ingredients.length === 0">
                                 <td colspan="4">
                                     {{ '::NoIngredientsAddedYet' | abpLocalization }}
                                 </td>
@@ -98,9 +124,18 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row mb-2">
             <div class="col">
-                <h2>{{ '::Steps' | abpLocalization }}</h2>
+                <div class="row mb-2">
+                    <div class="col d-flex justify-content-between align-items-center">
+                        <h2>{{ '::Steps' | abpLocalization }}</h2>
+                        <div>
+                            <button type="button" class="btn btn-primary">
+                                {{ '::AddNewStep' | abpLocalization }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
                 <div class="table-responsive">
                     <table class="table mb-2">
                         <thead>
@@ -109,12 +144,33 @@
                             <th>{{ '::Actions' | abpLocalization }}</th>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let instruction of form.value.steps">
-                                <td>{{ instruction.number }}</td>
-                                <td [innerHTML]="instruction.instructions"></td>
-                                <td></td>
+                            <tr
+                                *ngFor="
+                                    let step of steps | abpSort: 'asc':'number';
+                                    let first = first;
+                                    let last = last
+                                "
+                            >
+                                <td>{{ step.number }}</td>
+                                <td [innerHTML]="step.instructions"></td>
+                                <td>
+                                    <div>
+                                        <i class="fas fa-edit mr-4"></i>
+                                        <i
+                                            class="fas fa-arrow-up mr-4"
+                                            [ngClass]="{ 'fa-disabled': first }"
+                                            [disabled]="first"
+                                        ></i>
+                                        <i
+                                            class="fas fa-arrow-down mr-4"
+                                            [ngClass]="{ 'fa-disabled': last }"
+                                            [disabled]="last"
+                                        ></i>
+                                        <i class="fas fa-trash-alt"></i>
+                                    </div>
+                                </td>
                             </tr>
-                            <tr *ngIf="!form.value.steps || form.value.steps.length === 0">
+                            <tr *ngIf="steps.length === 0">
                                 <td colspan="4">
                                     {{ '::NoStepsAddedYet' | abpLocalization }}
                                 </td>

@@ -8,6 +8,11 @@ body {
     cursor: pointer;
 }
 
+.fa-disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
 @keyframes donut-spin {
     0% {
         transform: rotate(0deg);

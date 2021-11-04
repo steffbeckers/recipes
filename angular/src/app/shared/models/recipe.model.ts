@@ -21,10 +21,12 @@ export class RecipeIngredient {
     amount: number;
     sortOrder: number;
     unit: string;
+    editing: boolean;
 }
 
 export class RecipeStep {
     id: string;
     instructions: string;
     number: number;
+    editing: boolean;
 }
