@@ -48,8 +48,20 @@ export class RecipeDetailComponent implements OnInit {
             this.form.patchValue(recipe);
             this.form.markAsPristine();
 
-            this.ingredients$.next(recipe.ingredients);
-            this.steps$.next(recipe.steps);
+            this.ingredients$.next(
+                recipe.ingredients.map(ingredient => {
+                    return {
+                        ...ingredient,
+                    };
+                })
+            );
+            this.steps$.next(
+                recipe.steps.map(step => {
+                    return {
+                        ...step,
+                    };
+                })
+            );
         });
     }
 
