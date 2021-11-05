@@ -40,8 +40,8 @@ export const reducer = createReducer(
     on(CategoriesActions.listPaginationChanged, (state, { currentPage, itemsPerPage }) => {
         return {
             ...state,
-            currentPage: currentPage != null ? currentPage : state.currentPage,
-            itemsPerPage: itemsPerPage != null ? itemsPerPage : state.itemsPerPage,
+            currentPage: currentPage != null ? +currentPage : state.currentPage,
+            itemsPerPage: itemsPerPage != null ? +itemsPerPage : state.itemsPerPage,
         };
     }),
     on(CategoriesActions.listDataLoaded, (state, { data }) => {

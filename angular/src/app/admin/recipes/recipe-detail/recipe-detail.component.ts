@@ -37,6 +37,8 @@ export class RecipeDetailComponent implements OnInit {
         name: [null, [Validators.required]],
         description: [null],
         categoryId: [null, [Validators.required]],
+        forAmount: [null],
+        forUnit: [null],
     });
 
     constructor(private fb: FormBuilder, private store$: Store<fromRecipes.State>) {}
@@ -87,6 +89,8 @@ export class RecipeDetailComponent implements OnInit {
             name: formValue.name,
             description: formValue.description,
             categoryId: formValue.categoryId,
+            forAmount: formValue.forAmount,
+            forUnit: formValue.forUnit,
             photo: this.photo ? this.photo : null,
             deletePhoto: this.deletePhoto,
             ingredients: this.ingredients$.value

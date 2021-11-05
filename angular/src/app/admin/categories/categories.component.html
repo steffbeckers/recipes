@@ -34,10 +34,10 @@
                         (change)="itemsPerPageChanged($event.target.value)"
                         class="form-select form-select-sm mr-2"
                     >
-                        <option value="5">5</option>
-                        <option value="10">10</option>
-                        <option value="25">25</option>
-                        <option value="50">50</option>
+                        <option [ngValue]="5">5</option>
+                        <option [ngValue]="10">10</option>
+                        <option [ngValue]="25">25</option>
+                        <option [ngValue]="50">50</option>
                     </select>
                     <span class="mr-2">{{ '::categories' | abpLocalization }}.</span>
                     <span>{{ '::TotalCount' | abpLocalization }}: {{ totalCount$ | async }}</span>

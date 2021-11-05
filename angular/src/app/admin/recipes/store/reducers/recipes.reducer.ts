@@ -40,8 +40,8 @@ export const reducer = createReducer(
         return {
             ...state,
             loading: true,
-            currentPage: currentPage != null ? currentPage : state.currentPage,
-            itemsPerPage: itemsPerPage != null ? itemsPerPage : state.itemsPerPage,
+            currentPage: currentPage != null ? +currentPage : state.currentPage,
+            itemsPerPage: itemsPerPage != null ? +itemsPerPage : state.itemsPerPage,
         };
     }),
     on(RecipesActions.listDataLoaded, (state, { data }) => {
