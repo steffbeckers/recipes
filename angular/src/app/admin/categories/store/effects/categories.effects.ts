@@ -1,18 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { CategoriesService } from '@proxy/categories';
+import { CategoriesService, CategoryDto } from '@proxy/categories';
 import { of } from 'rxjs';
-import {
-    catchError,
-    exhaustMap,
-    map,
-    mergeMap,
-    switchMap,
-    tap,
-    withLatestFrom,
-} from 'rxjs/operators';
+import { catchError, exhaustMap, map, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
+import { RealtimeService } from 'src/app/shared/services/realtime.service';
 import * as AppActions from 'src/app/store/actions/app.actions';
 import { selectRouteParam } from 'src/app/store/selectors/router.selectors';
 
@@ -26,7 +18,7 @@ export class CategoriesEffects {
         private store$: Store<fromCategories.State>,
         private actions$: Actions,
         private categoriesService: CategoriesService,
-        private router: Router
+        private realtimeService: RealtimeService
     ) {}
 
     loadCategories$ = createEffect(() =>
@@ -70,16 +62,6 @@ export class CategoriesEffects {
         )
     );
 
-    // TODO: Router action needed?
-    navigateAfterCreated$ = createEffect(
-        () =>
-            this.actions$.pipe(
-                ofType(CategoriesActions.categoryCreated),
-                tap(({ data }) => this.router.navigateByUrl('/admin/categories/' + data.id))
-            ),
-        { dispatch: false }
-    );
-
     updateCategory$ = createEffect(() =>
         this.actions$.pipe(
             ofType(CategoriesActions.updateCategory),
@@ -110,13 +92,21 @@ export class CategoriesEffects {
         )
     );
 
-    // TODO: Router action needed?
-    navigateAfterDeleted$ = createEffect(
-        () =>
-            this.actions$.pipe(
-                ofType(CategoriesActions.categoryDeleted),
-                tap(() => this.router.navigateByUrl('/admin/categories'))
-            ),
-        { dispatch: false }
+    realtimeCreated$ = createEffect(() =>
+        this.realtimeService
+            .on<CategoryDto>('CategoryCreated')
+            .pipe(map(category => CategoriesActions.categoryCreated({ data: category })))
+    );
+
+    realtimeUpdated$ = createEffect(() =>
+        this.realtimeService
+            .on<CategoryDto>('CategoryUpdated')
+            .pipe(map(category => CategoriesActions.categoryUpdated({ data: category })))
+    );
+
+    realtimeDeleted$ = createEffect(() =>
+        this.realtimeService
+            .on<string>('CategoryDeleted')
+            .pipe(map(categoryId => CategoriesActions.categoryDeleted({ id: categoryId })))
     );
 }

@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { FileInputDto } from '@proxy/files';
 import {
@@ -9,7 +11,7 @@ import {
 } from '@proxy/recipes';
 import { LookupDto } from '@proxy/shared';
 import { BehaviorSubject } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { filter, first, tap } from 'rxjs/operators';
 import { Recipe, RecipeIngredient, RecipeStep } from 'src/app/shared/models/recipe.model';
 import { environment } from 'src/environments/environment';
 
@@ -41,7 +43,12 @@ export class RecipeDetailComponent implements OnInit {
         forUnit: [null],
     });
 
-    constructor(private fb: FormBuilder, private store$: Store<fromRecipes.State>) {}
+    constructor(
+        private fb: FormBuilder,
+        private store$: Store<fromRecipes.State>,
+        private actions$: Actions,
+        private router: Router
+    ) {}
 
     ngOnInit(): void {
         this.store$.dispatch(RecipesActions.detailPageLoaded());
@@ -69,6 +76,18 @@ export class RecipeDetailComponent implements OnInit {
                     })
                 );
             }
+
+            this.actions$
+                .pipe(
+                    ofType(RecipesActions.recipeDeleted),
+                    first(),
+                    tap(({ id }) => {
+                        if (id === recipe.id) {
+                            this.router.navigateByUrl(`/admin/recipes`);
+                        }
+                    })
+                )
+                .subscribe();
         });
     }
 

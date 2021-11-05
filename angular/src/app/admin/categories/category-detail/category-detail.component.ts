@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { CategoryUpdateInputDto } from '@proxy/categories';
 import { FileInputDto } from '@proxy/files';
+import { filter, first, tap } from 'rxjs/operators';
 import { Category } from 'src/app/shared/models/category.model';
 import { environment } from 'src/environments/environment';
 
@@ -30,14 +33,31 @@ export class CategoryDetailComponent implements OnInit {
 
     category$ = this.store$.select(selectCategory);
 
-    constructor(private fb: FormBuilder, private store$: Store<fromCategories.State>) {}
+    constructor(
+        private fb: FormBuilder,
+        private store$: Store<fromCategories.State>,
+        private actions$: Actions,
+        private router: Router
+    ) {}
 
     ngOnInit(): void {
         this.store$.dispatch(CategoriesActions.detailPageLoaded());
 
-        this.category$.subscribe((category: Category) => {
+        this.category$.pipe(filter(x => !!x)).subscribe((category: Category) => {
             this.form.patchValue(category);
             this.form.markAsPristine();
+
+            this.actions$
+                .pipe(
+                    ofType(CategoriesActions.categoryDeleted),
+                    first(),
+                    tap(({ id }) => {
+                        if (id === category.id) {
+                            this.router.navigateByUrl(`/admin/categories`);
+                        }
+                    })
+                )
+                .subscribe();
         });
     }
 

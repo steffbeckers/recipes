@@ -1,8 +1,11 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { RecipeCreateInputDto } from '@proxy/recipes';
 import { LookupDto } from '@proxy/shared';
+import { first, tap } from 'rxjs/operators';
 
 import * as fromRecipes from '../store';
 import * as RecipesActions from '../store/actions/recipes.actions';
@@ -19,10 +22,25 @@ export class RecipeCreateComponent implements OnInit {
         categoryId: [null, [Validators.required]],
     });
 
-    constructor(private fb: FormBuilder, private store: Store<fromRecipes.State>) {}
+    constructor(
+        private fb: FormBuilder,
+        private store$: Store<fromRecipes.State>,
+        private actions$: Actions,
+        private router: Router
+    ) {}
 
     ngOnInit(): void {
-        this.store.dispatch(RecipesActions.createPageLoaded());
+        this.store$.dispatch(RecipesActions.createPageLoaded());
+
+        this.actions$
+            .pipe(
+                ofType(RecipesActions.recipeCreated),
+                first(),
+                tap(({ data }) => {
+                    this.router.navigateByUrl(`/admin/recipes/${data.id}`);
+                })
+            )
+            .subscribe();
     }
 
     categorySelected(category: LookupDto<string>): void {
@@ -46,6 +64,6 @@ export class RecipeCreateComponent implements OnInit {
             steps: [],
         };
 
-        this.store.dispatch(RecipesActions.createRecipe({ input }));
+        this.store$.dispatch(RecipesActions.createRecipe({ input }));
     }
 }

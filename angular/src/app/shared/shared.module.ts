@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { ThemeSharedModule } from '@abp/ng.theme.shared';
 import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxValidateCoreModule } from '@ngx-validate/core';
+import { RealtimeService } from './services/realtime.service';
 
 @NgModule({
     declarations: [],
@@ -21,6 +22,6 @@ import { NgxValidateCoreModule } from '@ngx-validate/core';
         NgbTypeaheadModule,
         NgxValidateCoreModule,
     ],
-    providers: [],
+    providers: [RealtimeService],
 })
 export class SharedModule {}
