@@ -92,6 +92,13 @@ spec:
                 name: "{{ $fullName }}-back-end"
                 port:
                   number: 80
+          - path: /signalr-hubs
+            pathType: Prefix
+            backend:
+              service:
+                name: "{{ $fullName }}-back-end"
+                port:
+                  number: 80
           - path: /
             pathType: ImplementationSpecific
             backend:
