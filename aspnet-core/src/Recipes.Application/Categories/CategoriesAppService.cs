@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Recipes.Files;
 using Recipes.Permissions;
+using Recipes.Realtime;
 using Recipes.Recipes;
 using Recipes.Shared;
 using System;
@@ -20,15 +22,18 @@ namespace Recipes.Categories
     {
         private readonly IBlobContainer _blobContainer;
         private readonly ICategoryRepository _categoryRepository;
+        private readonly IHubContext<RealtimeHub> _realtimeHubContext;
         private readonly IRecipeRepository _recipeRepository;
 
         public CategoriesAppService(
             IBlobContainer blobContainer,
             ICategoryRepository categoryRepository,
+            IHubContext<RealtimeHub> realtimeHubContext,
             IRecipeRepository recipeRepository)
         {
             _blobContainer = blobContainer;
             _categoryRepository = categoryRepository;
+            _realtimeHubContext = realtimeHubContext;
             _recipeRepository = recipeRepository;
         }
 
@@ -62,7 +67,12 @@ namespace Recipes.Categories
                 category,
                 autoSave: true);
 
-            return await GetAsync(category.Id);
+            CategoryDto categoryDto = await GetAsync(category.Id);
+
+            // TODO: Event handler based on category entity insert?
+            await _realtimeHubContext.Clients.All.SendAsync("CategoryCreated", categoryDto);
+
+            return categoryDto;
         }
 
         [Authorize(RecipesPermissions.Categories.Delete)]
@@ -82,6 +92,9 @@ namespace Recipes.Categories
             }
 
             await _categoryRepository.DeleteAsync(id);
+
+            // TODO: Event handler based on category entity delete?
+            await _realtimeHubContext.Clients.All.SendAsync("CategoryDeleted", id);
         }
 
         public virtual async Task<CategoryDto> GetAsync(Guid id)
@@ -249,7 +262,12 @@ namespace Recipes.Categories
                 category,
                 autoSave: true);
 
-            return await GetAsync(category.Id);
+            CategoryDto categoryDto = await GetAsync(category.Id);
+
+            // TODO: Event handler based on category entity update?
+            await _realtimeHubContext.Clients.All.SendAsync("CategoryUpdated", categoryDto);
+
+            return categoryDto;
         }
     }
 }

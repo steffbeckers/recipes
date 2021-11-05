@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp.Account;
+using Volo.Abp.AspNetCore.SignalR;
 using Volo.Abp.AutoMapper;
 using Volo.Abp.BlobStoring;
 using Volo.Abp.BlobStoring.Azure;
@@ -16,6 +17,7 @@ namespace Recipes
 {
     [DependsOn(
         typeof(AbpAccountApplicationModule),
+        typeof(AbpAspNetCoreSignalRModule),
         typeof(AbpBlobStoringAzureModule),
         typeof(AbpFeatureManagementApplicationModule),
         typeof(AbpIdentityApplicationModule),

@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Recipes.Categories;
 using Recipes.Files;
 using Recipes.Permissions;
+using Recipes.Realtime;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,15 +22,18 @@ namespace Recipes.Recipes
     {
         private readonly IBlobContainer _blobContainer;
         private readonly ICategoryRepository _categoryRepository;
+        private readonly IHubContext<RealtimeHub> _realtimeHubContext;
         private readonly IRecipeRepository _recipeRepository;
 
         public RecipesAppService(
             IBlobContainer blobContainer,
             ICategoryRepository categoryRepository,
+            IHubContext<RealtimeHub> realtimeHubContext,
             IRecipeRepository recipeRepository)
         {
             _blobContainer = blobContainer;
             _categoryRepository = categoryRepository;
+            _realtimeHubContext = realtimeHubContext;
             _recipeRepository = recipeRepository;
         }
 
@@ -90,13 +95,21 @@ namespace Recipes.Recipes
                 recipe,
                 autoSave: true);
 
-            return await GetAsync(recipe.Id);
+            RecipeDto recipeDto = await GetAsync(recipe.Id);
+
+            // TODO: Event handler based on recipe entity insert?
+            await _realtimeHubContext.Clients.All.SendAsync("RecipeCreated", recipeDto);
+
+            return recipeDto;
         }
 
         [Authorize(RecipesPermissions.Recipes.Delete)]
         public virtual async Task DeleteAsync(Guid id)
         {
             await _recipeRepository.DeleteAsync(id);
+
+            // TODO: Event handler based on recipe entity delete?
+            await _realtimeHubContext.Clients.All.SendAsync("RecipeDeleted", id);
         }
 
         public virtual async Task<RecipeDto> GetAsync(Guid id)
@@ -269,7 +282,12 @@ namespace Recipes.Recipes
                 recipe,
                 autoSave: true);
 
-            return await GetAsync(recipe.Id);
+            RecipeDto recipeDto = await GetAsync(recipe.Id);
+
+            // TODO: Event handler based on recipe entity update?
+            await _realtimeHubContext.Clients.All.SendAsync("RecipeUpdated", recipeDto);
+
+            return recipeDto;
         }
     }
 }
